@@ -1,13 +1,12 @@
-<script lang="ts" setup >
+<script lang="ts" setup>
 import { useMessage } from 'naive-ui'
 import { returnRules } from '@/utils/accountRule'
-import { ref,computed } from 'vue'
-// import { requestLogin } from "@/services/login"
-// import { inject, ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import request from '@/utils/request';
+import request from '@/utils/request'
 import type { RequsetUser, ResponseLogin } from '@/types/account'
-import type{ AxiosError} from 'axios'
+import type { AxiosError } from 'axios'
+import { debounce } from '@/utils/debounce'
 
 const form = ref(null)
 const message = useMessage()
@@ -17,8 +16,7 @@ const model = ref({
 })
 const router = useRouter()
 const rules = computed(() => returnRules(model.value.password))
-const userData=ref(null)
-
+const userData = ref(null)
 
 const requestLogin = (dataAccount: RequsetUser): ResponseLogin => {
   request<ResponseLogin>({
@@ -32,26 +30,28 @@ const requestLogin = (dataAccount: RequsetUser): ResponseLogin => {
       message.success('登录成功')
       return result
     })
-    .catch((error:AxiosError) => {
+    .catch((error: AxiosError) => {
       console.error(error)
       message.error('登录失败，连接超时')
     })
 }
 
-const handleLoginButtonClick = (e) => {
+const handleLoginButtonClick = debounce((e) => {
   e.preventDefault()
   form.value?.validate((errors) => {
     if (!errors) {
       // 这里可以添加实际的登录逻辑，例如发送请求到后端
-      userData.value= requestLogin({account: model.value.username,
-        password: model.value.password})
-        console.log()
+      userData.value = requestLogin({
+        account: model.value.username,
+        password: model.value.password,
+      })
+      console.log()
     } else {
       console.log(errors)
       message.error('登录失败，请检查输入信息')
     }
   })
-}
+}, 200)
 </script>
 <template>
   <n-form ref="form" :model="model" :rules="rules">
