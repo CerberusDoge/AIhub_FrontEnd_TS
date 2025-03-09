@@ -1,7 +1,11 @@
-// src/utils/request.js
 import axios from 'axios'
+import type {
+  AxiosError,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosRequestConfig,
+} from 'axios'
 
-// 创建 Axios 实例
 const service = axios.create({
   baseURL: 'http://3a461183.r27.cpolar.top', // 基础 URL
   timeout: 5000, // 超时时间
@@ -9,28 +13,27 @@ const service = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use(
-  (config) => {
-    // 在发送请求前可修改配置（例如添加 token）
+  (config: InternalAxiosRequestConfig<any>): InternalAxiosRequestConfig<any> => {
     const accessToken = localStorage.getItem('accessToken')
     if (accessToken) {
+      // 如果 headers 不存在，则赋值为空对象
+      config.headers = config.headers || {}
+      // 设置 token
       config.headers.Authorization = `Bearer ${accessToken}`
     }
     return config
   },
-  (error) => {
-    // 请求错误处理
+  (error: AxiosError): Promise<AxiosError> => {
     return Promise.reject(error)
-  }
+  },
 )
 
 // 响应拦截器
 service.interceptors.response.use(
-  (response) => {
-    // 对响应数据进行处理（例如提取 data 字段）
+  (response: AxiosResponse): any => {
     return response.data
   },
-  (error) => {
-    // 统一错误处理（例如根据 HTTP 状态码提示）
+  (error: AxiosError): Promise<AxiosError> => {
     if (error.response) {
       switch (error.response.status) {
         case 401:
@@ -44,7 +47,16 @@ service.interceptors.response.use(
       }
     }
     return Promise.reject(error)
-  }
+  },
 )
 
-export default service // 导出配置后的实例
+/**
+ * 封装一个请求函数，使其支持泛型返回数据类型
+ * @param config Axios 请求配置对象
+ * @returns 返回一个 Promise，其中泛型 T 表示后端返回数据的类型
+ */
+function request<T>(config: AxiosRequestConfig): Promise<T> {
+  return service(config)
+}
+
+export default request

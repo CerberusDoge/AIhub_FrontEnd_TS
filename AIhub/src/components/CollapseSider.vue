@@ -91,16 +91,6 @@ const menuOptions = [
   },
 ]
 
-// export default defineComponent({
-//   setup() {
-//     return {
-//       inverted: ref(false),
-//       menuOptions,
-//       collapsed,
-//       renderIcon
-//     }
-//   },
-// })
 </script>
 
 <template>

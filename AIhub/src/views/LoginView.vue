@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import FormLogin from '@/components/FormLogin.vue'
-// import { RouterLink, RouterView } from 'vue-router'
-const $axios = inject('$axios')
-$axios
+
 </script>
 
 <template>

@@ -14,7 +14,7 @@ const model = ref({
 
 const rules = computed(() => returnRules(model.value.password))
 
-const $axios = inject('$axios')
+
 const handleRegisterButtonClick = (e) => {
   e.preventDefault()
   form.value?.validate((errors) => {
@@ -23,18 +23,7 @@ const handleRegisterButtonClick = (e) => {
         return { username: model.value.username, password: model.value.password }
       })
       // 这里可以添加实际的登录逻辑，例如发送请求到后端
-      $axios({ methods: 'post', data })
-        .then(result => {
-          console.log('登录信息:', data.value)
-          console.log(result)
 
-          this.$router.push('/login')
-          message.success('登录成功')
-        })
-        .catch(error=>{
-          console.log(error)
-          message.error('登录失败，连接超时')
-        })
     } else {
       console.log(errors)
       message.error('登录失败，请检查输入信息')
