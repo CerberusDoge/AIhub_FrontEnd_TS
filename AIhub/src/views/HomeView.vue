@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import CollapseSider from '@/components/CollapseSider.vue'
-const $axios = inject('$axios')
-$axios
+
 </script>
 
 <template>

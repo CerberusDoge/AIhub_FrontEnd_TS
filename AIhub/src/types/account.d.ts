@@ -1,6 +1,6 @@
 export type RequsetUser= {
-  account: string;
-  password: string;
+  account: string|null;
+  password: string|null;
   [property: string]: any;
 }
 

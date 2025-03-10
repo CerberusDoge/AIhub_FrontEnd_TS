@@ -7,8 +7,8 @@ import type {
 } from 'axios'
 
 const service = axios.create({
-  baseURL: 'http://3a461183.r27.cpolar.top', // 基础 URL
-  timeout: 5000, // 超时时间
+  baseURL: 'http://45.207.208.42', // 基础 URL
+  // timeout: 5000, // 超时时间
 })
 
 // 请求拦截器
