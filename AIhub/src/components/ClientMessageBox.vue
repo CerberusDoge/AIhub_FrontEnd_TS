@@ -1,0 +1,91 @@
+<script setup lang="ts">
+import { Pencil,Copy,Bookmarks,ShareSocial } from '@vicons/ionicons5'
+import { ref } from 'vue'
+const isHover = ref<boolean>(false)
+</script>
+
+<template>
+  <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
+    <div class="card"><slot></slot></div>
+    <div :class="{ 'ghost-mode': !isHover }" class="tool" >
+      <div class="normalMode">
+        <n-tooltip trigger="hover" placement="top" >
+          <template #trigger>
+            <n-float-button position="relative" height="30" width="30">
+              <n-icon size="16px">
+                <Pencil />
+              </n-icon>
+            </n-float-button>
+          </template>
+          编辑
+        </n-tooltip>
+        <n-tooltip trigger="hover" placement="top">
+          <template #trigger>
+            <n-float-button position="relative" height="30" width="30">
+              <n-icon size="16px">
+                <Copy />
+              </n-icon>
+            </n-float-button>
+          </template>
+          复制
+        </n-tooltip>
+        <n-tooltip trigger="hover" placement="top">
+          <template #trigger>
+            <n-float-button position="relative" height="30" width="30">
+              <n-icon size="16px">
+                <Bookmarks />
+              </n-icon>
+            </n-float-button>
+          </template>
+          收藏
+        </n-tooltip>
+        <n-tooltip trigger="hover" placement="top">
+          <template #trigger>
+            <n-float-button position="relative" height="30" width="30">
+              <n-icon size="16px">
+                <ShareSocial />
+              </n-icon>
+            </n-float-button>
+          </template>
+          分享
+        </n-tooltip>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.cardContainer {
+
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  width: 100%;
+  padding: 0.7vw;
+  flex-direction: column;
+}
+.card {
+  padding: 0.8vw;
+  background-color: #f5f5f5;
+  border-radius: 0.5vw;
+  width: fit-content;
+  max-width: 100%;
+}
+.ghost-mode {
+  visibility: hidden; /* 隐藏但占位 */
+  pointer-events: none; /* 禁用交互 */
+  position: relative; /* 保持文档流定位 */
+  z-index: -1; /* 防止遮挡其他元素 */
+}
+.normalMode{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 0.4vw;
+  .n-float-button{
+    margin: 0.2vw;
+    height: 8px;
+    width: 8px;
+  }
+}
+</style>

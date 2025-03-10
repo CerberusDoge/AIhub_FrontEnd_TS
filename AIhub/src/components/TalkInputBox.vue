@@ -48,7 +48,11 @@ const input = ref('')
   display: none; /* 直接隐藏边框层 */
 }
 
-
+/* 深度选择器应对scoped样式 */
+:deep(.n-input) {
+  --n-border-focus: transparent !important;
+  --n-box-shadow-focus: none !important;
+}
 
 .inputBox {
   font-size: 1rem;

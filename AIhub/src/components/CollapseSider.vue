@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { BookmarkOutline, DiceOutline, FolderOutline,SettingsOutline ,Add} from '@vicons/ionicons5'
+import {
+  BookmarkOutline,
+  DiceOutline,
+  FolderOutline,
+  SettingsOutline,
+  Add,
+} from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { defineComponent, h, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
-function renderIcon(icon) {
+function renderIcon(icon: any) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
 BookmarkOutline
-const collapsed = ref(false);
+const collapsed = ref(false)
 const menuOptions = [
   {
     label: () =>
@@ -90,44 +96,24 @@ const menuOptions = [
     href: '/setting',
   },
 ]
-
 </script>
 
 <template>
-
-    <!-- <n-switch v-model:value="collapsed" /> -->
-    <n-layout has-sider>
-    <n-layout-sider
-      bordered
-      collapse-mode="width"
-      :collapsed-width="64"
-      :width="240"
-      :collapsed="collapsed"
-      show-trigger
-      @collapse="collapsed = true"
-      @expand="collapsed = false"
-      style="height: 100vh"
-    >
-      <n-menu
-        :collapsed-width="64"
-        :collapsed-icon-size="22"
-        :options="menuOptions"
-
-
-      />
-    </n-layout-sider>
-    </n-layout>
-
+  <!-- <n-switch v-model:value="collapsed" /> -->
+<div></div>
 </template>
 
 <style scoped lang="scss">
-.sider {
+.n-layout {
+  width: 4%;
+  padding: 0;
+  margin: 0;
+  border: 0;
   height: 100%;
   z-index: 1000;
   overflow: visible;
 }
 .n-layout-sider {
-
   background-color: vars.$dimGreen;
 }
 
