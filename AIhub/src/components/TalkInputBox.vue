@@ -2,11 +2,27 @@
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref } from 'vue'
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
-import { fetchRequset } from '@/utils/sse'
+import { fetchRequest } from '@/utils/sse'
 import type { ChatRequest } from '@/types/message'
+import { chatInfoStore } from '@/stores/chatInfo'
+import { debounce } from '@/utils/debounce'
+import {watch} from 'vue'
+
+const chatStore = chatInfoStore()
+
+
+watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
+  // 当 watchedValue 变化时，更新 inputValue
+  console.log(newValue)
+  input.value = `${newValue}`;
+});
+const storeInput = debounce ((value: any) => {
+  chatStore.inputBoxInfo = value
+  console.log(chatStore.inputBoxInfo)
+},200)
 
 const loadingRef = ref(false)
-const storeData = ref("")
+const storeData = ref('')
 const ChatRequest = ref({
   userId: 1,
   chatInfoId: null,
@@ -16,7 +32,7 @@ const ChatRequest = ref({
 })
 
 const handleClick = async () => {
-  fetchRequset("/api/v1/chat",JSON.stringify(ChatRequest.value),storeData)
+  fetchRequest('/api/v1/chat', JSON.stringify(ChatRequest.value), storeData)
 }
 
 const input = ref('')
@@ -26,13 +42,14 @@ const input = ref('')
   <div class="inputBox">
     <p>{{ storeData }}</p>
     <n-input
+    :on-input=storeInput
       show-count
       id="typeIn"
       v-model="input"
       type="textarea"
       round
       clearable
-      :placeholder=storeData
+      :placeholder="storeData"
       :autosize="{
         minRows: 2,
         maxRows: 7,

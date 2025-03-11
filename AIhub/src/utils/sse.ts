@@ -1,4 +1,4 @@
-export const fetchRequset = (url: string, data: any, storeData: any) => {
+export const fetchRequest = (url: string, data: any, storeData: any) => {
   const headers = new Headers()
   const authorization = localStorage.getItem('accessToken')
   headers.set('Authorization', `Bearer ${authorization}`)

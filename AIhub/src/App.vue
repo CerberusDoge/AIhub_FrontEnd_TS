@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
+const num:number=1
 </script>
 
 <template>
-   <n-message-provider>
+   <n-message-provider :max=num>
   <router-view></router-view>
 </n-message-provider>
 </template>

@@ -1,17 +1,61 @@
 <script setup lang="ts">
-import { Pencil,Copy,Bookmarks,ShareSocial } from '@vicons/ionicons5'
+import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
 import { ref } from 'vue'
+import { useSlots } from 'vue'
+import { useMessage } from 'naive-ui'
+import { chatInfoStore } from '@/stores/chatInfo'
+
+const chatStore = chatInfoStore()
+const slots = useSlots()
+const message = useMessage()
 const isHover = ref<boolean>(false)
+
+const getSlotText = () => {
+  let slotText = ''
+  if (slots.default) {
+    const slotNodes = slots.default()
+    slotNodes.forEach((node) => {
+      if (typeof node.children === 'string') {
+        slotText += node.children
+      }
+    })
+  }
+  return slotText
+}
+
+const copySlotContent = async () => {
+  const text = getSlotText()
+  try {
+    await navigator.clipboard.writeText(text)
+    console.log('复制成功')
+    message.success('复制成功')
+  } catch (err) {
+    console.error('复制出错:', err)
+    message.error('复制出错')
+  }
+}
+
+const editSlotContent = async () => {
+  try {
+    const text = getSlotText()
+    chatStore.inputBoxInfo = text
+    console.log('复制成功')
+    message.success('复制成功')
+  } catch(err) {
+    console.error('编辑出错:', err)
+    message.error('编辑出错')
+  }
+}
 </script>
 
 <template>
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
     <div class="card"><slot></slot></div>
-    <div :class="{ 'ghost-mode': !isHover }" class="tool" >
+    <div :class="{ 'ghost-mode': !isHover }" class="tool">
       <div class="normalMode">
-        <n-tooltip trigger="hover" placement="top" >
+        <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
+            <n-float-button @click="editSlotContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Pencil />
               </n-icon>
@@ -21,7 +65,7 @@ const isHover = ref<boolean>(false)
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
+            <n-float-button @click="copySlotContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Copy />
               </n-icon>
@@ -56,7 +100,6 @@ const isHover = ref<boolean>(false)
 
 <style scoped lang="scss">
 .cardContainer {
-
   display: flex;
   justify-content: center;
   align-items: end;
@@ -71,7 +114,7 @@ const isHover = ref<boolean>(false)
   width: fit-content;
   max-width: 90%;
   overflow: hidden;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   word-wrap: break-word;
 }
 .ghost-mode {
@@ -80,12 +123,12 @@ const isHover = ref<boolean>(false)
   position: relative; /* 保持文档流定位 */
   z-index: -1; /* 防止遮挡其他元素 */
 }
-.normalMode{
+.normalMode {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   margin-top: 0.4vw;
-  .n-float-button{
+  .n-float-button {
     margin: 0.2vw;
     height: 8px;
     width: 8px;
