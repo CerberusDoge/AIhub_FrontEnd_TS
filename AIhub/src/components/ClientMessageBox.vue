@@ -39,8 +39,8 @@ const editSlotContent = async () => {
   try {
     const text = getSlotText()
     chatStore.inputBoxInfo = text
-    console.log('复制成功')
-    message.success('复制成功')
+    console.log('修改成功')
+    message.success('已复制到控制台')
   } catch(err) {
     console.error('编辑出错:', err)
     message.error('编辑出错')

@@ -5,21 +5,18 @@ import { ArrowUp as Arrow } from '@vicons/ionicons5'
 import { fetchRequest } from '@/utils/sse'
 import type { ChatRequest } from '@/types/message'
 import { chatInfoStore } from '@/stores/chatInfo'
-import { debounce } from '@/utils/debounce'
-import {watch} from 'vue'
 
 const chatStore = chatInfoStore()
+const storeNew = ref('')
 
-
-watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
-  // 当 watchedValue 变化时，更新 inputValue
-  console.log(newValue)
-  input.value = `${newValue}`;
-});
-const storeInput = debounce ((value: any) => {
+// watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
+//   // 当 watchedValue 变化时，更新 inputValue
+//   storeNew.value=chatStore.inputBoxInfo
+// });
+const storeInput = (value: any) => {
   chatStore.inputBoxInfo = value
   console.log(chatStore.inputBoxInfo)
-},200)
+}
 
 const loadingRef = ref(false)
 const storeData = ref('')
@@ -42,7 +39,8 @@ const input = ref('')
   <div class="inputBox">
     <p>{{ storeData }}</p>
     <n-input
-    :on-input=storeInput
+      :value="chatStore.inputBoxInfo"
+      :on-input="storeInput"
       show-count
       id="typeIn"
       v-model="input"
