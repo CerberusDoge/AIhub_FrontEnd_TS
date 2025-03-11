@@ -11,7 +11,7 @@ export const requestLogin = async (dataAccount: RequsetUser): Promise<ResponseLo
 
     localStorage.setItem('accessToken', result.accessToken)
     localStorage.setItem('refreshToken', result.refreshToken)
-    localStorage.setItem('userID', JSON.stringify(result.id))
+    localStorage.setItem('userId', JSON.stringify(result.id))
     localStorage.setItem('account', result.account)
     localStorage.setItem('isLoggedIn', 'islogged')
 

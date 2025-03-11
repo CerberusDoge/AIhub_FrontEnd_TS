@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import { refreshToken } from '@/services/refresh'
+import { delChat, star, unStar } from '@/services/chat'
 const router = useRouter()
 const logOut = () => {
   localStorage.clear()
@@ -11,14 +12,27 @@ const logOut = () => {
 }
 
 const refresh = refreshToken
+const deleteChat = () => {
+  delChat(14)
+}
+const starChat = () => {
+  star(14, 1)
+}
+const unStarChat = () => {
+  unStar(1, 1)
+}
+
 const testMessage =
   'asdasd1asasdsd1asdasasdasdasdasd1asdasasdasdasd1asdasasdasdasd1asdasasdd1asdasasdasdasd1asdasasdasdasd1vasdasdadadasda`asdasasdasdasd1`asdasdadadasda`asdasasdasdasd1`asdasdadadasda`'
 </script>
 
 <template>
-  <button @click="logOut">logOut</button>
-  <button @click="refresh">refrshToken</button>
   <div class="layout">
+    <button @click="logOut">logOut</button>
+    <button @click="refresh">refrshToken</button>
+    <button @click="deleteChat">delete</button>
+    <button @click="starChat">star</button>
+    <button @click="unStarChat">unstar</button>
     <div class="messageContent">
       <ClientMessageBox>{{ testMessage }}</ClientMessageBox>
     </div>
