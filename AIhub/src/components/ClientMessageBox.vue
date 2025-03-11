@@ -60,7 +60,7 @@ const isHover = ref<boolean>(false)
   display: flex;
   justify-content: center;
   align-items: end;
-  width: 100%;
+  max-width: 90vw;
   padding: 0.7vw;
   flex-direction: column;
 }
@@ -69,7 +69,10 @@ const isHover = ref<boolean>(false)
   background-color: #f5f5f5;
   border-radius: 0.5vw;
   width: fit-content;
-  max-width: 100%;
+  max-width: 90%;
+  overflow: hidden;
+  flex-wrap:wrap;
+  word-wrap: break-word;
 }
 .ghost-mode {
   visibility: hidden; /* 隐藏但占位 */

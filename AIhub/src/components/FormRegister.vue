@@ -45,16 +45,15 @@ const handleRegisterButtonClick = debounce((e: any) => {
   e.preventDefault()
   form.value?.validate((errors) => {
     if (!errors) {
-      const data =  { account: model.value.account, password: model.value.password }
+      const data = { account: model.value.account, password: model.value.password }
       requestRegister(data)
       // 这里可以添加实际的登录逻辑，例如发送请求到后端
-
     } else {
       console.log(errors)
       message.error('登录失败，请检查输入信息')
     }
   })
-},200)
+}, 200)
 </script>
 <template>
   <n-form ref="form" :model="model" :rules="rules">

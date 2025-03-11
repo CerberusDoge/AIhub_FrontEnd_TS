@@ -2,19 +2,29 @@
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref } from 'vue'
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
+import { fetchRequset } from '@/utils/sse'
+import type { ChatRequest } from '@/types/message'
 
 const loadingRef = ref(false)
-const handleClick = () => {
-  loadingRef.value = true
-  setTimeout(() => {
-    loadingRef.value = false
-  }, 2000)
+const storeData = ref("")
+const ChatRequest = ref({
+  userId: 1,
+  chatInfoId: null,
+  model: 'deepseek-r1',
+  prompt: '',
+  message: '一句话介绍vue3',
+})
+
+const handleClick = async () => {
+  fetchRequset("/api/v1/chat",JSON.stringify(ChatRequest.value),storeData)
 }
+
 const input = ref('')
 </script>
 
 <template>
   <div class="inputBox">
+    <p>{{ storeData }}</p>
     <n-input
       show-count
       id="typeIn"
@@ -22,13 +32,14 @@ const input = ref('')
       type="textarea"
       round
       clearable
-      placeholder="请输入内容"
+      :placeholder=storeData
       :autosize="{
         minRows: 2,
         maxRows: 7,
       }"
     />
     <div class="bottomContent">
+      <!-- <button @click="handleClick">jasdasldl</button> -->
       <n-button circle :loading="loadingRef" @click="handleClick" color="#5FBD22">
         <template #icon>
           <n-icon>
@@ -43,7 +54,6 @@ const input = ref('')
 </template>
 
 <style scoped lang="scss">
-
 ::v-deep(.n-input__border) {
   display: none; /* 直接隐藏边框层 */
 }

@@ -3,13 +3,11 @@ import { useMessage } from 'naive-ui'
 import { returnRules } from '@/utils/accountRule'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import request from '@/utils/request'
 import { debounce } from '@/utils/debounce'
 import type { FormInst } from 'naive-ui' // 引入 FormInstance 类型
-import type { RequsetUser, ResponseLogin } from '@/types/account'
-import { useUserStore } from '@/stores/userInfo'
+import type { RequsetUser } from '@/types/account'
+import { requestLogin } from '@/services/login'
 
-const store = useUserStore()
 const form = ref<FormInst | null>(null)
 const message = useMessage()
 const model = ref<RequsetUser>({
@@ -26,47 +24,25 @@ const router = useRouter()
 const rules = computed(() => returnRules(model.value.password))
 const userData: any = ref(null)
 
-//登录请求
-const requestLogin = async (dataAccount: RequsetUser): Promise<ResponseLogin> => {
-  try {
-    const result = await request<ResponseLogin>({
-      url: '/api/v1/login',
-      method: 'post',
-      data: dataAccount,
-    })
-    // console.log('登录信息:', result)
-    message.success('登录成功')
-    localStorage.setItem('accessToken', result.accessToken)
-    localStorage.setItem('refreshToken', result.refreshToken)
-    localStorage.setItem('id', JSON.stringify(result.id))
-    localStorage.setItem('account', result.account)
-    localStorage.setItem('isLoggedIn', "islogged")
-    store.account = result.account
-    store.accessToken = result.accessToken
-    store.refreshToken = result.refreshToken
-
-    setTimeout(() => {
-      router.push('/chat')
-    }, 1000)
-
-    return result.data
-  } catch (error: any) {
-    console.error(error)
-    if (error.response&&error.response.status == 400) message.error('登录失败，请检查输入信息')
-    else message.error('登录失败，连接超时')
-    throw error // 重新抛出错误以保持 Promise 链
-  }
-}
-
 const handleLoginButtonClick = debounce((e: any) => {
   e.preventDefault()
-  form.value?.validate((errors: any) => {
+  form.value?.validate(async (errors: any) => {
     if (!errors) {
       // 这里可以添加实际的登录逻辑，例如发送请求到后端
-      userData.value = requestLogin({
-        account: model.value.account,
-        password: model.value.password,
-      })
+      try {
+        userData.value = await requestLogin({
+          account: model.value.account,
+          password: model.value.password,
+        })
+        message.success('登录成功')
+        setTimeout(() => {
+          router.push('/chat')
+        }, 1000)
+      } catch (errors: any) {
+        console.log(errors)
+        if (errors && errors.status == 400) message.error('登录失败，请检查输入信息')
+        else message.error('登录失败，连接超时')
+      }
     } else {
       console.log(errors)
       message.error('登录失败，请检查输入信息')
