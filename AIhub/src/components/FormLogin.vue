@@ -52,7 +52,7 @@ const requestLogin = async (dataAccount: RequsetUser): Promise<ResponseLogin> =>
     return result.data
   } catch (error: any) {
     console.error(error)
-    if (error.response.status == 400) message.error('登录失败，密码错误')
+    if (error.response&&error.response.status == 400) message.error('登录失败，请检查输入信息')
     else message.error('登录失败，连接超时')
     throw error // 重新抛出错误以保持 Promise 链
   }
