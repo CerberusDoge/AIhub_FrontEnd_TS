@@ -7,6 +7,7 @@ import type { ChatRequest } from '@/types/message'
 import { chatInfoStore } from '@/stores/chatInfo'
 
 const chatStore = chatInfoStore()
+chatStore.inputBoxInfo=''
 const sendMessage = () => {
   if (chatStore.inputBoxInfo.trim() !== '') {
     chatStore.isSendMessage = true
@@ -34,8 +35,11 @@ const ChatRequest = ref({
 })
 
 const handleClick = async () => {
-  chatStore.isSendMessage = true
-  fetchRequest('/api/v1/chat', JSON.stringify(ChatRequest.value), storeData)
+  if (chatStore.inputBoxInfo.trim() !== '') {
+    chatStore.isSendMessage = true
+    console.log("发送消息成功")
+    fetchRequest('/api/v1/chat', JSON.stringify(ChatRequest.value), storeData)
+  }
 }
 
 const input = ref('')
@@ -44,7 +48,7 @@ const input = ref('')
 <template>
   <div class="inputBox">
     <n-input
-      @keyup-enter="sendMessage"
+      @keyup.native.enter="sendMessage"
       :value="chatStore.inputBoxInfo"
       :on-input="storeInput"
       show-count
@@ -101,9 +105,9 @@ const input = ref('')
   border-width: 1px;
   border-color: vars.$border-light;
   box-shadow: vars.$box-shadow;
-  padding-top: 0.75rem;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
+  padding-top: 0.8rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   padding-bottom: 0.7rem;
 
 }

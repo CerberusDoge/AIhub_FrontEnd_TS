@@ -58,8 +58,8 @@ const editSlotContent = async () => {
 
 <template>
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
-    <div class="card"><div class="cardContent" v-html="RenderMd"></div></div>
-    <div :class="{ 'ghost-mode': !isHover }" class="tool">
+    <div class="card"><div v-html="RenderMd"></div></div>
+    <div asd class="tool">
       <div class="normalMode">
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
@@ -111,19 +111,18 @@ const editSlotContent = async () => {
   display: flex;
   justify-content: center;
   align-items: start;
-  max-width: 90vw;
+  width: 100%;
   padding: 0.7vw;
   flex-direction: column;
 }
 .card {
-  display: flex;
-  justify-content: center;
   width: 100%;
   padding: 0.6vw;
   padding-bottom: 0;
   // background-color: #f5f5f5;
   border-radius: 0.5vw;
-  max-width: 90%;
+  width: fit-content;
+  max-width: 100%;
   overflow: hidden;
   flex-wrap: wrap;
   word-wrap: break-word;
@@ -131,10 +130,15 @@ const editSlotContent = async () => {
 }
 
 .ghost-mode {
+  width: 100%;
   visibility: hidden; /* 隐藏但占位 */
   pointer-events: none; /* 禁用交互 */
   position: relative; /* 保持文档流定位 */
   z-index: -1; /* 防止遮挡其他元素 */
+}
+.tool{
+  width: 100%;
+  display: flex;
 }
 .normalMode {
   display: flex;

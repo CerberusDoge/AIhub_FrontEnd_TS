@@ -6,9 +6,12 @@ import type {
   AxiosRequestConfig,
 } from 'axios'
 
+
+
 const service = axios.create({
   baseURL: 'http://45.207.208.42', // 基础 URL
-  // timeout: 5000, // 超时时间
+  withCredentials: true,// 启用跨域凭证
+  timeout: 5000, // 超时时间
 })
 
 // 请求拦截器

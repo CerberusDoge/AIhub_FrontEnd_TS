@@ -53,10 +53,9 @@ watch(
     <button @click="starChat">star</button>
     <button @click="unStarChat">unstar</button>
     <div class="messageContent">
-
-      <ClientMessageBox>{{ currentTextMessage }}</ClientMessageBox>
+      <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
       <ServeMessageBox :messages="currentTextMessage"></ServeMessageBox>
-      <ClientMessageBox>{{ currentTextMessage }}</ClientMessageBox>
+      <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
     </div>
     <div class="command"><TalkInputBox></TalkInputBox></div>
   </div>

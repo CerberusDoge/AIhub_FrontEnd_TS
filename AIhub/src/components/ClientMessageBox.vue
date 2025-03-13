@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { ref } from 'vue'
-import { useSlots } from 'vue'
+import { ref,useSlots,defineProps  } from 'vue'
 import { useMessage } from 'naive-ui'
 import { chatInfoStore } from '@/stores/chatInfo'
 
@@ -9,6 +8,8 @@ const chatStore = chatInfoStore()
 const slots = useSlots()
 const message = useMessage()
 const isHover = ref<boolean>(false)
+const props=defineProps<{messages:string}>()
+
 
 const getSlotText = () => {
   let slotText = ''
@@ -24,9 +25,8 @@ const getSlotText = () => {
 }
 
 const copySlotContent = async () => {
-  const text = getSlotText()
   try {
-    await navigator.clipboard.writeText(text)
+    await navigator.clipboard.writeText(props.messages)
     console.log('复制成功')
     message.success('复制成功')
   } catch (err) {
@@ -37,7 +37,7 @@ const copySlotContent = async () => {
 
 const editSlotContent = async () => {
   try {
-    const text = getSlotText()
+    const text = props.messages
     chatStore.inputBoxInfo = text
     console.log('修改成功')
     message.success('已复制到控制台')
@@ -50,7 +50,7 @@ const editSlotContent = async () => {
 
 <template>
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
-    <div class="card"><slot></slot></div>
+    <div class="card" v-text="props.messages"></div>
     <div :class="{ 'ghost-mode': !isHover }" class="tool">
       <div class="normalMode">
         <n-tooltip trigger="hover" placement="top">
