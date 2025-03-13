@@ -5,24 +5,10 @@ import { useMessage } from 'naive-ui'
 import { chatInfoStore } from '@/stores/chatInfo'
 
 const chatStore = chatInfoStore()
-const slots = useSlots()
 const message = useMessage()
 const isHover = ref<boolean>(false)
 const props=defineProps<{messages:string}>()
 
-
-const getSlotText = () => {
-  let slotText = ''
-  if (slots.default) {
-    const slotNodes = slots.default()
-    slotNodes.forEach((node) => {
-      if (typeof node.children === 'string') {
-        slotText += node.children
-      }
-    })
-  }
-  return slotText
-}
 
 const copySlotContent = async () => {
   try {

@@ -4,7 +4,6 @@
   box-sizing: border-box;
   font-size: 1rem;
 
-
   margin: 0 auto;
   font-weight: normal;
   font-family:
@@ -17,30 +16,121 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-
 }
 
-h1,h2,h3,h4,p,ul,ol{
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+h5,
+h6 {
   margin: 0;
   font-family:
     Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     '微软雅黑', Arial, sans-serif;
 }
 
-pre{
- margin:0;
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 0;
+  padding: 0.5em 10px;
+  quotes: '\201C' '\201D' '\2018' '\2019';
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+  border-radius: 0.6rem;
+}
+blockquote p {
+  display: inline;
+}
+a {
+  color: #5fbd22;
+}
+table {
+
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+
+}
+
+thead tr {
+  text-align: center;
+  background-color: #e2fcd1;
+  color: #252525;
+  text-align: left;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 12px 15px;
+}
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+  border-bottom: 2px solid #5fbd22;
+}
+
+tbody tr.active-row {
+  font-weight: bold;
+  color: #5fbd22;
+}
+pre {
+  margin: 0;
 
   padding: 1rem;
   border-radius: 0.6rem;
-  background: #F3F3F3;
+  background: #f3f3f3;
   color: rgb(19, 19, 20);
   direction: ltr;
   text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  overflow: auto;
+  word-break: break-all;
+  word-wrap: break-word;
   line-height: 1.5;
 }
+
+.cursor {
+  color: #5fbd22;
+  padding-left: 0.4rem;
+  position: relative;
+  display: inline-block;
+  animation: blink 1s infinite; /* 1秒一次，无限循环 */
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
 @media (hover: hover) {
 }
 

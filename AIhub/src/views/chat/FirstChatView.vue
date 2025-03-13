@@ -38,11 +38,6 @@ watch(
     }
   },
 )
-
-// watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
-//   // 当 watchedValue 变化时，更新 inputValue
-//   storeNew.value=chatStore.inputBoxInfo
-// });
 </script>
 
 <template>
@@ -53,7 +48,6 @@ watch(
     <button @click="starChat">star</button>
     <button @click="unStarChat">unstar</button>
     <div class="messageContent">
-      <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
       <ServeMessageBox :messages="currentTextMessage"></ServeMessageBox>
       <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
     </div>

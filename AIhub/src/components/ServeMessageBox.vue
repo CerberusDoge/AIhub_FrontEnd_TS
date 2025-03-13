@@ -1,38 +1,50 @@
 <script setup lang="ts">
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { computed, ref, useSlots, defineProps } from 'vue'
+import { computed, ref, useSlots, defineProps, watch, onUnmounted } from 'vue'
 import { useMessage } from 'naive-ui'
 import { chatInfoStore } from '@/stores/chatInfo'
 import { marked } from 'marked'
 
-const chatStore = chatInfoStore()
-const slots = useSlots()
-const message = useMessage()
-const isHover = ref<boolean>(false)
-
 const props = defineProps<{
   messages: string
 }>()
+const message = useMessage()
+const currentIndex = ref(0) //当前读取的位置
+const isHover = ref<boolean>(false)
+const msg = ref('') //存储当前已经打印的消息
+const isOver = ref(false) //存储是否完成打印
+let timer: any = null
 
-const RenderMd = computed(() => {
-  console.log(props.messages)
-  return marked(props.messages)
-})
-
-const getSlotText = () => {
-  let slotText = ''
-  if (slots.default) {
-    const slotNodes = slots.default()
-    slotNodes.forEach((node) => {
-      if (typeof node.children === 'string') {
-        slotText += node.children
-      }
-    })
+//打印效果
+const typing = () => {
+  //存在未打印的
+  if (currentIndex.value < props.messages.length) {
+    msg.value += props.messages.charAt(currentIndex.value++)
+    timer = setTimeout(typing, 50)
+  } else {
+    clearTimeout(timer)
   }
-  return slotText
 }
 
-const copySlotContent = async () => {
+onUnmounted(() => clearTimeout(timer))
+watch(
+  () => props.messages,
+  () => {
+    if (isOver) typing()
+    else msg.value = props.messages
+  },
+)
+
+const RenderMd = computed(() => {
+  console.log(msg.value)
+  let value
+  if (isOver) value = marked(msg.value)
+  else value = marked(msg.value)
+  console.log(value)
+  return value
+})
+
+const copyContent = async () => {
   try {
     await navigator.clipboard.writeText(props.messages)
     console.log('复制成功')
@@ -42,28 +54,18 @@ const copySlotContent = async () => {
     message.error('复制出错')
   }
 }
-
-const editSlotContent = async () => {
-  try {
-    const text = getSlotText()
-    chatStore.inputBoxInfo = text
-    console.log('修改成功')
-    message.success('已复制到控制台')
-  } catch (err) {
-    console.error('编辑出错:', err)
-    message.error('编辑出错')
-  }
-}
 </script>
 
 <template>
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
-    <div class="card"><div v-html="RenderMd"></div></div>
+    <div class="card">
+      <div class="cardContent" v-html="RenderMd"></div>
+    </div>
     <div asd class="tool">
       <div class="normalMode">
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button @click="editSlotContent" position="relative" height="30" width="30">
+            <n-float-button @click="copyContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Pencil />
               </n-icon>
@@ -73,7 +75,7 @@ const editSlotContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button @click="copySlotContent" position="relative" height="30" width="30">
+            <n-float-button @click="copyContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Copy />
               </n-icon>
@@ -124,9 +126,11 @@ const editSlotContent = async () => {
   width: fit-content;
   max-width: 100%;
   overflow: hidden;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   word-wrap: break-word;
   white-space: pre-wrap;
+
+
 }
 
 .ghost-mode {
@@ -136,7 +140,7 @@ const editSlotContent = async () => {
   position: relative; /* 保持文档流定位 */
   z-index: -1; /* 防止遮挡其他元素 */
 }
-.tool{
+.tool {
   width: 100%;
   display: flex;
 }
