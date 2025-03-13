@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { ref, provide } from 'vue'
 import CollapseSider from '@/components/CollapseSider.vue'
+const isOpen = ref(true) //侧栏是否打开
 
+provide('isOpen', isOpen.value)
 </script>
 
 <template>
   <div class="main">
-    <CollapseSider></CollapseSider>
+    <div class="sider"><CollapseSider v-show="isOpen"></CollapseSider></div>
     <div class="rightBar"><router-view></router-view></div>
   </div>
 </template>
@@ -16,10 +18,12 @@ import CollapseSider from '@/components/CollapseSider.vue'
   display: flex;
   height: 100%;
   overflow: visible;
-  .leftBar {
+  .sider {
+    background-color: vars.$deepGrey;
     display: flex;
-    z-index: 1000;
-    overflow: visible;
+    max-height: 100%;
+    padding: 1rem;
+    user-select: none;
   }
   .rightBar {
     display: flex;

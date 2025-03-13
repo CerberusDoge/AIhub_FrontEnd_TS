@@ -1,138 +1,73 @@
 <script setup lang="ts">
-import {
-  BookmarkOutline,
-  DiceOutline,
-  FolderOutline,
-  SettingsOutline,
-  Add,
-} from '@vicons/ionicons5'
+import { BookmarkOutline, DiceOutline, FolderOutline, Menu, Add } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { defineComponent, h, ref } from 'vue'
+import type { Component } from 'vue'
 import { RouterLink } from 'vue-router'
 
-function renderIcon(icon: any) {
+const topList=[{icon:Add,title:'新对话'}]
+function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
-BookmarkOutline
-const collapsed = ref(false)
-const menuOptions = [
-  {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'firstChatPage',
-            // params: {
-            //   lang: 'zh-CN',
-            // },
-          },
-        },
-        { default: () => '开启新对话' },
-      ),
-    key: 'newChat',
-    icon: renderIcon(Add),
-  },
-  {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'roleCenter',
-            // params: {
-            //   lang: 'zh-CN',
-            // },
-          },
-        },
-        { default: () => '角色中心' },
-      ),
-    key: 'roleCenter',
-    icon: renderIcon(DiceOutline),
-  },
-  {
-    label: '收藏夹',
-    key: 'collection',
-    icon: renderIcon(FolderOutline),
-    children: [
-      {
-        type: 'group',
-        label: '对话',
-        key: 'people',
-        children: [
-          {
-            label: '叙事者',
-            key: 'narrator',
-            icon: renderIcon(FolderOutline),
-          },
-          {
-            label: '饮品',
-            key: 'beverage',
-            icon: renderIcon(FolderOutline),
-            children: [
-              {
-                label: '威士忌',
-                key: 'whisky',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: () =>
-      h(
-        RouterLink,
-        {
-          to: {
-            name: 'setting',
-          },
-        },
-        { default: () => '设置' },
-      ),
-    key: 'setting',
-    icon: renderIcon(SettingsOutline),
-    href: '/setting',
-  },
-]
 </script>
 
 <template>
   <!-- <n-switch v-model:value="collapsed" /> -->
-<div></div>
+  <div class="wrap">
+    <div class="top">
+      <div class="topTitle">
+        <div>AIhub</div>
+        <n-button quaternary circle type="primary">
+          <template #icon>
+            <n-icon size="1.8rem"><Menu /></n-icon>
+          </template>
+        </n-button>
+      </div>
+      <div v-for="(val,index) in topList ":key=index class="row">
+        <component :is="renderIcon(val.icon)" />
+        <div class="rowTitle">{{val.title}}</div>
+        </div>
+
+    </div>
+    <div class="bottom">123</div>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.n-layout {
-  width: 4%;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  height: 100%;
-  z-index: 1000;
-  overflow: visible;
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 100%;
+  width: 100%;
 }
-.n-layout-sider {
-  background-color: vars.$dimGreen;
-}
+.top {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  .topTitle {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0.1rem 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem;
+    align-items: center;
+  }
 
-@media screen and (max-width: 768px) {
-  .n-card {
-    width: 90%;
-    max-height: 100%;
-  }
-}
-@media screen and (min-width: 769px) and (max-width: 1024px) {
-  .n-card {
-    width: 60%;
-    max-height: 100%;
-  }
-}
-@media screen and (min-width: 1025px) {
-  .n-card {
-    width: 30%;
-    max-height: 100%;
+  .row {
+    margin-bottom: 0.6rem;
+    width: 15rem;
+    padding: 0.5rem;
+    max-width: 100%;
+    background-color: vars.$grey;
+    border-radius: 0.7rem;
+    display: flex;
+    align-items: center;
+    .rowTitle {
+      margin-left: 0.5rem;
+    }
   }
 }
 </style>

@@ -8,3 +8,4 @@ export const useUserStore = defineStore('user', () => {
   const refreshToken = ref<string | null>(null)
   return { isLoggedIn, accessToken, account, refreshToken }
 })
+

@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
+import TopBar from '@/components/TopBar.vue'
 import { refreshToken } from '@/services/refresh'
 import { delChat, star, unStar } from '@/services/chat'
 import { chatInfoStore } from '@/stores/chatInfo'
@@ -16,7 +17,7 @@ const logOut = () => {
   localStorage.clear()
   router.push('/login')
 }
-
+const title = '啊实打实打算啊实adsaasdasdassa打实大苏打撒'
 const refresh = refreshToken
 const deleteChat = () => {
   delChat(14)
@@ -42,11 +43,7 @@ watch(
 
 <template>
   <div class="layout">
-    <button @click="logOut">logOut</button>
-    <button @click="refresh">refrshToken</button>
-    <button @click="deleteChat">delete</button>
-    <button @click="starChat">star</button>
-    <button @click="unStarChat">unstar</button>
+    <div class="topBar"><TopBar :title="title"></TopBar></div>
     <div class="messageContent">
       <ServeMessageBox :messages="currentTextMessage"></ServeMessageBox>
       <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
@@ -64,7 +61,10 @@ watch(
   justify-content: end;
   align-items: center;
 }
-
+.topBar {
+  width: 90%;
+  padding: 0.8rem;
+}
 .command {
   // background-color: pink;
 
@@ -76,6 +76,7 @@ watch(
   overflow-y: auto; /* 垂直滚动条自动显示 */
   overflow-x: hidden;
   max-height: 100%;
+  max-width: 100%;
   width: 60%;
   padding: 2%;
   height: 100%;
