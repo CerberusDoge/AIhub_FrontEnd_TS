@@ -7,7 +7,12 @@ import type { ChatRequest } from '@/types/message'
 import { chatInfoStore } from '@/stores/chatInfo'
 
 const chatStore = chatInfoStore()
-const storeNew = ref('')
+const sendMessage = () => {
+  if (chatStore.inputBoxInfo.trim() !== '') {
+    chatStore.isSendMessage = true
+    console.log("发送消息成功")
+  }
+}
 
 // watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
 //   // 当 watchedValue 变化时，更新 inputValue
@@ -29,6 +34,7 @@ const ChatRequest = ref({
 })
 
 const handleClick = async () => {
+  chatStore.isSendMessage = true
   fetchRequest('/api/v1/chat', JSON.stringify(ChatRequest.value), storeData)
 }
 
@@ -37,8 +43,8 @@ const input = ref('')
 
 <template>
   <div class="inputBox">
-    <p>{{ storeData }}</p>
     <n-input
+      @keyup-enter="sendMessage"
       :value="chatStore.inputBoxInfo"
       :on-input="storeInput"
       show-count
@@ -50,7 +56,7 @@ const input = ref('')
       :placeholder="storeData"
       :autosize="{
         minRows: 2,
-        maxRows: 7,
+        maxRows: 4,
       }"
     />
     <div class="bottomContent">
@@ -86,6 +92,8 @@ const input = ref('')
   box-sizing: border-box;
   max-height: 20rem;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 80%;
   cursor: text;
   flex-direction: column;
@@ -93,10 +101,11 @@ const input = ref('')
   border-width: 1px;
   border-color: vars.$border-light;
   box-shadow: vars.$box-shadow;
+  padding-top: 0.75rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   padding-bottom: 0.7rem;
-  padding-top: 0.9rem;
+
 }
 
 #typeIn {

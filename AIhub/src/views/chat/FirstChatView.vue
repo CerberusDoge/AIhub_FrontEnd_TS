@@ -3,8 +3,14 @@
 import { useRouter } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
+import ServeMessageBox from '@/components/ServeMessageBox.vue'
 import { refreshToken } from '@/services/refresh'
 import { delChat, star, unStar } from '@/services/chat'
+import { chatInfoStore } from '@/stores/chatInfo'
+import { ref, watch } from 'vue'
+
+const chatStore = chatInfoStore()
+const currentTextMessage = ref('')
 const router = useRouter()
 const logOut = () => {
   localStorage.clear()
@@ -22,8 +28,21 @@ const unStarChat = () => {
   unStar(1, 1)
 }
 
-const testMessage =
-  'asdasd1asasdsd1asdasasdasdasdasd1asdasasdasdasd1asdasasdasdasd1asdasasdd1asdasasdasdasd1asdasasdasdasd1vasdasdadadasda`asdasasdasdasd1`asdasdadadasda`asdasasdasdasd1`asdasdadadasda`'
+//监听是否有新消息
+watch(
+  () => chatStore.isSendMessage,
+  (newValue: boolean) => {
+    if (newValue === true) {
+      currentTextMessage.value = chatStore.inputBoxInfo
+      chatStore.isSendMessage = false
+    }
+  },
+)
+
+// watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
+//   // 当 watchedValue 变化时，更新 inputValue
+//   storeNew.value=chatStore.inputBoxInfo
+// });
 </script>
 
 <template>
@@ -34,7 +53,10 @@ const testMessage =
     <button @click="starChat">star</button>
     <button @click="unStarChat">unstar</button>
     <div class="messageContent">
-      <ClientMessageBox>{{ testMessage }}</ClientMessageBox>
+
+      <ClientMessageBox>{{ currentTextMessage }}</ClientMessageBox>
+      <ServeMessageBox :messages="currentTextMessage"></ServeMessageBox>
+      <ClientMessageBox>{{ currentTextMessage }}</ClientMessageBox>
     </div>
     <div class="command"><TalkInputBox></TalkInputBox></div>
   </div>

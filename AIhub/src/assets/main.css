@@ -20,7 +20,26 @@ body {
 
 }
 
+h1,h2,h3,h4,p,ul,ol{
+  margin: 0;
+  font-family:
+    Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    '微软雅黑', Arial, sans-serif;
+}
 
+pre{
+ margin:0;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  background: #F3F3F3;
+  color: rgb(19, 19, 20);
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+}
 @media (hover: hover) {
 }
 

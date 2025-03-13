@@ -29,3 +29,4 @@ export const unStar = (chatInfoId: number, userId: number) => {
       console.log(error)
     })
 }
+
