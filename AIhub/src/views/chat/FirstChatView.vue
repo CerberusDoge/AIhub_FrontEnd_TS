@@ -5,17 +5,14 @@ import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
 import TopBar from '@/components/TopBar.vue'
-import { refreshToken } from '@/services/refresh'
 import { delChat, star, unStar } from '@/services/chat'
 import { chatInfoStore } from '@/stores/chatInfo'
 import { ref, watch } from 'vue'
 
 const chatStore = chatInfoStore()
 const currentTextMessage = ref('')
-const router = useRouter()
 
-const title = '啊实打实打算啊实adsaasdasdassa打实大苏打撒'
-const refresh = refreshToken
+const title = '啊实打实大苏打撒'
 const deleteChat = () => {
   delChat(14)
 }
@@ -25,7 +22,7 @@ const starChat = () => {
 const unStarChat = () => {
   unStar(1, 1)
 }
-
+const content = ref('')
 //监听是否有新消息
 watch(
   () => chatStore.isSendMessage,
@@ -42,8 +39,8 @@ watch(
   <div class="layout">
     <div class="topBar"><TopBar :title="title"></TopBar></div>
     <div class="messageContent">
-      <ServeMessageBox :messages="currentTextMessage"></ServeMessageBox>
       <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
+      <ServeMessageBox :messages="chatStore.currentResponse"></ServeMessageBox>
     </div>
     <div class="command"><TalkInputBox></TalkInputBox></div>
   </div>

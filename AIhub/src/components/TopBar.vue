@@ -6,10 +6,11 @@ import {
   ArrowDownCircleOutline as Down,
   Heart as Love,
 } from '@vicons/ionicons5'
-import { NAvatar, NText, useMessage, NIcon } from 'naive-ui'
+import { NIcon } from 'naive-ui'
 import { Menu } from '@vicons/ionicons5'
 import type { Component } from 'vue'
 import { defineProps, h, ref } from 'vue'
+import ChangeMenuButton from './ChangeMenuButton.vue'
 
 const props = defineProps<{ title: string }>()
 
@@ -65,13 +66,7 @@ const changeMenu = () => {
 
 <template>
   <div class="main">
-    <div class="topBotton" v-show="!menuInfo.isDisplay">
-      <n-button quaternary circle type="primary" @click="changeMenu">
-        <template #icon>
-          <n-icon color="#5FBD22" size="1.6rem"><Menu /></n-icon>
-        </template>
-      </n-button>
-    </div>
+    <ChangeMenuButton></ChangeMenuButton>
     <n-dropdown placement="bottom-start" trigger="hover" :options="options" @select="handleSelect">
       <n-button quaternary icon-placement="right"
         ><template #icon>

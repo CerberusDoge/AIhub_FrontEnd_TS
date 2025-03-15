@@ -6,19 +6,20 @@ import { fetchRequest } from '@/utils/sse'
 import type { ChatRequest } from '@/types/message'
 import { chatInfoStore } from '@/stores/chatInfo'
 
+enum Model {
+  DeepseekR1 = 'deepseek-r1',
+  Doubao15Pro = 'doubao-1.5pro',
+}
+
 const chatStore = chatInfoStore()
-chatStore.inputBoxInfo=''
+chatStore.inputBoxInfo = ''
 const sendMessage = () => {
   if (chatStore.inputBoxInfo.trim() !== '') {
     chatStore.isSendMessage = true
-    console.log("发送消息成功")
+    console.log('发送消息成功')
   }
 }
 
-// watch(()=>chatStore.inputBoxInfo, (newValue:string) => {
-//   // 当 watchedValue 变化时，更新 inputValue
-//   storeNew.value=chatStore.inputBoxInfo
-// });
 const storeInput = (value: any) => {
   chatStore.inputBoxInfo = value
   console.log(chatStore.inputBoxInfo)
@@ -26,19 +27,25 @@ const storeInput = (value: any) => {
 
 const loadingRef = ref(false)
 const storeData = ref('')
-const ChatRequest = ref({
-  userId: 1,
+const chatRequest = ref<ChatRequest>({
   chatInfoId: null,
-  model: 'deepseek-r1',
+  model: Model.DeepseekR1,
   prompt: '',
   message: '一句话介绍vue3',
 })
-
+const standify = (chatId: number | null,model:Model,prompt:string,message:string): ChatRequest => {
+  return {
+    chatInfoId: chatId,
+    model:model,
+    prompt:prompt,
+    message:message,
+  }
+}
 const handleClick = async () => {
   if (chatStore.inputBoxInfo.trim() !== '') {
     chatStore.isSendMessage = true
-    console.log("发送消息成功")
-    fetchRequest('/api/v1/chat', JSON.stringify(ChatRequest.value), storeData)
+    fetchRequest(standify(null,Model.DeepseekR1,'',chatStore.inputBoxInfo), chatStore.currentResponse)
+    console.log('发送消息成功')
   }
 }
 
@@ -57,7 +64,7 @@ const input = ref('')
       type="textarea"
       round
       clearable
-      :placeholder="storeData"
+      placeholder='询问任何问题'
       :autosize="{
         minRows: 2,
         maxRows: 4,
@@ -109,7 +116,6 @@ const input = ref('')
   padding-left: 0.8rem;
   padding-right: 0.8rem;
   padding-bottom: 0.7rem;
-
 }
 
 #typeIn {

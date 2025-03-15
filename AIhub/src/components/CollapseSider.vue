@@ -3,8 +3,9 @@ import {
   BookmarkOutline,
   DiceOutline,
   FolderOutline,
+  Sync,
   SettingsOutline,
-  Menu,
+  OptionsOutline as Menu,
   Add,
   LogOutOutline,
 } from '@vicons/ionicons5'
@@ -12,10 +13,12 @@ import { NIcon } from 'naive-ui'
 import { h, ref } from 'vue'
 import { chatInfoStore } from '@/stores/chatInfo'
 import type { Component } from 'vue'
+import { useMessage } from 'naive-ui'
 import { useMenuStore } from '@/stores/menuInfo'
 import { useRouter } from 'vue-router'
 const menuInfo = useMenuStore()
-const isDisplay = ref(menuInfo.isDisplay) //侧栏是否打开
+import { getUserInfo } from '@/utils/user'
+import { debounce } from '@/utils/debounce'
 
 const topList = [{ icon: Add, title: '新对话' }]
 function renderIcon(icon: Component) {
@@ -25,14 +28,18 @@ const changeMenu = () => {
   menuInfo.isDisplay = !menuInfo.isDisplay
   console.log(menuInfo.isDisplay)
 }
-
+const message = useMessage()
 const logOut = () => {
   localStorage.clear()
   router.push('/login')
 }
 const setUp = () => {
-  router.replace('/chat/setting');
+  router.replace('/chat/setting')
 }
+
+const async = debounce(() => {
+  getUserInfo().then(() => message.success('刷新成功'))
+}, 500)
 
 const router = useRouter()
 </script>
@@ -45,7 +52,7 @@ const router = useRouter()
         <div>AIhub</div>
         <n-button quaternary circle type="primary" color="#767676" @click="changeMenu">
           <template #icon>
-            <n-icon size="1.8rem"><Menu /></n-icon>
+            <n-icon size="1.5rem"><Menu /></n-icon>
           </template>
         </n-button>
       </div>
@@ -59,6 +66,10 @@ const router = useRouter()
       </div>
     </div>
     <div class="bottom">
+      <div class="row" @click="async">
+        <n-icon size="1.4rem"><Sync /></n-icon>
+        <div class="rowTitle">刷新</div>
+      </div>
       <div class="row" @click="setUp">
         <n-icon size="1.4rem"><SettingsOutline /></n-icon>
         <div class="rowTitle">设置</div>

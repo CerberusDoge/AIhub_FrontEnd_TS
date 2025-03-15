@@ -13,31 +13,16 @@ export type ChatRequest = {
   /**
    * 模型名称，deepseek-r1, doubao-1.5pro
    */
-  model: string
+  model: Model
   /**
    * 提示词，用于预定义角色，比如你是一只猫娘
    */
   prompt?: string
-  /**
-   * 会话id，null 表示新会话
-   */
-  userId: number
-  [property: string]: any
-}
-export type deleteChat = {
-  message: string
   [property: string]: any
 }
 
-/**
- * 列表
- */
-export type Menu = {
-  account: string
-  id: number
-  password: string
-  userChatInfos: ChatInfo[]
-  userStars: ChatInfo[]
+export type deleteChat = {
+  message: string
   [property: string]: any
 }
 
@@ -62,73 +47,67 @@ export type ChatInfo = {
   [property: string]: any
 }
 
-export type RequestStar ={
-  chatInfoId: number;
-  userId: number;
-  [property: string]: any;
+export type RequestStar = {
+  chatInfoId: number
+  userId: number
+  [property: string]: any
 }
-
-
-
 
 /**
  * UserResponse
  */
-export type Response= {
+export type Response = {
   /**
    * 用户账号
    */
-  account: string;
+  account: string
   /**
    * 用户的apikey
    */
-  apiKey: string;
+  apiKey: string
   /**
    * 用户id
    */
-  id: number;
+  id: number
+  token: Token
   /**
    * 用户的聊天记录
    */
-  userChatInfos: ChatInfo[];
+  userChatMetas: ChatInfo[]
   /**
    * 用户的收藏
    */
-  userStars: ChatInfo[];
-  [property: string]: any;
+  userStars: ChatInfo[]
+  [property: string]: any
 }
 
 /**
-* ChatInfo
-*/
-export type ChatInfo= {
-  /**
-   * 聊天内容
-   */
-  content: string;
+ * ChatInfo
+ */
+export type ChatInfo = {
   /**
    * 聊天信息id，ID 编号
    */
-  id: number;
+  id: number
   /**
    * 模型，deepseek-r1, doubao-1.5pro 这是枚举
    */
-  model: Model;
+  model: Model
   /**
    * 聊天主题
    */
-  topic: string;
+  topic: string
   /**
    * 所属用户id
    */
-  userId: number;
-  [property: string]: any;
+  userId: number
+  [property: string]: any
 }
 
 /**
-* 模型，deepseek-r1, doubao-1.5pro 这是枚举
-*/
+ * 模型，deepseek-r1, doubao-1.5pro 这是枚举
+ */
 export enum Model {
-  DeepseekR1 = "deepseek-r1",
-  Doubao15Pro = "doubao-1.5pro",
+  DeepseekR1 = 'deepseek-r1',
+  Doubao15Pro = 'doubao-1.5pro',
 }
