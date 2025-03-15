@@ -28,8 +28,9 @@ export const updateUserInfo = async (data: UpdateRequest) => {
     const response = await request<string>({
       url: '/api/v1/user',
       method: 'post',
-      data: JSON.stringify(data)
+      data: data
     })
+    console.log(response)
   } catch (error: any) {
     console.error(error)
   }

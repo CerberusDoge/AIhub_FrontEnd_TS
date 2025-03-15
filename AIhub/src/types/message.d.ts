@@ -107,7 +107,7 @@ export type ChatInfo = {
 /**
  * 模型，deepseek-r1, doubao-1.5pro 这是枚举
  */
-export enum Model {
+export enum  Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue'
 import CollapseSider from '@/components/CollapseSider.vue'
-
 import { useMenuStore } from '@/stores/menuInfo'
 const menuInfo = useMenuStore()
 const changeMenu = () => {

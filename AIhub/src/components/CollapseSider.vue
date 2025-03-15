@@ -5,7 +5,7 @@ import {
   FolderOutline,
   Sync,
   SettingsOutline,
-  OptionsOutline as Menu,
+  Journal as Menu,
   Add,
   LogOutOutline,
 } from '@vicons/ionicons5'
@@ -134,7 +134,7 @@ const router = useRouter()
   display: flex;
   align-items: center;
   transition: border 0.3s ease;
-  border: 0.1rem solid vars.$highLightGreen;
+  border: 0.1rem solid #5FBD22;
   .rowTitle {
     margin-left: 0.5rem;
   }
