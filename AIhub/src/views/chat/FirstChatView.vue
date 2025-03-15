@@ -13,10 +13,7 @@ import { ref, watch } from 'vue'
 const chatStore = chatInfoStore()
 const currentTextMessage = ref('')
 const router = useRouter()
-const logOut = () => {
-  localStorage.clear()
-  router.push('/login')
-}
+
 const title = '啊实打实打算啊实adsaasdasdassa打实大苏打撒'
 const refresh = refreshToken
 const deleteChat = () => {
@@ -62,8 +59,12 @@ watch(
   align-items: center;
 }
 .topBar {
-  width: 90%;
-  padding: 0.8rem;
+  display: flex;
+  justify-content: start;
+  width: 96%;
+  max-width: 100%;
+  padding: 1rem;
+  padding-left: 0;
 }
 .command {
   // background-color: pink;

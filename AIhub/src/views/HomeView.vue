@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, provide } from 'vue'
 import CollapseSider from '@/components/CollapseSider.vue'
-const isOpen = ref(true) //侧栏是否打开
 
-provide('isOpen', isOpen.value)
+import { useMenuStore } from '@/stores/menuInfo'
+const menuInfo = useMenuStore()
+const changeMenu = () => {
+  menuInfo.isDisplay = !menuInfo.isDisplay
+}
 </script>
 
 <template>
   <div class="main">
-    <div class="sider"><CollapseSider v-show="isOpen"></CollapseSider></div>
+    <Transition name="slide"
+      ><div class="sider" v-show="menuInfo.isDisplay"><CollapseSider></CollapseSider></div
+    ></Transition>
     <div class="rightBar"><router-view></router-view></div>
   </div>
 </template>
@@ -19,10 +24,10 @@ provide('isOpen', isOpen.value)
   height: 100%;
   overflow: visible;
   .sider {
-    background-color: vars.$deepGrey;
+    background-color: vars.$dimGrey;
     display: flex;
     max-height: 100%;
-    padding: 1rem;
+    padding: 0.4rem 1rem 1rem 1rem;
     user-select: none;
   }
   .rightBar {
@@ -32,6 +37,11 @@ provide('isOpen', isOpen.value)
     justify-content: center;
     flex: 6.5 1 0;
   }
+}
+
+.topBotton {
+  padding: 0.8rem;
+  padding-left: 2rem;
 }
 
 @media screen and (max-width: 768px) {

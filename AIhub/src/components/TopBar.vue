@@ -7,6 +7,7 @@ import {
   Heart as Love,
 } from '@vicons/ionicons5'
 import { NAvatar, NText, useMessage, NIcon } from 'naive-ui'
+import { Menu } from '@vicons/ionicons5'
 import type { Component } from 'vue'
 import { defineProps, h, ref } from 'vue'
 
@@ -54,19 +55,38 @@ function handleSelect(key: string | number) {
     }
   }
 }
+
+import { useMenuStore } from '@/stores/menuInfo'
+const menuInfo = useMenuStore()
+const changeMenu = () => {
+  menuInfo.isDisplay = !menuInfo.isDisplay
+}
 </script>
 
 <template>
-  <n-dropdown placement="bottom-start" trigger="hover" :options="options" @select="handleSelect">
-    <n-button quaternary icon-placement="right"
-      ><template #icon>
-        <n-icon>
-          <Down />
-        </n-icon>
-      </template>
-      {{ props.title }}</n-button
-    >
-  </n-dropdown>
+  <div class="main">
+    <div class="topBotton" v-show="!menuInfo.isDisplay">
+      <n-button quaternary circle type="primary" @click="changeMenu">
+        <template #icon>
+          <n-icon color="#5FBD22" size="1.6rem"><Menu /></n-icon>
+        </template>
+      </n-button>
+    </div>
+    <n-dropdown placement="bottom-start" trigger="hover" :options="options" @select="handleSelect">
+      <n-button quaternary icon-placement="right"
+        ><template #icon>
+          <n-icon>
+            <Down />
+          </n-icon>
+        </template>
+        {{ props.title }}</n-button
+      >
+    </n-dropdown>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.main {
+  display: flex;
+}
+</style>

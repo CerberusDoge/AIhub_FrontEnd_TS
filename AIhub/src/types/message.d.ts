@@ -74,7 +74,7 @@ export type RequestStar ={
 /**
  * UserResponse
  */
-export interface Response {
+export type Response= {
   /**
    * 用户账号
    */
@@ -101,7 +101,7 @@ export interface Response {
 /**
 * ChatInfo
 */
-export interface ChatInfo {
+export type ChatInfo= {
   /**
    * 聊天内容
    */

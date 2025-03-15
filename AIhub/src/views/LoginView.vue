@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import FormLogin from '@/components/FormLogin.vue'
 
 </script>

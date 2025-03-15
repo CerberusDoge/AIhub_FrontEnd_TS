@@ -1,14 +1,40 @@
 <script setup lang="ts">
-import { BookmarkOutline, DiceOutline, FolderOutline, Menu, Add } from '@vicons/ionicons5'
+import {
+  BookmarkOutline,
+  DiceOutline,
+  FolderOutline,
+  SettingsOutline,
+  Menu,
+  Add,
+  LogOutOutline,
+} from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
-import { defineComponent, h, ref } from 'vue'
+import { h, ref } from 'vue'
+import { chatInfoStore } from '@/stores/chatInfo'
 import type { Component } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useMenuStore } from '@/stores/menuInfo'
+import { useRouter } from 'vue-router'
+const menuInfo = useMenuStore()
+const isDisplay = ref(menuInfo.isDisplay) //侧栏是否打开
 
-const topList=[{icon:Add,title:'新对话'}]
+const topList = [{ icon: Add, title: '新对话' }]
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
+const changeMenu = () => {
+  menuInfo.isDisplay = !menuInfo.isDisplay
+  console.log(menuInfo.isDisplay)
+}
+
+const logOut = () => {
+  localStorage.clear()
+  router.push('/login')
+}
+const setUp = () => {
+  router.replace('/chat/setting');
+}
+
+const router = useRouter()
 </script>
 
 <template>
@@ -17,19 +43,31 @@ function renderIcon(icon: Component) {
     <div class="top">
       <div class="topTitle">
         <div>AIhub</div>
-        <n-button quaternary circle type="primary">
+        <n-button quaternary circle type="primary" color="#767676" @click="changeMenu">
           <template #icon>
             <n-icon size="1.8rem"><Menu /></n-icon>
           </template>
         </n-button>
       </div>
-      <div v-for="(val,index) in topList ":key=index class="row">
+      <!-- <div v-for="(val, index) in topList" :key="index" class="row">
         <component :is="renderIcon(val.icon)" />
-        <div class="rowTitle">{{val.title}}</div>
-        </div>
-
+        <div class="rowTitle">{{ val.title }}</div>
+      </div> -->
+      <div id="newButton" @click="router.push('/chat')">
+        <n-icon size="1.4rem"><Add /></n-icon>
+        <div class="rowTitle">新对话</div>
+      </div>
     </div>
-    <div class="bottom">123</div>
+    <div class="bottom">
+      <div class="row" @click="setUp">
+        <n-icon size="1.4rem"><SettingsOutline /></n-icon>
+        <div class="rowTitle">设置</div>
+      </div>
+      <div class="row" @click="logOut">
+        <n-icon size="1.4rem"><LogOutOutline /></n-icon>
+        <div class="rowTitle">注销</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -55,19 +93,39 @@ function renderIcon(icon: Component) {
     padding: 0.4rem;
     align-items: center;
   }
-
-  .row {
-    margin-bottom: 0.6rem;
-    width: 15rem;
-    padding: 0.5rem;
-    max-width: 100%;
-    background-color: vars.$grey;
-    border-radius: 0.7rem;
-    display: flex;
-    align-items: center;
-    .rowTitle {
-      margin-left: 0.5rem;
-    }
+}
+.row {
+  margin-bottom: 0.6rem;
+  width: 15rem;
+  padding: 0.5rem;
+  max-width: 100%;
+  background-color: vars.$grey;
+  border-radius: 0.7rem;
+  display: flex;
+  align-items: center;
+  transition: border 0.3s ease;
+  .rowTitle {
+    margin-left: 0.5rem;
+  }
+}
+.row:hover {
+  background-color: vars.$deepGrey;
+}
+#newButton {
+  font-weight: bold;
+  color: #4da214;
+  margin-bottom: 0.6rem;
+  width: 15rem;
+  padding: 0.5rem;
+  max-width: 100%;
+  background-color: vars.$dimGreen;
+  border-radius: 0.7rem;
+  display: flex;
+  align-items: center;
+  transition: border 0.3s ease;
+  border: 0.1rem solid vars.$highLightGreen;
+  .rowTitle {
+    margin-left: 0.5rem;
   }
 }
 </style>

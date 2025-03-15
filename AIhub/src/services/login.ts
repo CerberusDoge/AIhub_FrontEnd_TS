@@ -1,19 +1,19 @@
-import request from '@/utils/request'
 import type { RequsetUser, ResponseLogin } from '@/types/account'
+import type { Response } from '@/types/message'
+import { requestWithoutCredit } from '@/utils/request'
 
-export const requestLogin = async (dataAccount: RequsetUser): Promise<ResponseLogin> => {
+export const requestLogin = async (dataAccount: RequsetUser): Promise<Response> => {
   try {
-    const result = await request<ResponseLogin>({
+    const result = await requestWithoutCredit<ResponseLogin>({
       url: '/api/v1/login',
       method: 'post',
       data: dataAccount,
     })
 
-    localStorage.setItem('accessToken', result.accessToken)
-    localStorage.setItem('refreshToken', result.refreshToken)
-    localStorage.setItem('userId', JSON.stringify(result.id))
+    localStorage.setItem('id', JSON.stringify(result.id))
     localStorage.setItem('account', result.account)
-    localStorage.setItem('isLoggedIn', 'islogged')
+    localStorage.setItem('apiKey', result.apiKey)
+    localStorage.setItem('account', result.account)
 
     return result.data
   } catch (error: any) {

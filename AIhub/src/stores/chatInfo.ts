@@ -7,5 +7,6 @@ export const chatInfoStore = defineStore('chatInfoStore', () => {
   const curretChatId=ref<number>()//当前的对话id
 
 
+
   return { inputBoxInfo, isSendMessage,curretChatId}
 })

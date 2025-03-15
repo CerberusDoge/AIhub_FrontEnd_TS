@@ -1,35 +1,31 @@
 import axios from 'axios'
-import type {
-  AxiosError,
-  InternalAxiosRequestConfig,
-  AxiosResponse,
-  AxiosRequestConfig,
-} from 'axios'
-
-
+import type { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios'
 
 const service = axios.create({
   baseURL: 'http://45.207.208.42', // 基础 URL
-  withCredentials: true,// 启用跨域凭证
-  timeout: 5000, // 超时时间
+  withCredentials: true, // 启用跨域凭证
+})
+export const serviceWithoutCredit = axios.create({
+  baseURL: 'http://45.207.208.42', // 基础 URL
+  withCredentials: false, // 启用跨域凭证
 })
 
 // 请求拦截器
-service.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<any>): InternalAxiosRequestConfig<any> => {
-    const accessToken = localStorage.getItem('accessToken')
-    if (accessToken) {
-      // 如果 headers 不存在，则赋值为空对象
-      config.headers = config.headers || {}
-      // 设置 token
-      config.headers.Authorization = `Bearer ${accessToken}`
-    }
-    return config
-  },
-  (error: AxiosError): Promise<AxiosError> => {
-    return Promise.reject(error)
-  },
-)
+// service.interceptors.request.use(
+//   (config: InternalAxiosRequestConfig<any>): InternalAxiosRequestConfig<any> => {
+//     const accessToken = localStorage.getItem('accessToken')
+//     if (accessToken) {
+//       // 如果 headers 不存在，则赋值为空对象
+//       config.headers = config.headers || {}
+//       // 设置 token
+//       config.headers.Authorization = `Bearer ${accessToken}`
+//     }
+//     return config
+//   },
+//   (error: AxiosError): Promise<AxiosError> => {
+//     return Promise.reject(error)
+//   },
+// )
 
 // 响应拦截器
 service.interceptors.response.use(
@@ -60,6 +56,9 @@ service.interceptors.response.use(
  */
 function request<T>(config: AxiosRequestConfig): Promise<T> {
   return service(config)
+}
+export function requestWithoutCredit<T>(config: AxiosRequestConfig): Promise<T> {
+  return serviceWithoutCredit(config)
 }
 
 export default request
