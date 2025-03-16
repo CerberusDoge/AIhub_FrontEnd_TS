@@ -3,7 +3,8 @@ const principles = {
     return /^\d+$/.test(num)
   }, //纯数字
   passwordPer: (num: string) => {
-    return /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(num)
+    // return /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(num)
+    return true
     // return /^\d+$/.test(num)
   }, //密码需包含大小写字母、数字、特殊符号，且长度 8-20 位
   samePassword: (num: string, val: string) => {

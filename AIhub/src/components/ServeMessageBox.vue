@@ -2,7 +2,7 @@
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
 import { computed, ref, useSlots, defineProps, watch, onUnmounted } from 'vue'
 import { useMessage } from 'naive-ui'
-import { chatInfoStore } from '@/stores/chatInfo'
+import { useChatInfoStore } from '@/stores/chatInfo'
 import { marked } from 'marked'
 
 const props = defineProps<{

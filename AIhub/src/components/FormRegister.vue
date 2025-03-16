@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 import { returnRules } from '@/utils/accountRule'
 import request from '@/utils/request'
 import { useRouter } from 'vue-router'
-import type { RequsetUser, ResponseRegister } from '@/types/account'
+import type { RequsetUser } from '@/types/account'
 import { debounce } from '@/utils/debounce'
 
 const form = ref<null | FormInst>(null)
@@ -18,9 +18,9 @@ const router = useRouter()
 
 const rules = computed(() => returnRules(model.value.password))
 
-const requestRegister = async (dataAccount: RequsetUser): Promise<ResponseRegister> => {
+const requestRegister = async (dataAccount: RequsetUser) => {
   try {
-    const result = await request<ResponseRegister>({
+    const result = await request<string>({
       url: '/api/v1/register',
       method: 'post',
       data: dataAccount,
@@ -28,16 +28,13 @@ const requestRegister = async (dataAccount: RequsetUser): Promise<ResponseRegist
 
     message.success('注册成功')
 
-    console.log(result.account)
     setTimeout(() => {
       router.push('/login')
     }, 1000)
-
-    return result.data
   } catch (error: any) {
     console.error(error)
-    message.error('注册失败，连接超时')
-    throw error // 重新抛出错误以保持 Promise 链
+    if (error.response.status == 400) message.error('注册失败，用户名已注册')
+    else message.error('注册失败，连接超时')
   }
 }
 
@@ -94,7 +91,7 @@ const handleRegisterButtonClick = debounce((e: any) => {
 
 <style scoped lang="scss">
 .prompt {
-  color: vars.$grey;
+  color: vars.$dimDark;
   font-size: vars.$font-size-small;
   height: fit-content;
 }

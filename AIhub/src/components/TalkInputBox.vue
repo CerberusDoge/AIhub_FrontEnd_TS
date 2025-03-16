@@ -4,26 +4,22 @@ import { ref } from 'vue'
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
 import { fetchRequest } from '@/utils/sse'
 import type { ChatRequest } from '@/types/message'
-import { chatInfoStore } from '@/stores/chatInfo'
+import { useChatInfoStore } from '@/stores/chatInfo'
+import { storeToRefs } from 'pinia'
 
 enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }
 
-const chatStore = chatInfoStore()
+const chatStore = useChatInfoStore()
 chatStore.inputBoxInfo = ''
-const sendMessage = () => {
-  if (chatStore.inputBoxInfo.trim() !== '') {
-    chatStore.isSendMessage = true
-    console.log('发送消息成功')
-  }
-}
 
-const storeInput = (value: any) => {
-  chatStore.inputBoxInfo = value
-  console.log(chatStore.inputBoxInfo)
-}
+
+// const storeInput = (value: any) => {
+//   chatStore.inputBoxInfo = value
+//   console.log(chatStore.inputBoxInfo)
+// }
 
 const loadingRef = ref(false)
 const storeData = ref('')
@@ -41,10 +37,10 @@ const standify = (chatId: number | null,model:Model,prompt:string,message:string
     message:message,
   }
 }
-const handleClick = async () => {
+const sendMessage = async () => {
   if (chatStore.inputBoxInfo.trim() !== '') {
     chatStore.isSendMessage = true
-    fetchRequest(standify(null,Model.DeepseekR1,'',chatStore.inputBoxInfo), chatStore.currentResponse)
+    fetchRequest(standify(null,Model.DeepseekR1,'',chatStore.inputBoxInfo))
     console.log('发送消息成功')
   }
 }
@@ -56,11 +52,9 @@ const input = ref('')
   <div class="inputBox">
     <n-input
       @keyup.native.enter="sendMessage"
-      :value="chatStore.inputBoxInfo"
-      :on-input="storeInput"
+      v-model:value="chatStore.inputBoxInfo"
       show-count
       id="typeIn"
-      v-model="input"
       type="textarea"
       round
       clearable
@@ -72,7 +66,7 @@ const input = ref('')
     />
     <div class="bottomContent">
       <!-- <button @click="handleClick">jasdasldl</button> -->
-      <n-button circle :loading="loadingRef" @click="handleClick" color="#5FBD22">
+      <n-button circle :loading="loadingRef" @click="sendMessage" color="#5FBD22">
         <template #icon>
           <n-icon>
             <Arrow />

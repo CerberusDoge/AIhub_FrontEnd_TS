@@ -9,7 +9,7 @@ export const requestLogin = async (dataAccount: RequsetUser): Promise<Response> 
       method: 'post',
       data: dataAccount,
     })
-    console.log(result.token)
+    console.log(result)
     localStorage.setItem('id', JSON.stringify(result.id))
     localStorage.setItem('account', result.account)
     localStorage.setItem('apiKey', result.apiKey)

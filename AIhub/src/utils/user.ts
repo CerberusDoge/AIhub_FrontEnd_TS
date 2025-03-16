@@ -25,7 +25,8 @@ export const getUserInfo = async () => {
 
 export const updateUserInfo = async (data: UpdateRequest) => {
   try {
-    const response = await request<string>({
+    console.log(data)
+    const response = await request<any>({
       url: '/api/v1/user',
       method: 'post',
       data: data
@@ -33,5 +34,6 @@ export const updateUserInfo = async (data: UpdateRequest) => {
     console.log(response)
   } catch (error: any) {
     console.error(error)
+    throw error
   }
 }

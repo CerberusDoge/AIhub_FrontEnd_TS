@@ -9,7 +9,7 @@ export type UpdateRequest= {
   /**
    * 新的apikey
    */
-  apiKey?: string;
+  apiKey?: string|null;
   /**
    * 新的密码
    */

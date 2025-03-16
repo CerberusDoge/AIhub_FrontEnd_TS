@@ -11,7 +11,7 @@ import {
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { h, ref } from 'vue'
-import { chatInfoStore } from '@/stores/chatInfo'
+import { useChatInfoStore } from '@/stores/chatInfo'
 import type { Component } from 'vue'
 import { useMessage } from 'naive-ui'
 import { useMenuStore } from '@/stores/menuInfo'

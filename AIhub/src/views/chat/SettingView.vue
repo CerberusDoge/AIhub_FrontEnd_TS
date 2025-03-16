@@ -12,8 +12,11 @@ enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }
-
-const modelValue = ref<UpdateRequest>({})
+const apiInput = ref('')
+const modelValue = ref<UpdateRequest>({
+  apiKey: localStorage.getItem('apiKey') ? localStorage.getItem('apiKey') : '',
+  // password: 'GOGOgasd!123123',
+})
 const selectOptions = ref([
   {
     label: 'deepseek-r1',
@@ -24,16 +27,16 @@ const selectOptions = ref([
     value: Model.Doubao15Pro,
   },
 ])
-const submitModel = debounce(
-  () =>
-    updateUserInfo(modelValue.value)
-      .then(() => message.success('上传成功'))
-      .catch((error) => {
-        console.error(error)
-        message.error('上传失败')
-      }),
-  500,
-)
+const submitModel = debounce(() => {
+  modelValue.value.apiKey = apiInput.value
+  console.log(modelValue.value)
+  updateUserInfo(modelValue.value)
+    .then(() => message.success('上传成功'))
+    .catch((error) => {
+      console.error(error)
+      message.error('上传失败')
+    })
+}, 500)
 </script>
 
 <template>
@@ -53,7 +56,13 @@ const submitModel = debounce(
                 size="large"
                 placeholder="选择模型"
               />
-              <n-input :value="modelValue.apiKey" type="text" size="large" placeholder="输入key">
+              <n-input
+                v-model:value="apiInput"
+                :default-value="modelValue.apiKey"
+                type="text"
+                size="large"
+                placeholder="输入key"
+              >
                 <template #prefix>
                   <n-icon :component="Key" />
                 </template>

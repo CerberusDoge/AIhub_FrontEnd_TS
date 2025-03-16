@@ -6,10 +6,10 @@ import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
 import TopBar from '@/components/TopBar.vue'
 import { delChat, star, unStar } from '@/services/chat'
-import { chatInfoStore } from '@/stores/chatInfo'
+import { useChatInfoStore } from '@/stores/chatInfo'
 import { ref, watch } from 'vue'
 
-const chatStore = chatInfoStore()
+const chatStore = useChatInfoStore()
 const currentTextMessage = ref('')
 
 const title = '啊实打实大苏打撒'
@@ -40,6 +40,7 @@ watch(
     <div class="topBar"><TopBar :title="title"></TopBar></div>
     <div class="messageContent">
       <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
+      <ServeMessageBox :messages="chatStore.currentReasonResponse"></ServeMessageBox>
       <ServeMessageBox :messages="chatStore.currentResponse"></ServeMessageBox>
     </div>
     <div class="command"><TalkInputBox></TalkInputBox></div>

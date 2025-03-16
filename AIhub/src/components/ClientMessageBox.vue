@@ -2,9 +2,9 @@
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
 import { ref,useSlots,defineProps  } from 'vue'
 import { useMessage } from 'naive-ui'
-import { chatInfoStore } from '@/stores/chatInfo'
+import { useChatInfoStore } from '@/stores/chatInfo'
 
-const chatStore = chatInfoStore()
+const chatStore = useChatInfoStore()
 const message = useMessage()
 const isHover = ref<boolean>(false)
 const props=defineProps<{messages:string}>()
