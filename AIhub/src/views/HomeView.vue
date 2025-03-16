@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import CollapseSider from '@/components/CollapseSider.vue'
+import CollapseSider from '@/components/Sider/CollapseSider.vue'
 import { useMenuStore } from '@/stores/menuInfo'
+import { getUserInfo } from '@/utils/user'
 const menuInfo = useMenuStore()
-const changeMenu = () => {
-  menuInfo.isDisplay = !menuInfo.isDisplay
-}
+getUserInfo()
 </script>
 
 <template>

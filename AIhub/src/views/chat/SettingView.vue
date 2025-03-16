@@ -12,11 +12,12 @@ enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }
-const apiInput = ref('')
+
 const modelValue = ref<UpdateRequest>({
   apiKey: localStorage.getItem('apiKey') ? localStorage.getItem('apiKey') : '',
   // password: 'GOGOgasd!123123',
 })
+console.log(modelValue.value.apiKey)
 const selectOptions = ref([
   {
     label: 'deepseek-r1',
@@ -28,10 +29,12 @@ const selectOptions = ref([
   },
 ])
 const submitModel = debounce(() => {
-  modelValue.value.apiKey = apiInput.value
   console.log(modelValue.value)
   updateUserInfo(modelValue.value)
-    .then(() => message.success('上传成功'))
+    .then(() => {message.success('上传成功')
+    if(modelValue.value.apiKey)
+    localStorage.setItem('apiKey',modelValue.value.apiKey)
+    })
     .catch((error) => {
       console.error(error)
       message.error('上传失败')
@@ -57,8 +60,7 @@ const submitModel = debounce(() => {
                 placeholder="选择模型"
               />
               <n-input
-                v-model:value="apiInput"
-                :default-value="modelValue.apiKey"
+                v-model:value="modelValue.apiKey"
                 type="text"
                 size="large"
                 placeholder="输入key"

@@ -1,7 +1,6 @@
 import type { Response } from '@/types/message'
 import { useUserStore } from '@/stores/userInfo'
 import request from '@/utils/request'
-import { debounce } from './debounce'
 import type { UpdateRequest } from '@/types/account'
 
 const UserStore = useUserStore()
@@ -13,8 +12,9 @@ export const getUserInfo = async () => {
     console.log(data)
     UserStore.account = data.account
     UserStore.apiKey = data.apiKey
-    UserStore.userChatInfos = data.userChatInfos
+    UserStore.userChatInfos = data.userChatMetas
     UserStore.userStars = data.userStars
+
     localStorage.setItem('account', data.account)
     localStorage.setItem('apiKey', data.apiKey)
     localStorage.setItem('isLoggedIn', 'islogged')
@@ -23,6 +23,7 @@ export const getUserInfo = async () => {
   }
 }
 
+//更新用户信息
 export const updateUserInfo = async (data: UpdateRequest) => {
   try {
     console.log(data)

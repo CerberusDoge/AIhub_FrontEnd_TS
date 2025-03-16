@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import {
-  BookmarkOutline,
-  DiceOutline,
-  FolderOutline,
   Sync,
   SettingsOutline,
   Journal as Menu,
   Add,
   LogOutOutline,
+  BookmarksOutline as Mark,
+  ChatbubblesOutline as Chat,
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
-import { h, ref } from 'vue'
-import { useChatInfoStore } from '@/stores/chatInfo'
-import type { Component } from 'vue'
+import RecentFolder from '@/components/Sider/RecentFolder.vue'
+import FavoriteFolder from './FavoriteFolder.vue'
 import { useMessage } from 'naive-ui'
 import { useMenuStore } from '@/stores/menuInfo'
 import { useRouter } from 'vue-router'
@@ -20,10 +18,6 @@ const menuInfo = useMenuStore()
 import { getUserInfo } from '@/utils/user'
 import { debounce } from '@/utils/debounce'
 
-const topList = [{ icon: Add, title: '新对话' }]
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) })
-}
 const changeMenu = () => {
   menuInfo.isDisplay = !menuInfo.isDisplay
   console.log(menuInfo.isDisplay)
@@ -56,27 +50,46 @@ const router = useRouter()
           </template>
         </n-button>
       </div>
-      <!-- <div v-for="(val, index) in topList" :key="index" class="row">
-        <component :is="renderIcon(val.icon)" />
-        <div class="rowTitle">{{ val.title }}</div>
-      </div> -->
+
       <div id="newButton" @click="router.push('/chat')">
         <n-icon size="1.4rem"><Add /></n-icon>
         <div class="rowTitle">新对话</div>
       </div>
     </div>
-    <div class="bottom">
-      <div class="row" @click="async">
-        <n-icon size="1.4rem"><Sync /></n-icon>
-        <div class="rowTitle">刷新</div>
+    <div class="scrollArea">
+      <div class="row">
+        <n-collapse>
+          <template #header-extra>
+            <n-icon><Chat /></n-icon>
+          </template>
+          <n-collapse-item title="最近对话" name="1">
+            <RecentFolder></RecentFolder>
+          </n-collapse-item>
+        </n-collapse>
       </div>
-      <div class="row" @click="setUp">
-        <n-icon size="1.4rem"><SettingsOutline /></n-icon>
-        <div class="rowTitle">设置</div>
+      <div class="row">
+        <n-collapse>
+          <template #header-extra>
+            <n-icon><Mark /></n-icon>
+          </template>
+          <n-collapse-item title="收藏夹" name="1">
+            <FavoriteFolder></FavoriteFolder>
+          </n-collapse-item>
+        </n-collapse>
       </div>
-      <div class="row" @click="logOut">
-        <n-icon size="1.4rem"><LogOutOutline /></n-icon>
-        <div class="rowTitle">注销</div>
+      <div class="bottom">
+        <div class="row" @click="async">
+          <n-icon size="1.4rem"><Sync /></n-icon>
+          <div class="rowTitle">刷新</div>
+        </div>
+        <div class="row" @click="setUp">
+          <n-icon size="1.4rem"><SettingsOutline /></n-icon>
+          <div class="rowTitle">设置</div>
+        </div>
+        <div class="row" @click="logOut">
+          <n-icon size="1.4rem"><LogOutOutline /></n-icon>
+          <div class="rowTitle">注销</div>
+        </div>
       </div>
     </div>
   </div>
@@ -95,6 +108,7 @@ const router = useRouter()
   display: flex;
   width: 100%;
   flex-direction: column;
+  padding-bottom: 0.5rem;
   .topTitle {
     font-size: 1.1rem;
     font-weight: bold;
@@ -104,6 +118,14 @@ const router = useRouter()
     padding: 0.4rem;
     align-items: center;
   }
+}
+.scrollArea {
+  max-height: 100%;
+  flex: 1;
+  overflow: auto;
+}
+.scrollArea::-webkit-scrollbar {
+  display: none;
 }
 .row {
   margin-bottom: 0.6rem;
@@ -122,6 +144,7 @@ const router = useRouter()
 .row:hover {
   background-color: vars.$deepGrey;
 }
+
 #newButton {
   font-weight: bold;
   color: #4da214;
@@ -134,7 +157,7 @@ const router = useRouter()
   display: flex;
   align-items: center;
   transition: border 0.3s ease;
-  border: 0.1rem solid #5FBD22;
+  border: 0.1rem solid #5fbd22;
   .rowTitle {
     margin-left: 0.5rem;
   }
