@@ -4,15 +4,17 @@ import { computed, ref, useSlots, defineProps, watch, onUnmounted } from 'vue'
 import { useMessage } from 'naive-ui'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { marked } from 'marked'
+import { returnRules } from '@/utils/accountRule'
 
 const props = defineProps<{
   messages: string
+  isOver: boolean
 }>()
 const message = useMessage()
 const currentIndex = ref(0) //当前读取的位置
 const isHover = ref<boolean>(false)
 const msg = ref('') //存储当前已经打印的消息
-const isOver = ref(false) //存储是否完成打印
+const isOver = props.isOver //存储是否完成打印
 let timer: any = null
 
 //打印效果
@@ -30,18 +32,14 @@ onUnmounted(() => clearTimeout(timer))
 watch(
   () => props.messages,
   () => {
-    if (isOver) typing()
+    if (!isOver) typing()
     else msg.value = props.messages
   },
 )
 
 const RenderMd = computed(() => {
-  console.log(msg.value)
-  let value
-  if (isOver) value = marked(msg.value)
-  else value = marked(msg.value)
-  console.log(value)
-  return value
+  if (isOver) return marked(props.messages)
+  else return marked(msg.value)
 })
 
 const copyContent = async () => {
@@ -129,8 +127,6 @@ const copyContent = async () => {
   flex-wrap: nowrap;
   word-wrap: break-word;
   white-space: pre-wrap;
-
-
 }
 
 .ghost-mode {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CollapseSider from '@/components/Sider/CollapseSider.vue'
 import { useMenuStore } from '@/stores/menuInfo'
-import { getUserInfo } from '@/utils/user'
+import { getUserInfo } from '@/services/user'
 const menuInfo = useMenuStore()
 getUserInfo()
 </script>

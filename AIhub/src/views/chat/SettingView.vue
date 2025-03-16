@@ -3,7 +3,7 @@
 import { Key } from '@vicons/ionicons5'
 import ChangeMenuButton from '@/components/ChangeMenuButton.vue'
 import { ref } from 'vue'
-import { updateUserInfo } from '@/utils/user'
+import { updateUserInfo } from '@/services/user'
 import { debounce } from '@/utils/debounce'
 import { useMessage } from 'naive-ui'
 import type { UpdateRequest } from '@/types/account'

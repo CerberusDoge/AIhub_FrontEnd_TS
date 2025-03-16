@@ -2,7 +2,7 @@
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref } from 'vue'
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
-import { fetchRequest } from '@/utils/sse'
+import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
@@ -14,7 +14,6 @@ enum Model {
 
 const chatStore = useChatInfoStore()
 chatStore.inputBoxInfo = ''
-
 
 // const storeInput = (value: any) => {
 //   chatStore.inputBoxInfo = value
@@ -29,18 +28,23 @@ const chatRequest = ref<ChatRequest>({
   prompt: '',
   message: '一句话介绍vue3',
 })
-const standify = (chatId: number | null,model:Model,prompt:string,message:string): ChatRequest => {
+const standify = (
+  chatId: number | null,
+  model: Model,
+  prompt: string,
+  message: string,
+): ChatRequest => {
   return {
     chatInfoId: chatId,
-    model:model,
-    prompt:prompt,
-    message:message,
+    model: model,
+    prompt: prompt,
+    message: message,
   }
 }
 const sendMessage = async () => {
   if (chatStore.inputBoxInfo.trim() !== '') {
     chatStore.isSendMessage = true
-    fetchRequest(standify(null,Model.DeepseekR1,'',chatStore.inputBoxInfo))
+    fetchRequest(standify(null, Model.DeepseekR1, '', chatStore.inputBoxInfo))
     console.log('发送消息成功')
   }
 }
@@ -58,7 +62,7 @@ const input = ref('')
       type="textarea"
       round
       clearable
-      placeholder='询问任何问题'
+      placeholder="询问任何问题"
       :autosize="{
         minRows: 2,
         maxRows: 4,

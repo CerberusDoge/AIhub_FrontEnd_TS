@@ -15,7 +15,7 @@ import { useMessage } from 'naive-ui'
 import { useMenuStore } from '@/stores/menuInfo'
 import { useRouter } from 'vue-router'
 const menuInfo = useMenuStore()
-import { getUserInfo } from '@/utils/user'
+import { getUserInfo } from '@/services/user'
 import { debounce } from '@/utils/debounce'
 
 const changeMenu = () => {

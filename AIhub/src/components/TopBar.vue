@@ -11,7 +11,14 @@ import { Menu } from '@vicons/ionicons5'
 import type { Component } from 'vue'
 import { defineProps, h, ref } from 'vue'
 import ChangeMenuButton from './ChangeMenuButton.vue'
+import { delChat, star, unStar } from '@/services/chat'
+import { useChatInfoStore } from '@/stores/chatInfo'
+import { useRouter } from 'vue-router'
+import { useMessage } from 'naive-ui'
 
+const message = useMessage()
+const router = useRouter()
+const ChatInfo = useChatInfoStore()
 const props = defineProps<{ title: string }>()
 
 function renderIcon(icon: Component) {
@@ -40,20 +47,26 @@ const options = ref([
   },
 ])
 
-function handleSelect(key: string | number) {
-  switch (key) {
-    case 'edit': {
-      console.log(1)
-      break
+async function handleSelect(key: string | number) {
+  try {
+    switch (key) {
+      case 'edit': {
+        console.log(1)
+        break
+      }
+      case 'love': {
+        console.log(2)
+        break
+      }
+      case 'delete': {
+        delChat(ChatInfo.currentChatInfo!.id)
+        message.success('删除成功')
+        router.push('/chat')
+        break
+      }
     }
-    case 'love': {
-      console.log(2)
-      break
-    }
-    case 'delete': {
-      console.log(3)
-      break
-    }
+  } catch (error) {
+    console.error(error)
   }
 }
 

@@ -12,8 +12,8 @@ export const getUserInfo = async () => {
     console.log(data)
     UserStore.account = data.account
     UserStore.apiKey = data.apiKey
-    UserStore.userChatInfos = data.userChatMetas
-    UserStore.userStars = data.userStars
+    UserStore.userChatInfos = data.userChatMetas.slice().reverse()
+    UserStore.userStars = data.userStars.slice().reverse()
 
     localStorage.setItem('account', data.account)
     localStorage.setItem('apiKey', data.apiKey)

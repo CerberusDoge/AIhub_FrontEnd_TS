@@ -4,6 +4,7 @@ import request from '@/utils/request'
 
 export const requestLogin = async (dataAccount: RequsetUser): Promise<Response> => {
   try {
+  console.log(dataAccount)
     const result = await request<Response>({
       url: '/api/v2/login',
       method: 'post',
@@ -15,7 +16,6 @@ export const requestLogin = async (dataAccount: RequsetUser): Promise<Response> 
     localStorage.setItem('apiKey', result.apiKey)
     localStorage.setItem('isLoggedIn', 'islogged')
     localStorage.setItem('satoken', result.token.tokenValue)
-
     return result.data
   } catch (error: any) {
     console.error(error)

@@ -13,6 +13,11 @@ const router = createRouter({
       meta: { requiresAuth: true }, // 添加元信息，表示该路由需要登录才能访问
       children: [
         {
+          path: '',
+          name: 'firstChatPage',
+          component: () => import('@/views/chat/FirstChatView.vue'),
+        },
+        {
           path: 'roleCenter',
           name: 'roleCenter',
           component: () => import('@/views/chat/ChatView.vue'),
@@ -23,9 +28,8 @@ const router = createRouter({
           component: () => import('@/views/chat/SettingView.vue'),
         },
         {
-          path: '/chat',
-          name: 'firstChatPage',
-          component: () => import('@/views/chat/FirstChatView.vue'),
+          path: ':id',
+          component: () => import('@/views/chat/ChatView.vue'),
         },
       ],
     },
@@ -50,18 +54,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-
   const logg = localStorage.getItem('isLoggedIn')
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // 检查是否已登录，这里假设使用 localStorage 存储登录状态
 
-    if(logg == 'islogged')
-      next()
-      else {
+    if (logg == 'islogged') next()
+    else {
       next({ name: 'login' }) // 未登录则跳转到登录页
     }
   } else {
-    if (logg == 'islogged'&&(to.name === 'login' || to.name === 'register')) {
+    if (logg == 'islogged' && (to.name === 'login' || to.name === 'register')) {
       next({ name: 'chat' })
     }
     next() // 不需要登录的路由直接放行

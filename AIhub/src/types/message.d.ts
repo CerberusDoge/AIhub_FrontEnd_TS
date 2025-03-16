@@ -107,7 +107,22 @@ export type ChatInfo = {
 /**
  * 模型，deepseek-r1, doubao-1.5pro 这是枚举
  */
-export enum  Model {
+export enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
+}
+
+export type ContentDetail = {
+  content: string | null
+  function_call: null
+  name: null|string
+  reasoning_content: string|null
+  role: string
+  tool_call_id: null
+  tool_calls: null
+}
+
+export enum Role {
+  User = 'user',
+  Assistant = 'assistant',
 }
