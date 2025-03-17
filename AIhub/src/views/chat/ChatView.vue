@@ -16,12 +16,14 @@ const chatStore = useChatInfoStore()
 const { currentChatInfo } = storeToRefs(chatStore)
 const title = ref('') //存储标题
 const id = ref(route.params.id) //存储现在的id
-const allChats = ref<ContentDetail[] | null>() //存储当前id所有对话信息
+const {allChats }=storeToRefs(chatStore) //存储当前id所有对话信息
 
 const isLoaded = ref(false) //监控是否渲染完成
 
 getChatInfo(Number(id.value)).then(() => {
-  title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : '123'
+  console.log(currentChatInfo.value)
+  console.log(currentChatInfo.value?.topic)
+  title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : ''
   allChats.value = JSON.parse(currentChatInfo.value!.content)
   isLoaded.value = true
 })
@@ -63,11 +65,14 @@ watch(
       <div v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
-            v-if="val.role === 'assistant'"
+            v-if="val.role === 'assistant' && (val.reasoning_content || val.content)"
             :isOver="true"
             :messages="val.reasoning_content ? val.reasoning_content : val.content!"
           ></ServeMessageBox>
-          <ClientMessageBox v-else :messages="val.content!"></ClientMessageBox>
+          <ClientMessageBox
+            v-else-if="val.role === 'user' && val.content"
+            :messages="val.content!"
+          ></ClientMessageBox>
         </div>
       </div>
       <div v-else>
@@ -78,7 +83,6 @@ watch(
           <n-skeleton height="2rem" width="100%" :sharp="false" />
           <n-skeleton height="2rem" width="100%" :sharp="false" />
           <n-skeleton height="2rem" width="100%" :sharp="false" />
-
         </n-space>
       </div>
     </div>

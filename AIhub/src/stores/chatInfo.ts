@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { ChatInfo } from '@/types/message'
+import type { ContentDetail } from '@/types/message'
 
 export const useChatInfoStore = defineStore('chatInfoStore', () => {
   const inputBoxInfo = ref<string>('') //聊天框内容
@@ -9,6 +10,7 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
   const currentChatInfo = ref<ChatInfo>() //当前选择对话所有信息
   const currentResponse = ref<string>('') //当前返回的消息
   const currentReasonResponse = ref<string>('') //当前返回的推理消息
+  const allChats = ref<ContentDetail[]>() //当前//存储当前id所有对话信息
 
   return {
     inputBoxInfo,
@@ -17,5 +19,6 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
     currentResponse,
     currentReasonResponse,
     currentChatInfo,
+    allChats,
   }
 })

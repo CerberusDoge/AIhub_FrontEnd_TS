@@ -1,33 +1,42 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
 
+import { NIcon } from 'naive-ui'
+import type { SelectGroupOption, SelectOption } from 'naive-ui'
+
 enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }
+const options: Array<SelectOption | SelectGroupOption> = [
+  {
+    label: 'deepseek-r1',
+    value: `${Model.DeepseekR1}`,
+  },
+  {
+    label: 'doubao-1.5pro',
+    value: `${Model.Doubao15Pro}`,
+  },
+]
 
 const chatStore = useChatInfoStore()
-chatStore.inputBoxInfo = ''
+chatStore.inputBoxInfo = '' //输入框内容
+const { currentChatInfo } = storeToRefs(chatStore)
 
 // const storeInput = (value: any) => {
 //   chatStore.inputBoxInfo = value
 //   console.log(chatStore.inputBoxInfo)
 // }
 
+const chosenModel = ref<Model>(Model.DeepseekR1) //已选的模型
 const loadingRef = ref(false)
-const storeData = ref('')
-const chatRequest = ref<ChatRequest>({
-  chatInfoId: null,
-  model: Model.DeepseekR1,
-  prompt: '',
-  message: '一句话介绍vue3',
-})
 const standify = (
   chatId: number | null,
   model: Model,
@@ -42,9 +51,17 @@ const standify = (
   }
 }
 const sendMessage = async () => {
+  console.log(chosenModel.value)
   if (chatStore.inputBoxInfo.trim() !== '') {
     chatStore.isSendMessage = true
-    fetchRequest(standify(null, Model.DeepseekR1, '', chatStore.inputBoxInfo))
+    fetchRequest(
+      standify(
+        currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
+        chosenModel.value ? chosenModel.value : Model.DeepseekR1,
+        '',
+        chatStore.inputBoxInfo,
+      ),
+    )
     console.log('发送消息成功')
   }
 }
@@ -70,6 +87,14 @@ const input = ref('')
     />
     <div class="bottomContent">
       <!-- <button @click="handleClick">jasdasldl</button> -->
+      <n-select
+        class="selector"
+        v-model:value="chosenModel"
+        :options="options"
+        placeholder="请选择模型"
+      >
+        <template #header> 大语言模型 </template></n-select
+      >
       <n-button circle :loading="loadingRef" @click="sendMessage" color="#5FBD22">
         <template #icon>
           <n-icon>
@@ -111,9 +136,13 @@ const input = ref('')
   border-color: vars.$border-light;
   box-shadow: vars.$box-shadow;
   padding-top: 0.8rem;
-  padding-left: 0.8rem;
-  padding-right: 0.8rem;
-  padding-bottom: 0.7rem;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+.selector {
+  border-radius: 1rem;
+  width: 14rem;
 }
 
 #typeIn {
@@ -128,6 +157,6 @@ const input = ref('')
 }
 .bottomContent {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
 }
 </style>
