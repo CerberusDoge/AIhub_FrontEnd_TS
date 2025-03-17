@@ -1,26 +1,32 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/userInfo'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const chatInfo = useUserStore()
 const { userStars } = storeToRefs(chatInfo)
+
+const goTo = (id: number) => {
+  router.push(`/chat/${id}`)
+}
 </script>
 <template>
-  <n-config-provider
-    :theme-overrides="{
-      Scrollbar: {
-        width: '0px',
-      },
-    }"
-  >
-    <n-scrollbar trigger="hover" style="max-height: 20rem">
-      <div v-for="(val, index) in userStars" :key="index" class="row" :value="val.id">
-        <div class="rowTitle">{{ val.topic }}</div>
+  <div class="main" style="max-height: 20rem">
+    <div v-for="(val, index) in userStars" :key="index" class="row" @click="goTo(val.id)">
+      <div class="rowTitle">
+        {{ val.topic }}
       </div>
-    </n-scrollbar>
-  </n-config-provider>
+    </div>
+  </div>
 </template>
 <style scoped lang="scss">
+.main::-webkit-scrollbar {
+  display: none;
+}
 .main {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 20rem;
@@ -30,7 +36,7 @@ const { userStars } = storeToRefs(chatInfo)
   width: 15rem;
   padding: 0.5rem;
   max-width: 90%;
-  background-color: vars.$grey;
+  background-color: vars.$deepGrey vars.$grey;
   border-radius: 0.7rem;
   display: flex;
   align-items: center;
@@ -43,6 +49,6 @@ const { userStars } = storeToRefs(chatInfo)
 }
 
 .row:hover {
-  background-color: vars.$deepGrey;
+  background-color: vars.$grey;
 }
 </style>

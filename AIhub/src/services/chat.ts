@@ -18,11 +18,12 @@ export const delChat = (id: number) => {
     })
 }
 
-export const star = (chatInfoId: number, userId: number) => {
+export const star = (chatInfoId: number) => {
+
   request<ChatInfo>({
-    url: '/api/v1/star',
+    url: `/api/v1/star/${chatInfoId}`,
     method: 'post',
-    data: { chatInfoId: chatInfoId, userId: userId },
+    data: { chatInfoId: chatInfoId },
   })
     .then((response) => {
       getUserInfo()

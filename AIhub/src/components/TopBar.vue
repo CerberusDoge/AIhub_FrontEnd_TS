@@ -55,7 +55,7 @@ async function handleSelect(key: string | number) {
         break
       }
       case 'love': {
-        console.log(2)
+        star(ChatInfo.currentChatInfo!.id)
         break
       }
       case 'delete': {
@@ -67,6 +67,7 @@ async function handleSelect(key: string | number) {
     }
   } catch (error) {
     console.error(error)
+    message.error("操作失败")
   }
 }
 
