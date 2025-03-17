@@ -64,7 +64,7 @@ const copyContent = async () => {
       <div class="normalMode">
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button @click="copyContent" position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" @click="copyContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Pencil />
               </n-icon>
@@ -74,7 +74,7 @@ const copyContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button @click="copyContent" position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" @click="copyContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Copy />
               </n-icon>
@@ -84,7 +84,7 @@ const copyContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }"position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Bookmarks />
               </n-icon>
@@ -94,7 +94,7 @@ const copyContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <ShareSocial />
               </n-icon>

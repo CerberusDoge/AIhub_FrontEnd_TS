@@ -9,15 +9,17 @@ import type { ContentDetail } from '@/types/message'
 import ReasonContainer from '@/components/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getChatInfo } from '@/services/chat'
-import { ref, watch } from 'vue'
+import { onMounted, onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { nextTick } from 'vue'
+import { debounce } from '@/utils/debounce'
 
 const route = useRoute()
 const chatStore = useChatInfoStore()
 const { currentChatInfo } = storeToRefs(chatStore)
 const title = ref('') //存储标题
 const id = ref(route.params.id) //存储现在的id
-const {allChats }=storeToRefs(chatStore) //存储当前id所有对话信息
+const { allChats } = storeToRefs(chatStore) //存储当前id所有对话信息
 
 const isLoaded = ref(false) //监控是否渲染完成
 
@@ -45,6 +47,15 @@ watch(
   },
 )
 
+//滑动函数
+const bottomAnchor = ref()
+const scrollToBottom = () => {
+  bottomAnchor.value.scrollIntoView({ behavior: 'smooth' })
+}
+onUpdated(() => debounce(scrollToBottom(), 500))
+// nextTick(() => {
+//   scrollToBottom()
+// });
 </script>
 
 <template>
@@ -54,13 +65,13 @@ watch(
       <div v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
-            v-if="val.role === 'assistant' &&  val.content"
-            :isNew="val.isNew?true:false"
+            v-if="val.role === 'assistant' && val.content"
+            :isNew="val.isNew ? true : false"
             :messages="val.reasoning_content ? val.reasoning_content : val.content!"
           ></ServeMessageBox>
           <ReasonContainer
             v-else-if="val.role === 'assistant' && val.reasoning_content"
-            :isNew="val.isNew?true:false"
+            :isNew="val.isNew ? true : false"
             :messages="val.reasoning_content ? val.reasoning_content : val.content!"
           ></ReasonContainer>
           <ClientMessageBox
@@ -79,6 +90,7 @@ watch(
           <n-skeleton height="2rem" width="100%" :sharp="false" />
         </n-space>
       </div>
+      <div ref="bottomAnchor"></div>
     </div>
     <div class="command"><TalkInputBox></TalkInputBox></div>
   </div>
