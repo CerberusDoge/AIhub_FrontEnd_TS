@@ -6,6 +6,7 @@ import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
 import TopBar from '@/components/TopBar.vue'
 import type { ContentDetail } from '@/types/message'
+import ReasonContainer from '@/components/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getChatInfo } from '@/services/chat'
 import { ref, watch } from 'vue'
@@ -44,18 +45,6 @@ watch(
   },
 )
 
-const currentTextMessage = ref('')
-
-//监听是否有新消息
-watch(
-  () => chatStore.isSendMessage,
-  (newValue: boolean) => {
-    if (newValue === true) {
-      currentTextMessage.value = chatStore.inputBoxInfo
-      chatStore.isSendMessage = false
-    }
-  },
-)
 </script>
 
 <template>
@@ -65,10 +54,15 @@ watch(
       <div v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
-            v-if="val.role === 'assistant' && (val.reasoning_content || val.content)"
-            :isOver="true"
+            v-if="val.role === 'assistant' &&  val.content"
+            :isNew="val.isNew?true:false"
             :messages="val.reasoning_content ? val.reasoning_content : val.content!"
           ></ServeMessageBox>
+          <ReasonContainer
+            v-else-if="val.role === 'assistant' && val.reasoning_content"
+            :isNew="val.isNew?true:false"
+            :messages="val.reasoning_content ? val.reasoning_content : val.content!"
+          ></ReasonContainer>
           <ClientMessageBox
             v-else-if="val.role === 'user' && val.content"
             :messages="val.content!"

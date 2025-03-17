@@ -7,6 +7,8 @@ import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
+import type { ContentDetail } from '@/types/message'
+import { switchDataToClientMsg } from '@/services/chat'
 
 import { NIcon } from 'naive-ui'
 import type { SelectGroupOption, SelectOption } from 'naive-ui'
@@ -17,7 +19,7 @@ enum Model {
 }
 const chatStore = useChatInfoStore()
 chatStore.inputBoxInfo = '' //输入框内容
-const { currentChatInfo } = storeToRefs(chatStore)
+const { currentChatInfo,allChats } = storeToRefs(chatStore)
 console.log(currentChatInfo.value?.model)
 
 const options = ref<Array<SelectOption | SelectGroupOption>>([
@@ -51,10 +53,6 @@ watch(
   },
 )
 
-// const storeInput = (value: any) => {
-//   chatStore.inputBoxInfo = value
-//   console.log(chatStore.inputBoxInfo)
-// }
 
 const chosenModel = ref<Model>() //已选的模型
 const loadingRef = ref(false)
@@ -72,21 +70,22 @@ const standify = (
   }
 }
 const sendMessage = async () => {
-  console.log(chosenModel.value)
-  if (chatStore.inputBoxInfo.trim() !== '') {
-    chatStore.isSendMessage = true
+
+ const inputBoxInfo=chatStore.inputBoxInfo.trim()
+ chatStore.inputBoxInfo=''
+  if (inputBoxInfo !== '') {
+    allChats.value!.push(switchDataToClientMsg(inputBoxInfo))
     fetchRequest(
       standify(
         currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
         currentChatInfo.value?.model!,
         '',
-        chatStore.inputBoxInfo,
+       inputBoxInfo,
       ),
-    )
+    )//发送sse渲染请求
   }
 }
 
-const input = ref('')
 </script>
 
 <template>

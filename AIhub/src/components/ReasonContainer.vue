@@ -27,7 +27,7 @@ const typing = () => {
   }
 }
 if (isNew) typing()
-    else msg.value = props.messages
+else msg.value = props.messages
 
 onUnmounted(() => clearTimeout(timer))
 watch(
@@ -42,68 +42,17 @@ const RenderMd = computed(() => {
   if (!isNew) return marked(props.messages)
   else return marked(msg.value)
 })
-
-const copyContent = async () => {
-  try {
-    await navigator.clipboard.writeText(props.messages)
-    console.log('复制成功')
-    message.success('复制成功')
-  } catch (err) {
-    console.error('复制出错:', err)
-    message.error('复制出错')
-  }
-}
 </script>
 
 <template>
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
-    <div class="card">
-      <div class="cardContent" v-html="RenderMd"></div>
-    </div>
-    <div asd class="tool">
-      <div class="normalMode">
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button @click="copyContent" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Pencil />
-              </n-icon>
-            </n-float-button>
-          </template>
-          编辑
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button @click="copyContent" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Copy />
-              </n-icon>
-            </n-float-button>
-          </template>
-          复制
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Bookmarks />
-              </n-icon>
-            </n-float-button>
-          </template>
-          收藏
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <ShareSocial />
-              </n-icon>
-            </n-float-button>
-          </template>
-          分享
-        </n-tooltip>
+    <n-collapse
+      ><div class="card">
+        <n-collapse-item title="思考过程" name="1">
+          <div class="cardContent" v-html="RenderMd"></div>
+        </n-collapse-item>
       </div>
-    </div>
+    </n-collapse>
   </div>
 </template>
 
@@ -114,18 +63,17 @@ const copyContent = async () => {
   align-items: start;
   width: 100%;
   padding: 0.7em;
-  padding-top: 0;
+  padding-bottom: 0;
   padding-left: 0;
   flex-direction: column;
 }
 .card {
   width: 100%;
-  display: flex;
-  justify-content: start;
   padding: 0.6em;
   padding-bottom: 0;
   // background-color: #f5f5f5;
   border-radius: 0.5em;
+  width: fit-content;
   max-width: 100%;
   overflow: hidden;
   flex-wrap: nowrap;

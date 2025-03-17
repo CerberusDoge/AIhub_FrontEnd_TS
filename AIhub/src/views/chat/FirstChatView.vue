@@ -41,10 +41,10 @@ watch(
     <div class="messageContent">
       <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
       <ServeMessageBox
-        :isOver="false"
+        :isNew="false"
         :messages="chatStore.currentReasonResponse"
       ></ServeMessageBox>
-      <ServeMessageBox :isOver="false" :messages="chatStore.currentResponse"></ServeMessageBox>
+      <ServeMessageBox :isNew="false" :messages="chatStore.currentResponse"></ServeMessageBox>
     </div>
     <div class="command"><TalkInputBox></TalkInputBox></div>
   </div>

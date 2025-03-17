@@ -2,6 +2,7 @@ import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
 import { getUserInfo } from '@/services/user'
+import { switchDataToServeMsg } from './chat'
 
 const headers = new Headers()
 const authorization = localStorage.getItem('satoken')
@@ -61,6 +62,10 @@ export const fetchRequest = (data: ChatRequest) => {
           }
         })
       }
+      if (chatInfo.currentReasonResponse) {
+        chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentReasonResponse, true))
+        chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
+      } else chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
       getUserInfo()
     })
     .catch((error) => {

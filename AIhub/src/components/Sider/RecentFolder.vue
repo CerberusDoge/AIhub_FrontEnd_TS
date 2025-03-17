@@ -24,6 +24,9 @@ const goTo = (id: number) => {
   display: none;
 }
 .main {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 20rem;

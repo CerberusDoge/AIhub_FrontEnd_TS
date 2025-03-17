@@ -114,15 +114,17 @@ export enum Model {
 
 export type ContentDetail = {
   content: string | null
-  function_call: null
-  name: null|string
-  reasoning_content: string|null
+  function_call?: null
+  name?: null
+  reasoning_content: string | null
   role: string
-  tool_call_id: null
-  tool_calls: null
+  tool_call_id?: null
+  tool_calls?: null
+  isNew?:boolean
 }
 
 export enum Role {
   User = 'user',
   Assistant = 'assistant',
 }
+
