@@ -3,7 +3,6 @@ import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
 import { getUserInfo } from '@/services/user'
 
-
 const headers = new Headers()
 const authorization = localStorage.getItem('satoken')
 headers.append('satoken', authorization!)
@@ -30,10 +29,9 @@ export const fetchRequest = (data: ChatRequest) => {
       const decoder = new TextDecoder()
       chatInfo.currentResponse = ''
       chatInfo.currentReasonResponse = ''
-      let partialData = ''; // 存储未完整的消息
+      let partialData = '' // 存储未完整的消息
 
       console.log(response)
-        getUserInfo()
 
       while (true) {
         const { done, value } = await reader.read()
@@ -63,6 +61,10 @@ export const fetchRequest = (data: ChatRequest) => {
           }
         })
       }
+      getUserInfo()
     })
-    .catch((error) => console.error('Request failed:', error))
+    .catch((error) => {
+      console.error('Request failed!!:', error)
+      throw error
+    })
 }

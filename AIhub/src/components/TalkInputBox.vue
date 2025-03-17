@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref, watch } from 'vue'
-
+import { useMessage } from 'naive-ui'
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
@@ -15,27 +15,48 @@ enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }
-const options: Array<SelectOption | SelectGroupOption> = [
+const chatStore = useChatInfoStore()
+chatStore.inputBoxInfo = '' //输入框内容
+const { currentChatInfo } = storeToRefs(chatStore)
+console.log(currentChatInfo.value?.model)
+
+const options = ref<Array<SelectOption | SelectGroupOption>>([
   {
     label: 'deepseek-r1',
     value: `${Model.DeepseekR1}`,
+    disabled: currentChatInfo.value?.model != Model.DeepseekR1,
   },
   {
     label: 'doubao-1.5pro',
     value: `${Model.Doubao15Pro}`,
+    disabled: currentChatInfo.value?.model != Model.Doubao15Pro,
   },
-]
-
-const chatStore = useChatInfoStore()
-chatStore.inputBoxInfo = '' //输入框内容
-const { currentChatInfo } = storeToRefs(chatStore)
+])
+watch(
+  () => currentChatInfo.value?.model,
+  () => {
+    chosenModel.value=currentChatInfo.value?.model
+    options.value = [
+      {
+        label: 'deepseek-r1',
+        value: `${Model.DeepseekR1}`,
+        disabled: currentChatInfo.value?.model != Model.DeepseekR1,
+      },
+      {
+        label: 'doubao-1.5pro',
+        value: `${Model.Doubao15Pro}`,
+        disabled: currentChatInfo.value?.model != Model.Doubao15Pro,
+      },
+    ]
+  },
+)
 
 // const storeInput = (value: any) => {
 //   chatStore.inputBoxInfo = value
 //   console.log(chatStore.inputBoxInfo)
 // }
 
-const chosenModel = ref<Model>(Model.DeepseekR1) //已选的模型
+const chosenModel = ref<Model>() //已选的模型
 const loadingRef = ref(false)
 const standify = (
   chatId: number | null,
@@ -57,12 +78,11 @@ const sendMessage = async () => {
     fetchRequest(
       standify(
         currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
-        chosenModel.value ? chosenModel.value : Model.DeepseekR1,
+        currentChatInfo.value?.model!,
         '',
         chatStore.inputBoxInfo,
       ),
     )
-    console.log('发送消息成功')
   }
 }
 

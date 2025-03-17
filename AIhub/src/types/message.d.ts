@@ -13,7 +13,7 @@ export type ChatRequest = {
   /**
    * 模型名称，deepseek-r1, doubao-1.5pro
    */
-  model: Model
+  model: string
   /**
    * 提示词，用于预定义角色，比如你是一只猫娘
    */
@@ -41,7 +41,7 @@ export type ChatInfo = {
   /**
    * 模型，deepseek-r1, doubao-1.5pro
    */
-  model: string
+  model: Model
   topic: string
   userId: number
   [property: string]: any
