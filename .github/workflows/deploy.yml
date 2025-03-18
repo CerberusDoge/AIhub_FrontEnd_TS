@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: vite build  # 或 vite build（需与项目配置一致）
+        run: npm run build  # 或 vite build（需与项目配置一致）
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
