@@ -91,9 +91,8 @@ onUpdated(() => debounce(scrollToBottom(), 500))
           <n-skeleton height="2rem" width="100%" :sharp="false" />
         </n-space>
       </div>
-
     </div>
-    <div class="command"><TalkInputBox :isNew=false></TalkInputBox></div>
+    <div class="command"><TalkInputBox :isNew="false"></TalkInputBox></div>
   </div>
 </template>
 
@@ -120,7 +119,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
 
   display: flex;
   justify-content: center;
-  padding-bottom: 2%;
+  padding-bottom: 2rem;
 }
 .messageContent {
   overflow-y: auto; /* 垂直滚动条自动显示 */
@@ -131,6 +130,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
   padding: 2%;
   height: 100%;
   display: flex;
+  justify-content: space-between;
   flex-direction: column-reverse;
 }
 .messageContent::-webkit-scrollbar {

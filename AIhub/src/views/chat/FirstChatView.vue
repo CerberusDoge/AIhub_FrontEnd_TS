@@ -113,7 +113,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
 
   display: flex;
   justify-content: center;
-  padding-bottom: 2%;
+  padding-bottom: 2rem;
 }
 .messageContent {
   overflow-y: auto; /* 垂直滚动条自动显示 */
@@ -124,6 +124,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
   padding: 2%;
   height: 100%;
   display: flex;
+  justify-content: space-between;
   flex-direction: column-reverse;
 }
 .messageContent::-webkit-scrollbar {
