@@ -1,52 +1,99 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
 import TopBar from '@/components/TopBar.vue'
-import { delChat, star, unStar } from '@/services/chat'
+import type { ContentDetail } from '@/types/message'
+import ReasonContainer from '@/components/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { ref, watch } from 'vue'
+import { getChatInfo } from '@/services/chat'
+import { onMounted, onUpdated, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { nextTick } from 'vue'
+import { debounce } from '@/utils/debounce'
 
+const route = useRoute()
 const chatStore = useChatInfoStore()
-const currentTextMessage = ref('')
+const { currentChatInfo } = storeToRefs(chatStore)
+const title = ref('') //存储标题
+const id = ref(route.params.id) //存储现在的id
+const { allChats } = storeToRefs(chatStore) //存储当前id所有对话信息
 
-const title = '啊实打实大苏打撒'
-const deleteChat = () => {
-  delChat(14)
-}
-const starChat = () => {
-  star(14, 1)
-}
-const unStarChat = () => {
-  unStar(1, 1)
-}
-const content = ref('')
-//监听是否有新消息
+const isLoaded = ref(true) //监控是否数据获取完成
+
+getChatInfo(Number(id.value)).then(() => {
+  console.log(currentChatInfo.value)
+  console.log(currentChatInfo.value?.topic)
+  title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : ''
+  allChats.value = JSON.parse(currentChatInfo.value!.content)
+
+})
+
+//监听新id
 watch(
-  () => chatStore.isSendMessage,
-  (newValue: boolean) => {
-    if (newValue === true) {
-      currentTextMessage.value = chatStore.inputBoxInfo
-      chatStore.isSendMessage = false
-    }
+  () => route.params.id,
+  (newId) => {
+    isLoaded.value = false
+    id.value = newId
+    getChatInfo(Number(id.value)).then(() => {
+      title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : '123'
+      allChats.value = JSON.parse(currentChatInfo.value!.content)
+      console.log(allChats.value)
+
+      console.log(isLoaded.value)
+    })
   },
 )
+
+//滑动函数
+const bottomAnchor = ref()
+const scrollToBottom = () => {
+  bottomAnchor.value.scrollIntoView({ behavior: 'smooth' })
+}
+onUpdated(() => debounce(scrollToBottom(), 500))
+// nextTick(() => {
+//   scrollToBottom()
+// });
 </script>
 
 <template>
   <div class="layout">
     <div class="topBar"><TopBar :title="title"></TopBar></div>
     <div class="messageContent">
-      <ClientMessageBox :messages="currentTextMessage"></ClientMessageBox>
-      <ServeMessageBox
-        :isNew="false"
-        :messages="chatStore.currentReasonResponse"
-      ></ServeMessageBox>
-      <ServeMessageBox :isNew="false" :messages="chatStore.currentResponse"></ServeMessageBox>
+      <div ref="bottomAnchor"></div>
+      <div v-if="isLoaded">
+        <div v-for="(val, index) in allChats" :key="index">
+          <ServeMessageBox
+            v-if="val.role === 'assistant' && val.content"
+            :isNew="val.isNew ? true : false"
+            :messages="val.reasoning_content ? val.reasoning_content : val.content!"
+          ></ServeMessageBox>
+          <ReasonContainer
+            v-else-if="val.role === 'assistant' && val.reasoning_content"
+            :isNew="val.isNew ? true : false"
+            :messages="val.reasoning_content ? val.reasoning_content : val.content!"
+          ></ReasonContainer>
+          <ClientMessageBox
+            v-else-if="val.role === 'user' && val.content"
+            :messages="val.content!"
+          ></ClientMessageBox>
+        </div>
+      </div>
+      <div v-else>
+        <n-space vertical>
+          <n-skeleton height="2rem" width="20%" round />
+          <n-skeleton height="2rem" width="33%" />
+          <n-skeleton text :repeat="10" /> <n-skeleton text style="width: 60%" />
+          <n-skeleton height="2rem" width="100%" :sharp="false" />
+          <n-skeleton height="2rem" width="100%" :sharp="false" />
+          <n-skeleton height="2rem" width="100%" :sharp="false" />
+        </n-space>
+      </div>
+
     </div>
-    <div class="command"><TalkInputBox></TalkInputBox></div>
+    <div class="command"><TalkInputBox :isNew=true></TalkInputBox></div>
   </div>
 </template>
 
@@ -83,7 +130,7 @@ watch(
   padding: 2%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 .messageContent::-webkit-scrollbar {
   width: 0;

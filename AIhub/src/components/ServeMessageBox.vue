@@ -21,7 +21,7 @@ const typing = () => {
   //存在未打印的
   if (currentIndex.value < props.messages.length) {
     msg.value += props.messages.charAt(currentIndex.value++)
-    timer = setTimeout(typing, 50)
+    timer = setTimeout(typing, 20)
   } else {
     clearTimeout(timer)
   }

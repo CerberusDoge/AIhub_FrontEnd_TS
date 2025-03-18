@@ -13,48 +13,53 @@ import { switchDataToClientMsg } from '@/services/chat'
 import { NIcon } from 'naive-ui'
 import type { SelectGroupOption, SelectOption } from 'naive-ui'
 
+const props = defineProps<{ isNew: boolean }>()
+
 enum Model {
   DeepseekR1 = 'deepseek-r1',
   Doubao15Pro = 'doubao-1.5pro',
 }
 const chatStore = useChatInfoStore()
 chatStore.inputBoxInfo = '' //输入框内容
-const { currentChatInfo,allChats } = storeToRefs(chatStore)
-console.log(currentChatInfo.value?.model)
+const { currentChatInfo, allChats } = storeToRefs(chatStore)
 
-const options = ref<Array<SelectOption | SelectGroupOption>>([
-  {
-    label: 'deepseek-r1',
-    value: `${Model.DeepseekR1}`,
-    disabled: currentChatInfo.value?.model != Model.DeepseekR1,
-  },
-  {
-    label: 'doubao-1.5pro',
-    value: `${Model.Doubao15Pro}`,
-    disabled: currentChatInfo.value?.model != Model.Doubao15Pro,
-  },
-])
+
+//判断模型选择框内容函数
+const chosenModel = ref<Model>() //已选的模型
+const returnOption = (isNew: boolean): Array<SelectOption | SelectGroupOption> => {
+  let options = [
+    {
+      label: 'deepseek-r1',
+      value: `${Model.DeepseekR1}`,
+      disabled: currentChatInfo.value?.model != Model.DeepseekR1,
+    },
+    {
+      label: 'doubao-1.5pro',
+      value: `${Model.Doubao15Pro}`,
+      disabled: currentChatInfo.value?.model != Model.Doubao15Pro,
+    },
+  ]
+  if (isNew) {
+    chosenModel.value = Model.Doubao15Pro
+    options[0].disabled = false
+    options[1].disabled = false
+  } else {
+    chosenModel.value = currentChatInfo.value?.model
+  }
+  return options
+}
+
+const options = ref<Array<SelectOption | SelectGroupOption>>(returnOption(props.isNew))
 watch(
   () => currentChatInfo.value?.model,
   () => {
-    chosenModel.value=currentChatInfo.value?.model
-    options.value = [
-      {
-        label: 'deepseek-r1',
-        value: `${Model.DeepseekR1}`,
-        disabled: currentChatInfo.value?.model != Model.DeepseekR1,
-      },
-      {
-        label: 'doubao-1.5pro',
-        value: `${Model.Doubao15Pro}`,
-        disabled: currentChatInfo.value?.model != Model.Doubao15Pro,
-      },
-    ]
+    if (!props.isNew) {
+      options.value = returnOption(props.isNew)
+    }
   },
 )
 
 
-const chosenModel = ref<Model>() //已选的模型
 const loadingRef = ref(false)
 const standify = (
   chatId: number | null,
@@ -70,9 +75,8 @@ const standify = (
   }
 }
 const sendMessage = async () => {
-
- const inputBoxInfo=chatStore.inputBoxInfo.trim()
- chatStore.inputBoxInfo=''
+  const inputBoxInfo = chatStore.inputBoxInfo.trim()
+  chatStore.inputBoxInfo = ''
   if (inputBoxInfo !== '') {
     allChats.value!.push(switchDataToClientMsg(inputBoxInfo))
     fetchRequest(
@@ -80,12 +84,11 @@ const sendMessage = async () => {
         currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
         currentChatInfo.value?.model!,
         '',
-       inputBoxInfo,
+        inputBoxInfo,
       ),
-    )//发送sse渲染请求
+    ) //发送sse渲染请求
   }
 }
-
 </script>
 
 <template>

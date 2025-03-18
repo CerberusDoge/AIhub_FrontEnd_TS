@@ -62,6 +62,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
   <div class="layout">
     <div class="topBar"><TopBar :title="title"></TopBar></div>
     <div class="messageContent">
+      <div ref="bottomAnchor"></div>
       <div v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
@@ -90,9 +91,9 @@ onUpdated(() => debounce(scrollToBottom(), 500))
           <n-skeleton height="2rem" width="100%" :sharp="false" />
         </n-space>
       </div>
-      <div ref="bottomAnchor"></div>
+
     </div>
-    <div class="command"><TalkInputBox></TalkInputBox></div>
+    <div class="command"><TalkInputBox :isNew=false></TalkInputBox></div>
   </div>
 </template>
 
@@ -129,7 +130,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
   padding: 2%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 .messageContent::-webkit-scrollbar {
   width: 0;
