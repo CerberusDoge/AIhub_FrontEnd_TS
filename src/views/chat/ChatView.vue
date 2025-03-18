@@ -11,7 +11,7 @@ import { getChatInfo } from '@/services/chat'
 import { onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { debounce } from '@/utils/debounce'
-
+//1
 const route = useRoute()
 const chatStore = useChatInfoStore()
 const { currentChatInfo } = storeToRefs(chatStore)
