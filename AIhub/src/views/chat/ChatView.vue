@@ -112,6 +112,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
   width: 96%;
   max-width: 100%;
   padding: 1rem;
+  padding-bottom: 0;
   padding-left: 0;
 }
 .command {

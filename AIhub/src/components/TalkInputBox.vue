@@ -86,7 +86,12 @@ const sendMessage = async () => {
         '',
         inputBoxInfo,
       ),
-    ) //发送sse渲染请求
+    ).then(()=>{
+      if(props.isNew){
+
+      }
+
+    }) //发送sse渲染请求
   }
 }
 </script>

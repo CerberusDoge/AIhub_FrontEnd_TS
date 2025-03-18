@@ -37,13 +37,13 @@ export type ChatInfo = {
   /**
    * ID 编号
    */
-  id: number
+  id: number|undefined
   /**
    * 模型，deepseek-r1, doubao-1.5pro
    */
-  model: Model
-  topic: string
-  userId: number
+  model?: Model
+  topic?: string
+  userId?: number
   [property: string]: any
 }
 

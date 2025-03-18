@@ -2,8 +2,10 @@ import type { Response } from '@/types/message'
 import { useUserStore } from '@/stores/userInfo'
 import request from '@/utils/request'
 import type { UpdateRequest } from '@/types/account'
+import  {useChatInfoStore} from '@/stores/chatInfo'
 
 const UserStore = useUserStore()
+const ChatInfoStore=useChatInfoStore()
 
 //获取用户信息
 export const getUserInfo = async () => {
@@ -14,7 +16,7 @@ export const getUserInfo = async () => {
     UserStore.apiKey = data.apiKey
     UserStore.userChatInfos = data.userChatMetas.slice().reverse()
     UserStore.userStars = data.userStars.slice().reverse()
-
+    ChatInfoStore.curretChatId=UserStore.userChatInfos[0].id
     localStorage.setItem('account', data.account)
     localStorage.setItem('apiKey', data.apiKey)
     localStorage.setItem('isLoggedIn', 'islogged')

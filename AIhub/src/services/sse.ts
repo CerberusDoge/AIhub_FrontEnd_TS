@@ -19,7 +19,7 @@ function isJSON(jsonStr: any) {
     return false
   }
 }
-export const fetchRequest = (data: ChatRequest) => {
+export const fetchRequest = async (data: ChatRequest) => {
   fetch(`${baseURL}/api/v1/chat`, {
     method: 'post',
     headers: headers,
@@ -66,7 +66,7 @@ export const fetchRequest = (data: ChatRequest) => {
         chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentReasonResponse, true))
         chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
       } else chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
-      getUserInfo()
+      getUserInfo().then((res)=>console.log(res))
     })
     .catch((error) => {
       console.error('Request failed!!:', error)

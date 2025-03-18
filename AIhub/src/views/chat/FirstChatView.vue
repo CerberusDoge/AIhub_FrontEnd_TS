@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
@@ -14,36 +14,27 @@ import { storeToRefs } from 'pinia'
 import { nextTick } from 'vue'
 import { debounce } from '@/utils/debounce'
 
-const route = useRoute()
+const router=useRouter()
 const chatStore = useChatInfoStore()
-const { currentChatInfo } = storeToRefs(chatStore)
-const title = ref('') //存储标题
-const id = ref(route.params.id) //存储现在的id
-const { allChats } = storeToRefs(chatStore) //存储当前id所有对话信息
-
+const { allChats ,currentChatInfo,curretChatId} = storeToRefs(chatStore) //存储当前id所有对话信息
+allChats.value=[]
+currentChatInfo.value.content=''
+currentChatInfo.value.id=undefined
 const isLoaded = ref(true) //监控是否数据获取完成
 
-getChatInfo(Number(id.value)).then(() => {
-  console.log(currentChatInfo.value)
-  console.log(currentChatInfo.value?.topic)
-  title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : ''
-  allChats.value = JSON.parse(currentChatInfo.value!.content)
+// getChatInfo(Number(id.value)).then(() => {
+//   console.log(currentChatInfo.value)
+//   console.log(currentChatInfo.value?.topic)
+//   title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : ''
+//   allChats.value = [JSON.parse(currentChatInfo.value!.content)]
 
-})
+// })
 
 //监听新id
 watch(
-  () => route.params.id,
+  () => curretChatId.value,
   (newId) => {
-    isLoaded.value = false
-    id.value = newId
-    getChatInfo(Number(id.value)).then(() => {
-      title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : '123'
-      allChats.value = JSON.parse(currentChatInfo.value!.content)
-      console.log(allChats.value)
-
-      console.log(isLoaded.value)
-    })
+    router.push(`chat/${newId}`)
   },
 )
 
@@ -60,7 +51,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
 
 <template>
   <div class="layout">
-    <div class="topBar"><TopBar :title="title"></TopBar></div>
+    <div class="topBar"><n-button  quaternary icon-placement="right">新对话</n-button></div>
     <div class="messageContent">
       <div ref="bottomAnchor"></div>
       <div v-if="isLoaded">
