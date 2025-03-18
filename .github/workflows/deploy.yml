@@ -32,9 +32,7 @@ jobs:
           script: |
             # 1. 清理旧文件并同步新文件（使用rsync增量传输）
             sudo rm -rf /var/www/AIhub/*
-             rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" \
-${{ github.workspace }}/dist/ \
-${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/AIhub/
+             rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ${{ github.workspace }}/dist/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/AIhub/
 
             # 2. 设置文件权限（避免Nginx访问失败）
             sudo chown -R www-data:www-data /var/www/AIhub
