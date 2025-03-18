@@ -9,7 +9,7 @@ import type { ContentDetail } from '@/types/message'
 import ReasonContainer from '@/components/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getChatInfo } from '@/services/chat'
-import { onMounted, onUpdated, ref, watch } from 'vue'
+import { KeepAlive, onMounted, onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nextTick } from 'vue'
 import { debounce } from '@/utils/debounce'
@@ -55,6 +55,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
     <div class="messageContent">
       <div ref="bottomAnchor"></div>
       <div v-if="isLoaded">
+
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
             v-if="val.role === 'assistant' && val.content"
@@ -71,6 +72,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
             :messages="val.content!"
           ></ClientMessageBox>
         </div>
+
       </div>
       <div v-else>
         <n-space vertical>

@@ -12,7 +12,7 @@ const goTo = (id: number) => {
 </script>
 <template>
   <div class="main" style="max-height: 20rem">
-    <div v-for="(val, index) in userChatInfos" :key="index" class="row" @click="goTo(val.id)">
+    <div v-for="(val, index) in userChatInfos" :key="index" class="row" @click="goTo(val.id!)">
       <div class="rowTitle">
         {{ val.topic }}
       </div>
@@ -42,9 +42,11 @@ const goTo = (id: number) => {
   align-items: center;
   transition: border 0.3s ease;
   .rowTitle {
+    width: 100%;
     margin-left: 0.5rem;
     white-space: nowrap; /* 禁止换行 */
     text-overflow: ellipsis;
+
   }
 }
 

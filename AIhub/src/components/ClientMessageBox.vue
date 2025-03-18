@@ -35,13 +35,17 @@ const editSlotContent = async () => {
 </script>
 
 <template>
+
+
+
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
     <div class="card" v-text="props.messages"></div>
     <div :class="{ 'ghost-mode': !isHover }" class="tool">
       <div class="normalMode">
+        <div class="normalMode">
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button @click="editSlotContent" position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" @click="editSlotContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Pencil />
               </n-icon>
@@ -51,7 +55,7 @@ const editSlotContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button @click="copySlotContent" position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" @click="copySlotContent" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Copy />
               </n-icon>
@@ -61,7 +65,7 @@ const editSlotContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }"position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Bookmarks />
               </n-icon>
@@ -71,7 +75,7 @@ const editSlotContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <ShareSocial />
               </n-icon>
@@ -79,6 +83,7 @@ const editSlotContent = async () => {
           </template>
           分享
         </n-tooltip>
+      </div>
       </div>
     </div>
   </div>
