@@ -12,7 +12,7 @@ const goTo = (id: number) => {
 </script>
 <template>
   <div class="main" style="max-height: 20rem">
-    <div v-for="(val, index) in userStars" :key="index" class="row" @click="goTo(val.id)">
+    <div v-for="(val, index) in userStars" :key="index" class="row" @click="goTo(val.id!)">
       <div class="rowTitle">
         {{ val.topic }}
       </div>
