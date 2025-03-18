@@ -31,17 +31,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 1. 清理旧文件并同步新文件（使用rsync增量传输）
-            sudo rm -rf /var/www/vue-app/*
+            sudo rm -rf /var/www/AIhub/*
             rsync -avz --delete ./dist/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/vue-app/
             
             # 2. 设置文件权限（避免Nginx访问失败）
-            sudo chown -R www-data:www-data /var/www/vue-app
-            sudo chmod -R 755 /var/www/vue-app
+            sudo chown -R www-data:www-data /var/www/AIhub
+            sudo chmod -R 755 /var/www/AIhub
             
-            # 3. 更新Nginx配置（若需动态加载配置）
-            # 将本地配置同步到服务器（示例路径需调整）
-            scp ./nginx.conf ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/etc/nginx/sites-available/vue-app.conf
-            sudo ln -sf /etc/nginx/sites-available/vue-app.conf /etc/nginx/sites-enabled/
             
             # 4. 测试并重载Nginx（避免服务中断）
             sudo nginx -t && sudo systemctl reload nginx
