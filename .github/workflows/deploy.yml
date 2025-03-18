@@ -1,4 +1,4 @@
-name: Deploy Vue to Ubuntu
+name: Deploy Vue to Nginx
 
 on:
   push:
@@ -15,12 +15,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'  # 启用依赖缓存加速构建
 
       - name: Install dependencies
         run: npm install
 
       - name: Build project
-        run: npm run build
+        run: vite build  # 或 vite build（需与项目配置一致）
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
@@ -28,9 +29,22 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          DEPLOY_PATH: /var/www/AIhub
           script: |
-           rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist/ ubuntu@$SERVER_IP:$DEPLOY_PATH
-           ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP "sudo chown -R www-data:www-data $DEPLOY_PATH && sudo systemctl reload nginx"
-        env:
-          SOURCE_DIR: ./dist
+            # 1. 清理旧文件并同步新文件（使用rsync增量传输）
+            sudo rm -rf /var/www/vue-app/*
+            rsync -avz --delete ./dist/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/vue-app/
+            
+            # 2. 设置文件权限（避免Nginx访问失败）
+            sudo chown -R www-data:www-data /var/www/vue-app
+            sudo chmod -R 755 /var/www/vue-app
+            
+            # 3. 更新Nginx配置（若需动态加载配置）
+            # 将本地配置同步到服务器（示例路径需调整）
+            scp ./nginx.conf ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/etc/nginx/sites-available/vue-app.conf
+            sudo ln -sf /etc/nginx/sites-available/vue-app.conf /etc/nginx/sites-enabled/
+            
+            # 4. 测试并重载Nginx（避免服务中断）
+            sudo nginx -t && sudo systemctl reload nginx
+            
+            # 5. 验证部署状态（可选）
+            curl -I http://${{ secrets.SERVER_IP }}
