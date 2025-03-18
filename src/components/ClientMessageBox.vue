@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { ref,useSlots,defineProps  } from 'vue'
+import { ref,defineProps  } from 'vue'
 import { useMessage } from 'naive-ui'
 import { useChatInfoStore } from '@/stores/chatInfo'
 
@@ -65,7 +65,7 @@ const editSlotContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }"position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Bookmarks />
               </n-icon>

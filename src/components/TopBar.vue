@@ -7,11 +7,10 @@ import {
   Heart as Love,
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
-import { Menu } from '@vicons/ionicons5'
 import type { Component } from 'vue'
 import { defineProps, h, ref } from 'vue'
 import ChangeMenuButton from './ChangeMenuButton.vue'
-import { delChat, star, unStar } from '@/services/chat'
+import { delChat, star } from '@/services/chat'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
@@ -71,12 +70,12 @@ async function handleSelect(key: string | number) {
   }
 }
 
-import { useMenuStore } from '@/stores/menuInfo'
-const menuInfo = useMenuStore()
-const changeMenu = () => {
-  menuInfo.isDisplay = !menuInfo.isDisplay
-}
-</script>
+// import { useMenuStore } from '@/stores/menuInfo'
+// const menuInfo = useMenuStore()
+// const changeMenu = () => {
+//   menuInfo.isDisplay = !menuInfo.isDisplay
+// }
+// </script>
 
 <template>
   <div class="main">

@@ -1,8 +1,9 @@
+<!-- eslint-disable vue/no-parsing-error -->
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { computed, ref, useSlots, defineProps, watch, onUnmounted } from 'vue'
+import { computed, ref, defineProps, watch, onUnmounted } from 'vue'
 import { useMessage } from 'naive-ui'
-import { useChatInfoStore } from '@/stores/chatInfo'
 import { marked } from 'marked'
 
 const props = defineProps<{
@@ -84,7 +85,7 @@ const copyContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }"position="relative" height="30" width="30">
+            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
               <n-icon size="16px">
                 <Bookmarks />
               </n-icon>

@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts" setup>
 import { useMessage } from 'naive-ui'
 import { returnRules } from '@/utils/accountRule'
@@ -16,7 +17,7 @@ const model = ref<RequsetUser>({
 })
 
 const cacheAccount = ref(localStorage.getItem('account'))
-if (cacheAccount) {
+if (cacheAccount.value) {
   model.value.account = cacheAccount.value
 }
 

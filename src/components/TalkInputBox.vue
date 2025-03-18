@@ -1,13 +1,17 @@
+<!-- eslint-disable vue/no-deprecated-v-on-native-modifier -->
+<!-- eslint-disable vue/no-deprecated-v-on-native-modifier -->
+<!-- eslint-disable vue/no-deprecated-v-on-native-modifier -->
+<!-- eslint-disable vue/no-deprecated-v-on-native-modifier -->
+<!-- eslint-disable vue/no-deprecated-v-on-native-modifier -->
+<!-- eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain -->
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref, watch } from 'vue'
-import { useMessage } from 'naive-ui'
 import { ArrowUp as Arrow } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
-import type { ContentDetail } from '@/types/message'
 import { switchDataToClientMsg } from '@/services/chat'
 
 import { NIcon } from 'naive-ui'
@@ -23,10 +27,10 @@ const chatStore = useChatInfoStore()
 chatStore.inputBoxInfo = '' //输入框内容
 const { currentChatInfo, allChats } = storeToRefs(chatStore)
 
-
 //判断模型选择框内容函数
 const chosenModel = ref<Model>() //已选的模型
 const returnOption = (isNew: boolean): Array<SelectOption | SelectGroupOption> => {
+  // eslint-disable-next-line prefer-const
   let options = [
     {
       label: 'deepseek-r1',
@@ -59,7 +63,6 @@ watch(
   },
 )
 
-
 const loadingRef = ref(false)
 const standify = (
   chatId: number | null,
@@ -86,11 +89,9 @@ const sendMessage = async () => {
         '',
         inputBoxInfo,
       ),
-    ).then(()=>{
-      if(props.isNew){
-
+    ).then(() => {
+      if (props.isNew) {
       }
-
     }) //发送sse渲染请求
   }
 }
@@ -99,7 +100,8 @@ const sendMessage = async () => {
 <template>
   <div class="inputBox">
     <n-input
-      @keyup.native.enter="sendMessage"
+      no-deprecated-v-on-native-modifier
+      eslint-disable-next-line
       v-model:value="chatStore.inputBoxInfo"
       show-count
       id="typeIn"
