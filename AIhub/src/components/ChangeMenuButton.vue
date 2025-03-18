@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NIcon } from 'naive-ui'
-import { OptionsOutline ,Book as Menu } from '@vicons/ionicons5'
+import { Book as Menu } from '@vicons/ionicons5'
 
 import { useMenuStore } from '@/stores/menuInfo'
 const menuInfo = useMenuStore()

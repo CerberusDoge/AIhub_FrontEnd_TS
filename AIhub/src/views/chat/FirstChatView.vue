@@ -4,8 +4,9 @@ import { useRouter } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
-import TopBar from '@/components/TopBar.vue'
-import type { ContentDetail } from '@/types/message'
+
+import ChangeMenuButton from '@/components/ChangeMenuButton.vue'
+
 import ReasonContainer from '@/components/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getChatInfo } from '@/services/chat'
@@ -51,7 +52,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
 
 <template>
   <div class="layout">
-    <div class="topBar"><n-button  quaternary icon-placement="right">新对话</n-button></div>
+    <div class="topBar">    <ChangeMenuButton></ChangeMenuButton><n-button  quaternary icon-placement="right">新对话</n-button></div>
     <div class="messageContent">
       <div ref="bottomAnchor"></div>
       <div v-if="isLoaded">

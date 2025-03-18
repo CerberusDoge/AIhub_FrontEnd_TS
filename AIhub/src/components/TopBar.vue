@@ -55,11 +55,11 @@ async function handleSelect(key: string | number) {
         break
       }
       case 'love': {
-        star(ChatInfo.currentChatInfo!.id)
+        star(ChatInfo.currentChatInfo!.id!)
         break
       }
       case 'delete': {
-        delChat(ChatInfo.currentChatInfo!.id)
+        delChat(ChatInfo.currentChatInfo!.id!)
         message.success('删除成功')
         router.push('/chat')
         break
