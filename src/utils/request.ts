@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
 import type {
   AxiosError,
@@ -7,7 +8,7 @@ import type {
 } from 'axios'
 
 const service = axios.create({
-  baseURL: 'http://45.207.208.42', // 基础 URL
+  baseURL: 'http://8.138.207.252:8080', // 基础 URL
   withCredentials: false, // 启用跨域凭证
 })
 

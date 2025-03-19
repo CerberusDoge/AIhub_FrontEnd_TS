@@ -8,21 +8,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm' # 启用依赖缓存加速构建
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
@@ -30,17 +15,20 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # 1. 清理旧文件并同步新文件（使用rsync增量传输）
-            sudo rm -rf /var/www/AIhub/*
-             rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ${{ github.workspace }}/dist/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/AIhub/
+             # 1. 拉取最新仓库
+             cd /var/www/AIhub_FrontEnd_TS
 
-            # 2. 设置文件权限（避免Nginx访问失败）
-            sudo chown -R www-data:www-data /var/www/AIhub
-            sudo chmod -R 755 /var/www/AIhub
+             # 2. 拉取最新仓库
+            git pull 
 
+             # 3. 拉取
+            npm install
 
-            # 4. 测试并重载Nginx（避免服务中断）
+             # 5. 构建
+            npm run build
+
+             # 6. 测试并重载Nginx（避免服务中断）
             sudo nginx -t && sudo systemctl reload nginx
 
-            # 5. 验证部署状态（可选）
+            # 7. 验证部署状态
             curl -I http://${{ secrets.SERVER_IP }}

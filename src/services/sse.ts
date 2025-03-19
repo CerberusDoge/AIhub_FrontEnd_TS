@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { storeToRefs } from 'pinia'
 import { getUserInfo } from '@/services/user'
 import { switchDataToServeMsg } from './chat'
 
@@ -8,18 +8,20 @@ const headers = new Headers()
 const authorization = localStorage.getItem('satoken')
 headers.append('satoken', authorization!)
 headers.append('Content-Type', 'application/json')
-const baseURL = 'http://45.207.208.42'
+const baseURL = 'http://8.138.207.252:8080'
 
 const chatInfo = useChatInfoStore()
 function isJSON(jsonStr: any) {
   try {
     JSON.parse(jsonStr)
     return true
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return false
   }
 }
 export const fetchRequest = async (data: ChatRequest) => {
+  console.log(data)
   fetch(`${baseURL}/api/v1/chat`, {
     method: 'post',
     headers: headers,
@@ -66,7 +68,7 @@ export const fetchRequest = async (data: ChatRequest) => {
         chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentReasonResponse, true))
         chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
       } else chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
-      getUserInfo().then((res)=>console.log(res))
+      getUserInfo().then((res) => console.log(res))
     })
     .catch((error) => {
       console.error('Request failed!!:', error)

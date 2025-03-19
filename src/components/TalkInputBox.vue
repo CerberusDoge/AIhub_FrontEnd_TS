@@ -77,6 +77,19 @@ const standify = (
     message: message,
   }
 }
+
+//
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function keyDown(e: any) {
+  if (e.ctrlKey && e.keyCode == 13) {
+    //用户点击了ctrl+enter触发
+    chatStore.inputBoxInfo += '\n'
+  } else {
+    //用户点击了enter触发
+    sendMessage()
+  }
+}
+
 const sendMessage = async () => {
   const inputBoxInfo = chatStore.inputBoxInfo.trim()
   chatStore.inputBoxInfo = ''
@@ -85,7 +98,7 @@ const sendMessage = async () => {
     fetchRequest(
       standify(
         currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
-        currentChatInfo.value?.model!,
+        chosenModel.value!,
         '',
         inputBoxInfo,
       ),
@@ -100,8 +113,7 @@ const sendMessage = async () => {
 <template>
   <div class="inputBox">
     <n-input
-      no-deprecated-v-on-native-modifier
-      eslint-disable-next-line
+      @keydown.enter="keyDown"
       v-model:value="chatStore.inputBoxInfo"
       show-count
       id="typeIn"
