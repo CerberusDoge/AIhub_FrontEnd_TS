@@ -62,7 +62,7 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             // 让每个插件都打包成独立的文件
             if (id.includes('vue')) return 'vue'
-            return id.toString().split('node_modules/')[1].split('/')[0].toString()
+            else return id.toString().split('node_modules/')[1].split('/')[0].toString()
           }
         },
       },
