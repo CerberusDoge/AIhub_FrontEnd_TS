@@ -9,6 +9,7 @@
     "eslint.config.*"
   ],
   "compilerOptions": {
+    "noImplicitAny": false,
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 import TalkInputBox from '@/components/TalkInputBox.vue'
 import ClientMessageBox from '@/components/ClientMessageBox.vue'
 import ServeMessageBox from '@/components/ServeMessageBox.vue'
@@ -9,18 +9,16 @@ import ChangeMenuButton from '@/components/ChangeMenuButton.vue'
 
 import ReasonContainer from '@/components/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { getChatInfo } from '@/services/chat'
-import { KeepAlive, onMounted, onUpdated, ref, watch } from 'vue'
+import { onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { nextTick } from 'vue'
 import { debounce } from '@/utils/debounce'
+import router from '@/router'
 
-const router=useRouter()
 const chatStore = useChatInfoStore()
-const { allChats ,currentChatInfo,curretChatId} = storeToRefs(chatStore) //存储当前id所有对话信息
-allChats.value=[]
-currentChatInfo.value.content=''
-currentChatInfo.value.id=undefined
+const { allChats, currentChatInfo, curretChatId } = storeToRefs(chatStore) //存储当前id所有对话信息
+allChats.value = []
+currentChatInfo.value.content = ''
+currentChatInfo.value.id = undefined
 const isLoaded = ref(true) //监控是否数据获取完成
 
 // getChatInfo(Number(id.value)).then(() => {
@@ -35,6 +33,7 @@ const isLoaded = ref(true) //监控是否数据获取完成
 watch(
   () => curretChatId.value,
   (newId) => {
+    console.log(1231232121)
     router.push(`chat/${newId}`)
   },
 )
@@ -52,11 +51,13 @@ onUpdated(() => debounce(scrollToBottom(), 500))
 
 <template>
   <div class="layout">
-    <div class="topBar">    <ChangeMenuButton></ChangeMenuButton><n-button  quaternary icon-placement="right">新对话</n-button></div>
+    <div class="topBar">
+      <ChangeMenuButton></ChangeMenuButton>
+      <n-button quaternary icon-placement="right">新对话</n-button>
+    </div>
     <div class="messageContent">
       <div ref="bottomAnchor"></div>
       <div v-if="isLoaded">
-
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
             v-if="val.role === 'assistant' && val.content"
@@ -73,7 +74,6 @@ onUpdated(() => debounce(scrollToBottom(), 500))
             :messages="val.content!"
           ></ClientMessageBox>
         </div>
-
       </div>
       <div v-else>
         <n-space vertical>
@@ -85,9 +85,8 @@ onUpdated(() => debounce(scrollToBottom(), 500))
           <n-skeleton height="2rem" width="100%" :sharp="false" />
         </n-space>
       </div>
-
     </div>
-    <div class="command"><TalkInputBox :isNew=true></TalkInputBox></div>
+    <div class="command"><TalkInputBox :isNew="true"></TalkInputBox></div>
   </div>
 </template>
 

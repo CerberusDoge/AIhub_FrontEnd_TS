@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 import type { deleteChat, ChatInfo, RequestStar, ContentDetail } from '@/types/message'
-import { error } from 'naive-ui/es/_utils/naive/warn'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getUserInfo } from '@/services/user'
 
@@ -19,7 +18,6 @@ export const delChat = (id: number) => {
 }
 
 export const star = (chatInfoId: number) => {
-
   request<ChatInfo>({
     url: `/api/v1/star/${chatInfoId}`,
     method: 'post',
@@ -70,16 +68,16 @@ export const switchDataToClientMsg = (content: string): ContentDetail => {
     content: content,
     role: 'user',
     reasoning_content: null,
-    isNew:true
+    isNew: true,
   }
 }
 //将数据转化为服务端对话记录格式
 export const switchDataToServeMsg = (content: string, reasoning: boolean): ContentDetail => {
-  let msg: ContentDetail = {
+  const msg: ContentDetail = {
     content: null,
     role: 'assistant',
     reasoning_content: null,
-    isNew:true
+    isNew: true,
   }
   if (reasoning) msg.reasoning_content = content
   else msg.content = content

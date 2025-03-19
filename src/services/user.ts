@@ -2,10 +2,10 @@ import type { Response } from '@/types/message'
 import { useUserStore } from '@/stores/userInfo'
 import request from '@/utils/request'
 import type { UpdateRequest } from '@/types/account'
-import  {useChatInfoStore} from '@/stores/chatInfo'
+// import { useChatInfoStore } from '@/stores/chatInfo'
 
 const UserStore = useUserStore()
-const ChatInfoStore=useChatInfoStore()
+// const ChatInfoStore = useChatInfoStore()
 
 //获取用户信息
 export const getUserInfo = async () => {
@@ -16,26 +16,26 @@ export const getUserInfo = async () => {
     UserStore.apiKey = data.apiKey
     UserStore.userChatInfos = data.userChatMetas.slice().reverse()
     UserStore.userStars = data.userStars.slice().reverse()
-    ChatInfoStore.curretChatId=UserStore.userChatInfos[0].id
+    // ChatInfoStore.curretChatId = UserStore.userChatInfos[0].id
     localStorage.setItem('account', data.account)
     localStorage.setItem('apiKey', data.apiKey)
     localStorage.setItem('isLoggedIn', 'islogged')
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
   }
 }
 
-//更新用户信息
+//更新用户设置
 export const updateUserInfo = async (data: UpdateRequest) => {
   try {
     console.log(data)
-    const response = await request<any>({
+    const response = await request<string>({
       url: '/api/v1/user',
       method: 'post',
-      data: data
+      data: data,
     })
     console.log(response)
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
     throw error
   }

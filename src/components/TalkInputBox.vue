@@ -80,7 +80,7 @@ const standify = (
 
 //
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function keyDown(e: any) {
+function keyUp(e: any) {
   if (e.ctrlKey && e.keyCode == 13) {
     //用户点击了ctrl+enter触发
     chatStore.inputBoxInfo += '\n'
@@ -113,7 +113,7 @@ const sendMessage = async () => {
 <template>
   <div class="inputBox">
     <n-input
-      @keydown.enter="keyDown"
+      @keyup.enter="keyUp"
       v-model:value="chatStore.inputBoxInfo"
       show-count
       id="typeIn"
