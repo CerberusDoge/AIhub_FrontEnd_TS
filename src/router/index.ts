@@ -7,27 +7,27 @@ const router = createRouter({
     {
       path: '/chat',
       name: 'chat',
-      component: () => import('@/views/HomeView.vue'),
+      component: () => import(/* webpackChunkName: "chat" */ '@/views/HomeView.vue'),
       meta: { requiresAuth: true }, // 添加元信息，表示该路由需要登录才能访问
       children: [
         {
           path: '',
           name: 'firstChatPage',
-          component: () => import('@/views/chat/FirstChatView.vue'),
+          component: () => import(/* webpackChunkName: "chat" */ '@/views/chat/FirstChatView.vue'),
         },
         {
           path: 'roleCenter',
           name: 'roleCenter',
-          component: () => import('@/views/chat/ChatView.vue'),
+          component: () => import(/* webpackChunkName: "chat" */ '@/views/chat/ChatView.vue'),
         },
         {
           path: 'setting',
           name: 'setting',
-          component: () => import('@/views/chat/SettingView.vue'),
+          component: () => import(/* webpackChunkName: "chat" */ '@/views/chat/SettingView.vue'),
         },
         {
           path: ':id',
-          component: () => import('@/views/chat/ChatView.vue'),
+          component: () => import(/* webpackChunkName: "chat" */ '@/views/chat/ChatView.vue'),
         },
       ],
     },
@@ -35,18 +35,18 @@ const router = createRouter({
       path: '/about',
       name: 'about',
 
-      component: () => import('../views/AboutView.vue'),
+      component: () => import(/* webpackChunkName: "loginAndRegister" */ '@/views/AboutView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: import('@/views/LoginView.vue'),
+      component: import(/* webpackChunkName: "loginAndRegister" */ '@/views/LoginView.vue'),
     },
     {
       path: '/register',
       name: 'register',
 
-      component: import('@/views/RegisterView.vue'),
+      component: import(/* webpackChunkName: "loginAndRegister" */ '@/views/RegisterView.vue'),
     },
   ],
 })

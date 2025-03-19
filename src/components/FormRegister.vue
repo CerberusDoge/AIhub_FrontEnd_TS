@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { useMessage, type FormInst } from 'naive-ui'
 import { ref, computed } from 'vue'
@@ -20,7 +21,7 @@ const rules = computed(() => returnRules(model.value.password))
 
 const requestRegister = async (dataAccount: RequsetUser) => {
   try {
-    const result = await request<string>({
+    await request<string>({
       url: '/api/v1/register',
       method: 'post',
       data: dataAccount,

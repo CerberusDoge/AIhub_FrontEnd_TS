@@ -1,15 +1,13 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { computed, ref, useSlots, defineProps, watch, onUnmounted } from 'vue'
-import { useMessage } from 'naive-ui'
-import { useChatInfoStore } from '@/stores/chatInfo'
+import { computed, ref, defineProps, watch, onUnmounted } from 'vue'
+
 import { marked } from 'marked'
 
 const props = defineProps<{
   messages: string
   isNew: boolean
 }>()
-const message = useMessage()
 const currentIndex = ref(0) //当前读取的位置
 const isHover = ref<boolean>(false)
 const msg = ref('') //存储当前已经打印的消息
@@ -78,7 +76,7 @@ const RenderMd = computed(() => {
   overflow: hidden;
   flex-wrap: nowrap;
   word-wrap: break-word;
-  white-space: normal ;
+  white-space: normal;
 }
 
 .ghost-mode {
