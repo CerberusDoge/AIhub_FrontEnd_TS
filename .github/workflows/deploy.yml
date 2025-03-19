@@ -21,7 +21,7 @@ jobs:
              # 2. 拉取最新仓库
             git pull 
 
-             # 3. 拉取
+            # 3. 拉取
             npm install
 
              # 5. 构建
