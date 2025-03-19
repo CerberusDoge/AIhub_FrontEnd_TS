@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-  // history: createWebHistory(import.meta.env.BASE_URL),
-  history: createWebHistory('/'),
+  history: createWebHistory(),
+  // history: createWebHashHistory(),
   routes: [
     { path: '/', redirect: '/chat' },
     {
@@ -41,13 +41,14 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: import(/* webpackChunkName: "loginAndRegister" */ '@/views/LoginView.vue'),
+      component: () => import(/* webpackChunkName: "loginAndRegister" */ '@/views/LoginView.vue'),
     },
     {
       path: '/register',
       name: 'register',
 
-      component: import(/* webpackChunkName: "loginAndRegister" */ '@/views/RegisterView.vue'),
+      component: () =>
+        import(/* webpackChunkName: "loginAndRegister" */ '@/views/RegisterView.vue'),
     },
   ],
 })
