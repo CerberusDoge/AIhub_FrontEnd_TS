@@ -8,9 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ChangeMenuButton: typeof import('./src/components/ChangeMenuButton.vue')['default']
-    ChatContentContainer: typeof import('./src/components/ChatContentContainer.vue')['default']
-    ClientMessageBox: typeof import('./src/components/ClientMessageBox.vue')['default']
+    ChangeMenuButton: typeof import('./src/components/TopBar/ChangeMenuButton.vue')['default']
+    ClientMessageBox: typeof import('./src/components/ChatContainer/ClientMessageBox.vue')['default']
     CollapseSider: typeof import('./src/components/Sider/CollapseSider.vue')['default']
     FavoriteFolder: typeof import('./src/components/Sider/FavoriteFolder.vue')['default']
     FormLogin: typeof import('./src/components/FormLogin.vue')['default']
@@ -32,12 +31,12 @@ declare module 'vue' {
     NSkeleton: typeof import('naive-ui')['NSkeleton']
     NSpace: typeof import('naive-ui')['NSpace']
     NTooltip: typeof import('naive-ui')['NTooltip']
-    ReasonContainer: typeof import('./src/components/ReasonContainer.vue')['default']
+    ReasonContainer: typeof import('./src/components/ChatContainer/ReasonContainer.vue')['default']
     RecentFolder: typeof import('./src/components/Sider/RecentFolder.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    ServeMessageBox: typeof import('./src/components/ServeMessageBox.vue')['default']
-    TalkInputBox: typeof import('./src/components/TalkInputBox.vue')['default']
-    TopBar: typeof import('./src/components/TopBar.vue')['default']
+    ServeMessageBox: typeof import('./src/components/ChatContainer/ServeMessageBox.vue')['default']
+    TalkInputBox: typeof import('./src/components/ChatContainer/TalkInputBox.vue')['default']
+    TopBar: typeof import('./src/components/TopBar/TopBar.vue')['default']
   }
 }

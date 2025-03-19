@@ -19,7 +19,7 @@ const typing = () => {
   //存在未打印的
   if (currentIndex.value < props.messages.length) {
     msg.value += props.messages.charAt(currentIndex.value++)
-    timer = setTimeout(typing, 50)
+    timer = setTimeout(typing, 34)
   } else {
     clearTimeout(timer)
   }
@@ -44,7 +44,7 @@ const RenderMd = computed(() => {
 
 <template>
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
-    <n-collapse
+    <n-collapse :default-expanded-names="['1']"
       ><div class="card">
         <n-collapse-item title="思考过程" name="1">
           <div class="cardContent" v-html="RenderMd"></div>
@@ -64,6 +64,21 @@ const RenderMd = computed(() => {
   padding-bottom: 0;
   padding-left: 0;
   flex-direction: column;
+
+  .cardContent {
+    color: rgb(108, 108, 108);
+    border-left: 0.3rem solid vars.$dimGrey;
+    padding-left: 0.5rem;
+  }
+  .cardContent:before {
+    color: #ccc;
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+    border-radius: 0.6rem;
+  }
 }
 .card {
   width: 100%;

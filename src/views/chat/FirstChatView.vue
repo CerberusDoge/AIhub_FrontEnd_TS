@@ -1,13 +1,13 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 // import { useRouter } from 'vue-router'
-import TalkInputBox from '@/components/TalkInputBox.vue'
-import ClientMessageBox from '@/components/ClientMessageBox.vue'
-import ServeMessageBox from '@/components/ServeMessageBox.vue'
+import TalkInputBox from '@/components/ChatContainer/TalkInputBox.vue'
+import ClientMessageBox from '@/components/ChatContainer/ClientMessageBox.vue'
+import ServeMessageBox from '@/components/ChatContainer/ServeMessageBox.vue'
 
-import ChangeMenuButton from '@/components/ChangeMenuButton.vue'
+import ChangeMenuButton from '@/components/TopBar/ChangeMenuButton.vue'
 
-import ReasonContainer from '@/components/ReasonContainer.vue'
+import ReasonContainer from '@/components/ChatContainer/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'

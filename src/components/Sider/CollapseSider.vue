@@ -58,7 +58,7 @@ const router = useRouter()
     </div>
     <div class="scrollArea">
       <div class="row">
-        <n-collapse>
+        <n-collapse :default-expanded-names="['1']">
           <template #header-extra>
             <n-icon><Chat /></n-icon>
           </template>
@@ -68,7 +68,7 @@ const router = useRouter()
         </n-collapse>
       </div>
       <div class="row">
-        <n-collapse>
+        <n-collapse :default-expanded-names="['1']">
           <template #header-extra>
             <n-icon><Mark /></n-icon>
           </template>

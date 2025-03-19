@@ -17,14 +17,15 @@ export const delChat = (id: number) => {
     })
 }
 
-export const star = (chatInfoId: number) => {
-  request<ChatInfo>({
+export const star = async (chatInfoId: number) => {
+  request<RequestStar>({
     url: `/api/v1/star/${chatInfoId}`,
     method: 'post',
     data: { chatInfoId: chatInfoId },
   })
     .then((response) => {
       getUserInfo()
+      getChatInfo(ChatInfo.currentChatInfo.id!)
       console.log(response)
     })
     .catch((error) => {
@@ -33,13 +34,15 @@ export const star = (chatInfoId: number) => {
     })
 }
 
-export const unStar = (chatInfoId: number, userId: number) => {
+export const unStar = async (chatInfoId: number) => {
   request<ChatInfo>({
-    url: '/api/v1/star',
+    url: `/api/v1/star/${chatInfoId}`,
     method: 'delete',
-    data: { chatInfoId: chatInfoId, userId: userId },
+    data: { chatInfoId: chatInfoId },
   })
     .then((response) => {
+      getUserInfo()
+      getChatInfo(ChatInfo.currentChatInfo.id!)
       console.log(response)
     })
     .catch((error) => {

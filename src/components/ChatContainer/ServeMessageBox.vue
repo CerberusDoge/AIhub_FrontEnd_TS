@@ -22,13 +22,13 @@ const typing = () => {
   //存在未打印的
   if (currentIndex.value < props.messages.length) {
     msg.value += props.messages.charAt(currentIndex.value++)
-    timer = setTimeout(typing, 20)
+    timer = setTimeout(typing, 34)
   } else {
     clearTimeout(timer)
   }
 }
 if (isNew) typing()
-    else msg.value = props.messages
+else msg.value = props.messages
 
 onUnmounted(() => clearTimeout(timer))
 watch(
@@ -65,17 +65,13 @@ const copyContent = async () => {
       <div class="normalMode">
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" @click="copyContent" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Pencil />
-              </n-icon>
-            </n-float-button>
-          </template>
-          编辑
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" @click="copyContent" position="relative" height="30" width="30">
+            <n-float-button
+              :style="{ boxShadow: 'none' }"
+              @click="copyContent"
+              position="relative"
+              height="30"
+              width="30"
+            >
               <n-icon size="16px">
                 <Copy />
               </n-icon>
@@ -85,7 +81,12 @@ const copyContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
+            <n-float-button
+              :style="{ boxShadow: 'none' }"
+              position="relative"
+              height="30"
+              width="30"
+            >
               <n-icon size="16px">
                 <Bookmarks />
               </n-icon>
@@ -95,7 +96,12 @@ const copyContent = async () => {
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
+            <n-float-button
+              :style="{ boxShadow: 'none' }"
+              position="relative"
+              height="30"
+              width="30"
+            >
               <n-icon size="16px">
                 <ShareSocial />
               </n-icon>
@@ -125,13 +131,14 @@ const copyContent = async () => {
   justify-content: start;
   padding: 0.6em;
   padding-bottom: 0;
+  padding-top: 0;
   // background-color: #f5f5f5;
   border-radius: 0.5em;
   max-width: 100%;
   overflow: hidden;
   flex-wrap: nowrap;
   word-wrap: break-word;
-  white-space: normal ;
+  white-space: normal;
 }
 
 .ghost-mode {

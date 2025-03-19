@@ -38,13 +38,15 @@ export type ChatInfo = {
   /**
    * ID 编号
    */
-  id: number|undefined
+  id: number | undefined
   /**
    * 模型，deepseek-r1, doubao-1.5pro
    */
   model?: Model
   topic?: string
   userId?: number
+  /*是否收藏*/
+  starred: boolean
   [property: string]: any
 }
 
@@ -121,11 +123,10 @@ export type ContentDetail = {
   role: string
   tool_call_id?: null
   tool_calls?: null
-  isNew?:boolean
+  isNew?: boolean
 }
 
 export enum Role {
   User = 'user',
   Assistant = 'assistant',
 }
-

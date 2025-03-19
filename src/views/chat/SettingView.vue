@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 import { Key } from '@vicons/ionicons5'
-import ChangeMenuButton from '@/components/ChangeMenuButton.vue'
+import ChangeMenuButton from '@/components/TopBar/ChangeMenuButton.vue'
 import { ref } from 'vue'
 import { updateUserInfo } from '@/services/user'
 import { debounce } from '@/utils/debounce'
@@ -31,9 +31,9 @@ const selectOptions = ref([
 const submitModel = debounce(() => {
   console.log(modelValue.value)
   updateUserInfo(modelValue.value)
-    .then(() => {message.success('上传成功')
-    if(modelValue.value.apiKey)
-    localStorage.setItem('apiKey',modelValue.value.apiKey)
+    .then(() => {
+      message.success('上传成功')
+      if (modelValue.value.apiKey) localStorage.setItem('apiKey', modelValue.value.apiKey)
     })
     .catch((error) => {
       console.error(error)

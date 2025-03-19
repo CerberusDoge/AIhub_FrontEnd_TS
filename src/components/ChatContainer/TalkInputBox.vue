@@ -16,7 +16,9 @@ import { switchDataToClientMsg } from '@/services/chat'
 
 import { NIcon } from 'naive-ui'
 import type { SelectGroupOption, SelectOption } from 'naive-ui'
+import { useMessage } from 'naive-ui'
 
+const message = useMessage()
 const props = defineProps<{ isNew: boolean }>()
 
 enum Model {
@@ -91,21 +93,23 @@ function keyUp(e: any) {
 }
 
 const sendMessage = async () => {
-  const inputBoxInfo = chatStore.inputBoxInfo.trim()
-  chatStore.inputBoxInfo = ''
-  if (inputBoxInfo !== '') {
-    allChats.value!.push(switchDataToClientMsg(inputBoxInfo))
-    fetchRequest(
-      standify(
-        currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
-        chosenModel.value!,
-        '',
-        inputBoxInfo,
-      ),
-    ).then(() => {
-      if (props.isNew) {
-      }
-    }) //发送sse渲染请求
+  try {
+    const inputBoxInfo = chatStore.inputBoxInfo.trim()
+    chatStore.inputBoxInfo = ''
+    if (inputBoxInfo !== '') {
+      allChats.value!.push(switchDataToClientMsg(inputBoxInfo))
+      fetchRequest(
+        standify(
+          currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
+          chosenModel.value!,
+          '',
+          inputBoxInfo,
+        ),
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    message.error('发送错误,')
   }
 }
 </script>
