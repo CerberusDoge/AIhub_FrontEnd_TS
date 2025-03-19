@@ -19,7 +19,8 @@ jobs:
             cd /var/www/AIhub_FrontEnd_TS
 
             # 2. 拉取最新仓库
-            git pull --force
+            git fetch
+            git merge --force
 
             # 3. 安装依赖
             npm install
