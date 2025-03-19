@@ -15,20 +15,20 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-             # 1. 拉取最新仓库
-             cd /var/www/AIhub_FrontEnd_TS
+            # 1. 拉取最新仓库
+            cd /var/www/AIhub_FrontEnd_TS
 
-             # 2. 拉取最新仓库
-            git pull 
+            # 2. 拉取最新仓库
+            git pull
 
-            # 3. 拉取
+            # 3. 安装依赖
             npm install
 
-             # 5. 构建
+            # 4. 构建项目
             npm run build
 
-             # 6. 测试并重载Nginx（避免服务中断）
+            # 5. 测试并重载Nginx（避免服务中断）
             sudo nginx -t && sudo systemctl reload nginx
 
-            # 7. 验证部署状态
+            # 6. 验证部署状态
             curl -I http://${{ secrets.SERVER_IP }}
