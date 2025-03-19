@@ -46,7 +46,7 @@ export type ChatInfo = {
   topic?: string
   userId?: number
   /*是否收藏*/
-  starred: boolean
+  starred?: boolean
   [property: string]: any
 }
 

@@ -75,6 +75,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
           ></ClientMessageBox>
         </div>
       </div>
+
       <div v-else>
         <n-space vertical>
           <n-skeleton height="2rem" width="20%" round />
