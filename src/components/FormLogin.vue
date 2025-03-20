@@ -4,7 +4,7 @@ import { useMessage } from 'naive-ui'
 import { returnRules } from '@/utils/accountRule'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { debounce } from '@/utils/debounce'
+import { throttle } from '@/utils/debounce'
 import type { FormInst } from 'naive-ui' // 引入 FormInstance 类型
 import type { RequsetUser } from '@/types/account'
 import { requestLogin } from '@/services/login'
@@ -25,7 +25,7 @@ const router = useRouter()
 const rules = computed(() => returnRules(model.value.password))
 const userData: any = ref(null)
 
-const handleLoginButtonClick = debounce((e: any) => {
+const handleLoginButtonClick = throttle((e: any) => {
   e.preventDefault()
   form.value?.validate(async (errors: any) => {
     if (!errors) {

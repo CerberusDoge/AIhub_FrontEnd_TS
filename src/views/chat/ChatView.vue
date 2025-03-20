@@ -10,7 +10,7 @@ import { useChatInfoStore } from '@/stores/chatInfo'
 import { getChatInfo } from '@/services/chat'
 import { onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { debounce } from '@/utils/debounce'
+import { throttle } from '@/utils/debounce'
 import { switchDataToClientMsg } from '@/services/chat'
 
 const route = useRoute()
@@ -62,7 +62,8 @@ const scrollToBottom = () => {
   bottomAnchor.value.scrollIntoView({ behavior: 'smooth' })
 }
 onUpdated(() => {
-  if (autoScroll.value) debounce(scrollToBottom, 500)()
+  console.log(autoScroll.value)
+  if (autoScroll.value) throttle(scrollToBottom, 500)()
 })
 // nextTick(() => {
 //   scrollToBottom()

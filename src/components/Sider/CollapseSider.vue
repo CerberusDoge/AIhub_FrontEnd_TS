@@ -16,7 +16,7 @@ import { useMenuStore } from '@/stores/menuInfo'
 import { useRouter } from 'vue-router'
 const menuInfo = useMenuStore()
 import { getUserInfo } from '@/services/user'
-import { debounce } from '@/utils/debounce'
+import { throttle } from '@/utils/debounce'
 
 const changeMenu = () => {
   menuInfo.isDisplay = !menuInfo.isDisplay
@@ -31,7 +31,7 @@ const setUp = () => {
   router.replace('/chat/setting')
 }
 
-const async = debounce(() => {
+const async = throttle(() => {
   getUserInfo().then(() => message.success('刷新成功'))
 }, 500)
 
