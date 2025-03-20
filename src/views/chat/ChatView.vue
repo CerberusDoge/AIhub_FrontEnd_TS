@@ -50,11 +50,20 @@ watch(
 )
 
 //滑动函数
+const autoScroll = ref(true)
+const handleInput = (data) => {
+  autoScroll.value = data
+}
 const bottomAnchor = ref()
+const handleWheel = () => {
+  autoScroll.value = false
+}
 const scrollToBottom = () => {
   bottomAnchor.value.scrollIntoView({ behavior: 'smooth' })
 }
-onUpdated(() => debounce(scrollToBottom(), 500))
+onUpdated(() => {
+  if (autoScroll.value) debounce(scrollToBottom, 500)()
+})
 // nextTick(() => {
 //   scrollToBottom()
 // });
@@ -63,7 +72,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
 <template>
   <div class="layout">
     <div class="topBar"><TopBar :title="title"></TopBar></div>
-    <div class="messageContent">
+    <div class="messageContent" @wheel="handleWheel">
       <div ref="bottomAnchor"></div>
       <div v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
@@ -94,7 +103,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
         </n-space>
       </div>
     </div>
-    <div class="command"><TalkInputBox :isNew="false"></TalkInputBox></div>
+    <div class="command"><TalkInputBox :isNew="false" @isSended="handleInput"></TalkInputBox></div>
   </div>
 </template>
 

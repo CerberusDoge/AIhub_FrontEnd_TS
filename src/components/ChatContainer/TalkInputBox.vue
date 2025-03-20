@@ -92,8 +92,11 @@ function keyUp(e: any) {
   }
 }
 
+const emits = defineEmits(['isSended'])
+
 const sendMessage = async () => {
   try {
+    emits('isSended', true)
     const inputBoxInfo = chatStore.inputBoxInfo.trim()
     chatStore.inputBoxInfo = ''
     if (props.isNew) chatStore.cacheinputBoxInfo = inputBoxInfo
