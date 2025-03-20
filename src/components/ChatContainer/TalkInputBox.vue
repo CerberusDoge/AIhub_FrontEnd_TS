@@ -96,8 +96,9 @@ const sendMessage = async () => {
   try {
     const inputBoxInfo = chatStore.inputBoxInfo.trim()
     chatStore.inputBoxInfo = ''
+    if (props.isNew) chatStore.cacheinputBoxInfo = inputBoxInfo
+    chatStore.allChats?.push(switchDataToClientMsg(inputBoxInfo))
     if (inputBoxInfo !== '') {
-      allChats.value!.push(switchDataToClientMsg(inputBoxInfo))
       fetchRequest(
         standify(
           currentChatInfo.value?.id ? currentChatInfo.value?.id : null,

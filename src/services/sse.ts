@@ -3,7 +3,7 @@ import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { useUserStore } from '@/stores/userInfo'
 import { getUserInfo } from '@/services/user'
-import { switchDataToServeMsg } from './chat'
+import { switchDataToServeMsg, switchDataToClientMsg } from './chat'
 
 const headers = new Headers()
 const authorization = localStorage.getItem('satoken')
@@ -30,9 +30,13 @@ export const fetchRequest = async (data: ChatRequest) => {
     body: JSON.stringify(data), // 请求体需序列化
   })
     .then(async (response) => {
+      const info = data.message
+      console.log(info)
       getUserInfo()
         .then(async () => {
           chatInfo.curretChatId = userInfo.userChatInfos[0].id
+
+          console.log(chatInfo.inputBoxInfo)
           console.log(chatInfo.curretChatId)
 
           const reader = response!.body!.getReader()

@@ -33,7 +33,7 @@ const isLoaded = ref(true) //监控是否数据获取完成
 watch(
   () => curretChatId.value,
   (newId) => {
-    console.log(1231232121)
+    console.log(newId)
     router.push(`chat/${newId}`)
   },
 )

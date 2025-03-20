@@ -5,6 +5,7 @@ import type { ContentDetail } from '@/types/message'
 
 export const useChatInfoStore = defineStore('chatInfoStore', () => {
   const inputBoxInfo = ref<string>('') //聊天框内容
+  const cacheinputBoxInfo = ref<string>('') //聊天框内容
   const isReasoned = ref<boolean>(false) //推理是否渲染完成
   const curretChatId = ref<number>() //当前的对话id
   const currentChatInfo = ref<ChatInfo>({ content: '', id: undefined }) //当前选择对话所有信息
@@ -14,6 +15,7 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
 
   return {
     inputBoxInfo,
+    cacheinputBoxInfo,
     isReasoned,
     curretChatId,
     currentResponse,

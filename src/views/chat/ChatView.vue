@@ -11,13 +11,13 @@ import { getChatInfo } from '@/services/chat'
 import { onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { debounce } from '@/utils/debounce'
-//1
+import { switchDataToClientMsg } from '@/services/chat'
+
 const route = useRoute()
 const chatStore = useChatInfoStore()
-const { currentChatInfo } = storeToRefs(chatStore)
+const { currentChatInfo, cacheinputBoxInfo, allChats } = storeToRefs(chatStore)
 const title = ref('') //存储标题
 const id = ref(route.params.id) //存储现在的id
-const { allChats } = storeToRefs(chatStore) //存储当前id所有对话信息
 
 const isLoaded = ref(false) //监控是否渲染完成
 
@@ -26,7 +26,11 @@ getChatInfo(Number(id.value)).then(() => {
   console.log(currentChatInfo.value?.topic)
   title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : ''
   allChats.value = JSON.parse(currentChatInfo.value!.content)
+  if (cacheinputBoxInfo.value !== '') {
+    allChats!.value!.push(switchDataToClientMsg(cacheinputBoxInfo.value))
+  }
   isLoaded.value = true
+  cacheinputBoxInfo.value = ''
 })
 
 //监听新id
