@@ -41,8 +41,7 @@ const handleInput = (data) => {
       <n-button quaternary icon-placement="right">新对话</n-button>
     </div>
     <div class="decorate" v-if="!isSend">
-      <div>你好!</div>
-      <div>随便问我些问题吧!</div>
+      <img class="prompt" src="../../assets/img/helloWorld.png" alt="" />
     </div>
     <div class="messageContent">
       <div ref="bottomAnchor"></div>
@@ -83,6 +82,8 @@ const handleInput = (data) => {
 <style scoped lang="scss">
 .decorate {
   display: flex;
+  position: fixed;
+  bottom: 8rem;
 }
 .layout {
   display: flex;
@@ -129,6 +130,9 @@ const handleInput = (data) => {
   width: 70%;
   max-width: 70%;
 }
+.prompt {
+  width: 34rem;
+}
 @media screen and (max-width: 768px) {
   .topBar {
     max-width: 90%;
@@ -142,6 +146,9 @@ const handleInput = (data) => {
   .contentList {
     width: 90%;
     max-width: 95%;
+  }
+  .prompt {
+    width: 24rem;
   }
 }
 </style>
