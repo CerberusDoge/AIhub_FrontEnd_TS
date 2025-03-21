@@ -153,10 +153,4 @@ onUpdated(() => {
 .contentListSketch {
   width: 60%;
 }
-// .messageContent::-webkit-scrollbar {
-//   width: 0;
-//   background: transparent;
-// }
-
-/* 创建滚动条轨道 */
 </style>

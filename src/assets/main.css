@@ -23,7 +23,6 @@ body {
   /* 设置滚动条的宽度 */
   width: 0.5rem;
 }
-
 /* 滚动条轨道 - 背景颜色/白底 */
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -40,22 +39,8 @@ body {
 /* 当鼠标悬停在滚动条滑块上时改变颜色 */
 ::-webkit-scrollbar-thumb:hover {
   background: #5fbd22;
+  width: 0.5rem;
 }
-
-/* h1,
-h2,
-h3,
-h4,
-p,
-ul,
-ol,
-h5,
-h6 {
-  margin: 0;
-  font-family:
-    Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    '微软雅黑', Arial, sans-serif;
-} */
 
 blockquote {
   background: #f9f9f9;

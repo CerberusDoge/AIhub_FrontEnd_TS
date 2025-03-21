@@ -8,14 +8,38 @@ getUserInfo()
 
 <template>
   <div class="main">
-    <Transition name="slide"
+    <transition name="slide" mode="out-in"
       ><div class="sider" v-show="menuInfo.isDisplay"><CollapseSider></CollapseSider></div
-    ></Transition>
+    ></transition>
     <div class="rightBar"><router-view></router-view></div>
   </div>
 </template>
 
 <style scoped lang="scss">
+/* 进入前：从左侧 -100% 开始 */
+.slide-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* 离开后：向右侧 100% 结束 */
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* 激活状态：添加过渡效果 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+/* 进入完成/离开开始时的最终位置 */
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
 .main {
   display: flex;
   height: 100%;
