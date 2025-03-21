@@ -117,10 +117,12 @@ const submitModel = debounce(() => {
   }
 }
 .main {
-  padding: 10rem;
-
+  padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 768px) {
 }
 </style>

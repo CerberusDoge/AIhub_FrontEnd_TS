@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { ref,defineProps  } from 'vue'
+import { ref, defineProps } from 'vue'
 import { useMessage } from 'naive-ui'
 import { useChatInfoStore } from '@/stores/chatInfo'
 
 const chatStore = useChatInfoStore()
 const message = useMessage()
 const isHover = ref<boolean>(false)
-const props=defineProps<{messages:string}>()
-
+const props = defineProps<{ messages: string }>()
 
 const copySlotContent = async () => {
   try {
@@ -27,7 +26,7 @@ const editSlotContent = async () => {
     chatStore.inputBoxInfo = text
     console.log('修改成功')
     message.success('已复制到控制台')
-  } catch(err) {
+  } catch (err) {
     console.error('编辑出错:', err)
     message.error('编辑出错')
   }
@@ -35,55 +34,74 @@ const editSlotContent = async () => {
 </script>
 
 <template>
-
-
-
   <div class="cardContainer" @mouseover="isHover = true" @mouseleave="isHover = false">
     <div class="card" v-text="props.messages"></div>
     <div :class="{ 'ghost-mode': !isHover }" class="tool">
       <div class="normalMode">
         <div class="normalMode">
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" @click="editSlotContent" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Pencil />
-              </n-icon>
-            </n-float-button>
-          </template>
-          编辑
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" @click="copySlotContent" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Copy />
-              </n-icon>
-            </n-float-button>
-          </template>
-          复制
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <Bookmarks />
-              </n-icon>
-            </n-float-button>
-          </template>
-          收藏
-        </n-tooltip>
-        <n-tooltip trigger="hover" placement="top">
-          <template #trigger>
-            <n-float-button :style="{ boxShadow: 'none' }" position="relative" height="30" width="30">
-              <n-icon size="16px">
-                <ShareSocial />
-              </n-icon>
-            </n-float-button>
-          </template>
-          分享
-        </n-tooltip>
-      </div>
+          <n-tooltip trigger="hover" placement="top">
+            <template #trigger>
+              <n-float-button
+                :style="{ boxShadow: 'none' }"
+                @click="editSlotContent"
+                position="relative"
+                height="30"
+                width="30"
+              >
+                <n-icon size="16px">
+                  <Pencil />
+                </n-icon>
+              </n-float-button>
+            </template>
+            编辑
+          </n-tooltip>
+          <n-tooltip trigger="hover" placement="top">
+            <template #trigger>
+              <n-float-button
+                :style="{ boxShadow: 'none' }"
+                @click="copySlotContent"
+                position="relative"
+                height="30"
+                width="30"
+              >
+                <n-icon size="16px">
+                  <Copy />
+                </n-icon>
+              </n-float-button>
+            </template>
+            复制
+          </n-tooltip>
+          <n-tooltip trigger="hover" placement="top">
+            <template #trigger>
+              <n-float-button
+                :style="{ boxShadow: 'none' }"
+                position="relative"
+                height="30"
+                width="30"
+              >
+                <n-icon size="16px">
+                  <Bookmarks />
+                </n-icon>
+              </n-float-button>
+            </template>
+            收藏
+          </n-tooltip>
+          <n-tooltip trigger="hover" placement="top">
+            <template #trigger>
+              <n-float-button
+                :style="{ boxShadow: 'none' }"
+                position="relative"
+                height="30"
+                width="30"
+              >
+                <n-icon size="16px">
+                  <ShareSocial />
+                </n-icon>
+              </n-float-button>
+            </template>
+            分享
+          </n-tooltip>
+        </div>
       </div>
     </div>
   </div>
@@ -124,6 +142,13 @@ const editSlotContent = async () => {
     margin: 0.2vw;
     height: 8px;
     width: 8px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    border-radius: 0.5rem;
+    padding: 0.6rem;
   }
 }
 </style>

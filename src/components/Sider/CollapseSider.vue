@@ -97,6 +97,7 @@ const router = useRouter()
 
 <style scoped lang="scss">
 .wrap {
+  padding: 0.4rem 1rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;

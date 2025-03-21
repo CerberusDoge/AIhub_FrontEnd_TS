@@ -154,4 +154,20 @@ onUpdated(() => {
 .contentListSketch {
   width: 70%;
 }
+
+@media screen and (max-width: 768px) {
+  .topBar {
+    max-width: 90%;
+    padding-left: 0.6rem;
+    padding-top: 0.6rem;
+  }
+  .command {
+    padding-bottom: 1.2rem;
+    width: 90%;
+  }
+  .contentList {
+    width: 90%;
+    max-width: 95%;
+  }
+}
 </style>

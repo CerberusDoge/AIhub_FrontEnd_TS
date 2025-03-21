@@ -147,6 +147,7 @@ const sendMessage = async () => {
         minRows: 1,
         maxRows: 4,
       }"
+      style="min-width: 100%"
     />
     <div class="bottomContent">
       <!-- <button @click="handleClick">jasdasldl</button> -->
@@ -222,5 +223,17 @@ const sendMessage = async () => {
 .bottomContent {
   display: flex;
   justify-content: space-between;
+}
+@media screen and (max-width: 768px) {
+  .inputBox {
+    width: 100%;
+    padding-top: 0.8rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    padding-bottom: 0.9rem;
+  }
+  .n-input-wrapper {
+    width: 100%;
+  }
 }
 </style>

@@ -9,9 +9,8 @@ import ChangeMenuButton from '@/components/TopBar/ChangeMenuButton.vue'
 
 import ReasonContainer from '@/components/ChatContainer/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { onUpdated, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { debounce } from '@/utils/debounce'
 import router from '@/router'
 
 const chatStore = useChatInfoStore()
@@ -21,14 +20,6 @@ currentChatInfo.value.content = ''
 currentChatInfo.value.id = undefined
 const isLoaded = ref(true) //监控是否数据获取完成
 
-// getChatInfo(Number(id.value)).then(() => {
-//   console.log(currentChatInfo.value)
-//   console.log(currentChatInfo.value?.topic)
-//   title.value = currentChatInfo.value?.topic ? currentChatInfo.value?.topic : ''
-//   allChats.value = [JSON.parse(currentChatInfo.value!.content)]
-
-// })
-
 //监听新id
 watch(
   () => curretChatId.value,
@@ -37,16 +28,10 @@ watch(
     router.push(`chat/${newId}`)
   },
 )
-
-//滑动函数
-const bottomAnchor = ref()
-const scrollToBottom = () => {
-  bottomAnchor.value.scrollIntoView({ behavior: 'smooth' })
+const isSend = ref(false)
+const handleInput = (data) => {
+  isSend.value = data
 }
-onUpdated(() => debounce(scrollToBottom(), 500))
-// nextTick(() => {
-//   scrollToBottom()
-// });
 </script>
 
 <template>
@@ -55,9 +40,13 @@ onUpdated(() => debounce(scrollToBottom(), 500))
       <ChangeMenuButton></ChangeMenuButton>
       <n-button quaternary icon-placement="right">新对话</n-button>
     </div>
+    <div class="decorate" v-if="!isSend">
+      <div>你好!</div>
+      <div>随便问我些问题吧!</div>
+    </div>
     <div class="messageContent">
       <div ref="bottomAnchor"></div>
-      <div v-if="isLoaded">
+      <div class="contentList" v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
             v-if="val.role === 'assistant' && val.content"
@@ -75,7 +64,7 @@ onUpdated(() => debounce(scrollToBottom(), 500))
           ></ClientMessageBox>
         </div>
       </div>
-
+      <!--
       <div v-else>
         <n-space vertical>
           <n-skeleton height="2rem" width="20%" round />
@@ -85,13 +74,16 @@ onUpdated(() => debounce(scrollToBottom(), 500))
           <n-skeleton height="2rem" width="100%" :sharp="false" />
           <n-skeleton height="2rem" width="100%" :sharp="false" />
         </n-space>
-      </div>
+      </div> -->
     </div>
-    <div class="command"><TalkInputBox :isNew="true"></TalkInputBox></div>
+    <div class="command"><TalkInputBox :isNew="true" @isSended="handleInput"></TalkInputBox></div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.decorate {
+  display: flex;
+}
 .layout {
   display: flex;
   flex-direction: column;
@@ -120,15 +112,36 @@ onUpdated(() => debounce(scrollToBottom(), 500))
   overflow-x: hidden;
   max-height: 100%;
   max-width: 100%;
-  width: 60%;
-  padding: 2%;
+  width: 100%;
+
   height: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-direction: column-reverse;
 }
 .messageContent::-webkit-scrollbar {
   width: 0;
   background: transparent;
+}
+
+.contentList {
+  width: 70%;
+  max-width: 70%;
+}
+@media screen and (max-width: 768px) {
+  .topBar {
+    max-width: 90%;
+    padding-left: 0.6rem;
+    padding-top: 0.6rem;
+  }
+  .command {
+    padding-bottom: 1.2rem;
+    width: 90%;
+  }
+  .contentList {
+    width: 90%;
+    max-width: 95%;
+  }
 }
 </style>

@@ -57,7 +57,8 @@ const goTo = (id: number) => {
   background-color: rgb(250, 250, 250);
   margin-bottom: 0.6rem;
   width: 13rem;
-  padding: 0.5rem;
+  margin-top: 0.28rem;
+  margin-bottom: 0.9rem;
   max-width: 90%;
   // background: linear-gradient(145deg, #e9f0df, #d4eacc);
   box-shadow:

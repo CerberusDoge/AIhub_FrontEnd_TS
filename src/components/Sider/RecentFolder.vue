@@ -56,7 +56,8 @@ const goTo = (id: number) => {
 }
 .rowChosen {
   background-color: rgb(250, 250, 250);
-  margin-bottom: 0.6rem;
+  margin-top: 0.28rem;
+  margin-bottom: 0.9rem;
   width: 13rem;
   padding: 0.5rem;
   max-width: 90%;
