@@ -6,6 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import { manualChunksPlugin } from 'vite-plugin-webpackchunkname'
+import viteCompression from 'vite-plugin-compression'
 
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
@@ -17,6 +18,14 @@ export default defineConfig({
     vueDevTools(),
     manualChunksPlugin(),
     visualizer(),
+    viteCompression({
+      verbose: true,
+      disable: false,
+      threshold: 1024,
+      algorithm: 'gzip',
+      ext: '.gz',
+      deleteOriginFile: true,
+    }),
     Components({
       resolvers: [NaiveUiResolver()],
     }),
