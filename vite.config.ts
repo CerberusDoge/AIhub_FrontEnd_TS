@@ -24,7 +24,7 @@ export default defineConfig({
       threshold: 1024,
       algorithm: 'gzip',
       ext: '.gz',
-      deleteOriginFile: true,
+      deleteOriginFile: false,
     }),
     Components({
       resolvers: [NaiveUiResolver()],
@@ -59,7 +59,7 @@ export default defineConfig({
       compress: {
         //生产环境时移除console
         pure_funcs: ['console.log'], // 只删除 console.log
-        drop_debugger: true,
+        drop_debugger: false,
       },
     },
     rollupOptions: {
