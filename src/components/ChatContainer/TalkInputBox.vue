@@ -7,7 +7,7 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref, watch } from 'vue'
-import { ArrowUp as Arrow } from '@vicons/ionicons5'
+import { ArrowUp as Arrow, Square as Pause } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
@@ -94,14 +94,28 @@ function keyUp(e: any) {
 
 const emits = defineEmits(['isSended'])
 
+const controller = ref()
+controller.value = new AbortController()
 const sendMessage = async () => {
   try {
-    emits('isSended', true)
+    const signal = controller.value.signal
     const inputBoxInfo = chatStore.inputBoxInfo.trim()
     chatStore.inputBoxInfo = ''
-    if (props.isNew) chatStore.cacheinputBoxInfo = inputBoxInfo
-    chatStore.allChats?.push(switchDataToClientMsg(inputBoxInfo))
+
+    console.log(chatStore.isSending)
+
+    if (chatStore.isSending) {
+      controller.value.abort()
+      controller.value = new AbortController()
+      chatStore.isSending = false
+      message.success('取消成功')
+      return
+    }
     if (inputBoxInfo !== '') {
+      if (props.isNew) chatStore.cacheinputBoxInfo = inputBoxInfo
+      chatStore.allChats?.push(switchDataToClientMsg(inputBoxInfo))
+
+      emits('isSended', true)
       fetchRequest(
         standify(
           currentChatInfo.value?.id ? currentChatInfo.value?.id : null,
@@ -109,11 +123,12 @@ const sendMessage = async () => {
           '',
           inputBoxInfo,
         ),
+        signal,
       )
     }
   } catch (error) {
     console.error(error)
-    message.error('发送错误,')
+    message.error('发送错误')
   }
 }
 </script>
@@ -123,14 +138,13 @@ const sendMessage = async () => {
     <n-input
       @keyup.enter="keyUp"
       v-model:value="chatStore.inputBoxInfo"
-      show-count
       id="typeIn"
       type="textarea"
       round
       clearable
-      placeholder="询问任何问题，Ctrl+Enter换行"
+      placeholder="询问任何问题，Ctrl+Enter换行，双击Enter取消"
       :autosize="{
-        minRows: 2,
+        minRows: 1,
         maxRows: 4,
       }"
     />
@@ -147,7 +161,8 @@ const sendMessage = async () => {
       <n-button circle :loading="loadingRef" @click="sendMessage" color="#5FBD22">
         <template #icon>
           <n-icon>
-            <Arrow />
+            <Arrow v-if="!chatStore.isSending" />
+            <Pause v-else />
           </n-icon>
         </template>
       </n-button>

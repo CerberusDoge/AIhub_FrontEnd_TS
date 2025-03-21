@@ -31,6 +31,7 @@ declare module 'vue' {
     NSkeleton: typeof import('naive-ui')['NSkeleton']
     NSpace: typeof import('naive-ui')['NSpace']
     NTooltip: typeof import('naive-ui')['NTooltip']
+    NVirtualList: typeof import('naive-ui')['NVirtualList']
     ReasonContainer: typeof import('./src/components/ChatContainer/ReasonContainer.vue')['default']
     RecentFolder: typeof import('./src/components/Sider/RecentFolder.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

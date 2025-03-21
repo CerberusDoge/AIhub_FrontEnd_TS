@@ -23,11 +23,13 @@ function isJSON(jsonStr: any) {
 }
 
 const userInfo = useUserStore()
-export const fetchRequest = async (data: ChatRequest) => {
+export const fetchRequest = async (data: ChatRequest, signal: AbortSignal) => {
+  chatInfo.isSending = true
   fetch(`${baseURL}/api/v1/chat`, {
     method: 'post',
     headers: headers,
     body: JSON.stringify(data), // 请求体需序列化
+    signal,
   })
     .then(async (response) => {
       const info = data.message
@@ -98,7 +100,7 @@ export const fetchRequest = async (data: ChatRequest) => {
               }
             })
           }
-
+          chatInfo.isSending = false
           // if (chatInfo.currentReasonResponse) {
           //   chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentReasonResponse, true))
           //   chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
@@ -110,6 +112,7 @@ export const fetchRequest = async (data: ChatRequest) => {
         })
     })
     .catch((error) => {
+      chatInfo.isSending = false
       console.error('Request failed!!:', error)
       throw error
     })
