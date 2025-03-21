@@ -128,7 +128,7 @@ const sendMessage = async () => {
       type="textarea"
       round
       clearable
-      placeholder="询问任何问题"
+      placeholder="询问任何问题，Ctrl+Enter换行"
       :autosize="{
         minRows: 2,
         maxRows: 4,

@@ -93,7 +93,7 @@ onUpdated(() => {
           ></ClientMessageBox>
         </div>
       </div>
-      <div v-else>
+      <div class="contentListSketch" v-else>
         <n-space vertical>
           <n-skeleton height="2rem" width="20%" round />
           <n-skeleton height="2rem" width="33%" />
@@ -149,6 +149,9 @@ onUpdated(() => {
 
 .contentList {
   max-width: 60%;
+}
+.contentListSketch {
+  width: 60%;
 }
 // .messageContent::-webkit-scrollbar {
 //   width: 0;
