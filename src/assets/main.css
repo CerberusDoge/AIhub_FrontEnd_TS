@@ -18,6 +18,30 @@ body {
   height: 100%;
 }
 
+/* 针对Webkit内核的浏览器 */
+::-webkit-scrollbar {
+  /* 设置滚动条的宽度 */
+  width: 0.5rem;
+}
+
+/* 滚动条轨道 - 背景颜色/白底 */
+::-webkit-scrollbar-track {
+  background: transparent;
+  padding-left: 1rem;
+}
+
+/* 滚动条的滑块部分 */
+::-webkit-scrollbar-thumb {
+  background: rgba(134, 144, 135, 0.4);
+  border-radius: 2rem;
+  padding-right: 1rem;
+}
+
+/* 当鼠标悬停在滚动条滑块上时改变颜色 */
+::-webkit-scrollbar-thumb:hover {
+  background: #5fbd22;
+}
+
 /* h1,
 h2,
 h3,
@@ -56,14 +80,12 @@ a {
   color: #5fbd22;
 }
 table {
-
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
   font-family: sans-serif;
   min-width: 400px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-
 }
 
 thead tr {
@@ -103,10 +125,10 @@ pre {
   color: rgb(19, 19, 20);
   direction: ltr;
   text-align: left;
-  white-space: pre-wrap;       /* css-3 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
   overflow: auto;
   word-break: break-all;
   word-wrap: break-word;

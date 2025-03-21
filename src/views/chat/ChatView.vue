@@ -75,7 +75,7 @@ onUpdated(() => {
     <div class="topBar"><TopBar :title="title"></TopBar></div>
     <div class="messageContent" @wheel="handleWheel">
       <div ref="bottomAnchor"></div>
-      <div v-if="isLoaded">
+      <div class="contentList" v-if="isLoaded">
         <div v-for="(val, index) in allChats" :key="index">
           <ServeMessageBox
             v-if="val.role === 'assistant' && val.content"
@@ -138,15 +138,22 @@ onUpdated(() => {
   overflow-x: hidden;
   max-height: 100%;
   max-width: 100%;
-  width: 60%;
-  padding: 2%;
+  width: 100%;
+
   height: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-direction: column-reverse;
 }
-.messageContent::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
+
+.contentList {
+  max-width: 60%;
 }
+// .messageContent::-webkit-scrollbar {
+//   width: 0;
+//   background: transparent;
+// }
+
+/* 创建滚动条轨道 */
 </style>

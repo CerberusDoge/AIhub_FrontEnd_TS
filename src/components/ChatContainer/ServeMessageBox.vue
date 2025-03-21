@@ -119,7 +119,6 @@ const copyContent = async () => {
   display: flex;
   justify-content: center;
   align-items: start;
-  width: 100%;
   padding: 0.7em;
   padding-top: 0;
   padding-left: 0;
