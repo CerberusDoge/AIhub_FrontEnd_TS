@@ -148,6 +148,7 @@ onUpdated(() => {
 }
 
 .contentList {
+  width: 60%;
   max-width: 60%;
 }
 .contentListSketch {
