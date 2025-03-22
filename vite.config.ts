@@ -71,6 +71,7 @@ export default defineConfig({
           if (id.includes('naive-ui')) {
             return 'naive-ui'
           }
+          if (id.includes('highlight.js')) return 'highlight'
         },
       },
     },

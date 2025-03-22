@@ -1,10 +1,10 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-import { Pencil, Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
+import { Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
 import { computed, ref, defineProps, watch, onUnmounted } from 'vue'
 import { useMessage } from 'naive-ui'
-import { marked } from 'marked'
+import { parseMarkdown } from '@/utils/marked'
 
 const props = defineProps<{
   messages: string
@@ -22,7 +22,7 @@ const typing = () => {
   //存在未打印的
   if (currentIndex.value < props.messages.length) {
     msg.value += props.messages.charAt(currentIndex.value++)
-    timer = setTimeout(typing, 34)
+    timer = setTimeout(typing, 40)
   } else {
     clearTimeout(timer)
   }
@@ -40,8 +40,8 @@ watch(
 )
 
 const RenderMd = computed(() => {
-  if (!isNew) return marked(props.messages)
-  else return marked(msg.value)
+  if (!isNew) return parseMarkdown(props.messages)
+  else return parseMarkdown(msg.value)
 })
 
 const copyContent = async () => {

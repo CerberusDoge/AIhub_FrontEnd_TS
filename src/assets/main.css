@@ -102,10 +102,6 @@ tbody tr.active-row {
   color: #5fbd22;
 }
 pre {
-  /* margin: 0; */
-
-  padding: 1rem;
-  border-radius: 0.6rem;
   background: #f3f3f3;
   color: rgb(19, 19, 20);
   direction: ltr;
@@ -114,10 +110,19 @@ pre {
   white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
   white-space: -pre-wrap; /* Opera 4-6 */
   white-space: -o-pre-wrap; /* Opera 7 */
-  overflow: auto;
-  word-break: break-all;
+  overflow-x: auto;
+  word-break: break-word;
   word-wrap: break-word;
   line-height: 1.5;
+  width: 100%;
+}
+code {
+  font-family:
+    Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    '微软雅黑', Arial, sans-serif;
+  overflow: hidden;
+  text-wrap: none;
+  overflow-x: auto;
 }
 
 .cursor {
@@ -143,4 +148,34 @@ pre {
   body {
     font-size: 0.9rem;
   }
+}
+
+/* 代码块外框 */
+.code-block {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  margin: 1em 0;
+  overflow: hidden;
+}
+
+/* 语言标签 */
+.lang-label {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  padding: 6px 12px;
+  font-family: monospace;
+  font-size: 0.85em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* 代码区域 */
+.code-block pre {
+  margin: 0;
+  padding: 12px;
+  background: #f9fafb;
+  overflow-x: auto;
+}
+
+.hljs {
+  background: transparent !important; /* 覆盖高亮背景色 */
 }
