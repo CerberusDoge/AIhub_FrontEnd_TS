@@ -13,7 +13,8 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
   const currentReasonResponse = ref<string>('') //当前返回的推理消息
   const allChats = ref<ContentDetail[]>() //当前//存储当前id所有对话信息
   const isSending = ref<boolean>(false) //是否在发送
-
+  const controller = ref(new AbortController())
+  const signal = ref(controller.value.signal)
   return {
     inputBoxInfo,
     cacheinputBoxInfo,
@@ -24,5 +25,7 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
     currentChatInfo,
     allChats,
     isSending,
+    controller,
+    signal,
   }
 })

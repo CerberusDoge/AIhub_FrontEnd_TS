@@ -75,7 +75,9 @@ const handleInput = (data) => {
         </n-space>
       </div> -->
     </div>
-    <div class="command"><TalkInputBox :isNew="true" @isSended="handleInput"></TalkInputBox></div>
+    <div class="command">
+      <TalkInputBox :isNew="true" @isSended="handleInput"></TalkInputBox>
+    </div>
   </div>
 </template>
 

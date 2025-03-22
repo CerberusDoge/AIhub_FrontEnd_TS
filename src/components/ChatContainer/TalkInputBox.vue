@@ -11,7 +11,7 @@ import { ArrowUp as Arrow, Square as Pause } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { storeToRefs } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { switchDataToClientMsg } from '@/services/chat'
 
 import { NIcon } from 'naive-ui'
@@ -94,19 +94,18 @@ function keyUp(e: any) {
 
 const emits = defineEmits(['isSended'])
 
-const controller = ref()
-controller.value = new AbortController()
+const { controller, signal } = storeToRefs(chatStore)
 const sendMessage = async () => {
   try {
-    const signal = controller.value.signal
+    signal.value = controller.value.signal //更新信号
     const inputBoxInfo = chatStore.inputBoxInfo.trim()
     chatStore.inputBoxInfo = ''
 
     console.log(chatStore.isSending)
 
     if (chatStore.isSending) {
-      controller.value.abort()
-      controller.value = new AbortController()
+      controller.value.abort() //中止
+      controller.value = new AbortController() //重置控制器
       chatStore.isSending = false
       message.success('取消成功')
       return
@@ -123,7 +122,7 @@ const sendMessage = async () => {
           '',
           inputBoxInfo,
         ),
-        signal,
+        signal.value,
       )
     }
   } catch (error) {
