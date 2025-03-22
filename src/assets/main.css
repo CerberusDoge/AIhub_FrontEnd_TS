@@ -156,6 +156,8 @@ code {
   border-radius: 6px;
   margin: 1em 0;
   overflow: hidden;
+  min-width: 100%;
+  width: 100%;
 }
 
 /* 语言标签 */

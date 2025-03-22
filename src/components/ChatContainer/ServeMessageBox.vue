@@ -124,6 +124,10 @@ const copyContent = async () => {
   padding-left: 0;
   flex-direction: column;
 }
+.cardContent {
+  max-width: 100%;
+  min-width: 100%;
+}
 .card {
   width: 100%;
   display: flex;
