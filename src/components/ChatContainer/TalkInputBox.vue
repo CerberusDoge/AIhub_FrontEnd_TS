@@ -11,7 +11,7 @@ import { ArrowUp as Arrow, Square as Pause } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { defineStore, storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia'
 import { switchDataToClientMsg } from '@/services/chat'
 
 import { NIcon } from 'naive-ui'

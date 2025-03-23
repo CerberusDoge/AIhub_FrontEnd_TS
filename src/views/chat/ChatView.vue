@@ -8,19 +8,29 @@ import TopBar from '@/components/TopBar/TopBar.vue'
 import ReasonContainer from '@/components/ChatContainer/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getChatInfo } from '@/services/chat'
-import { onUpdated, ref, watch } from 'vue'
+import { onBeforeUnmount, onUpdated, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { throttle } from '@/utils/debounce'
 import { switchDataToClientMsg } from '@/services/chat'
+import { getUserInfo } from '@/services/user'
 
 const route = useRoute()
 const chatStore = useChatInfoStore()
-const { currentChatInfo, cacheinputBoxInfo, allChats } = storeToRefs(chatStore)
+const { currentChatInfo, cacheinputBoxInfo, allChats, controller, signal, isSending } =
+  storeToRefs(chatStore)
 const title = ref('') //存储标题
 const id = ref(route.params.id) //存储现在的id
-
 const isLoaded = ref(false) //监控是否渲染完成
 
+onBeforeUnmount(() => {
+  isSending.value = false
+  console.log(1111111)
+  controller.value.abort() //中止
+  controller.value = new AbortController() //重置中止控制器
+  signal.value = controller.value.signal //重新赋值信号
+})
+
+getUserInfo()
 getChatInfo(Number(id.value)).then(() => {
   console.log(currentChatInfo.value)
   console.log(currentChatInfo.value?.topic)
@@ -37,6 +47,11 @@ getChatInfo(Number(id.value)).then(() => {
 watch(
   () => route.params.id,
   (newId) => {
+    isSending.value = false
+    controller.value.abort() //中止
+    controller.value = new AbortController() //重置中止控制器
+    signal.value = controller.value.signal //重新赋值信号
+
     isLoaded.value = false
     id.value = newId
     getChatInfo(Number(id.value)).then(() => {
@@ -46,6 +61,7 @@ watch(
       isLoaded.value = true
       console.log(isLoaded.value)
     })
+    getUserInfo()
   },
 )
 
