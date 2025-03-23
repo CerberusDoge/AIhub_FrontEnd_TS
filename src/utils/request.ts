@@ -6,6 +6,7 @@ import type {
   AxiosRequestConfig,
   InternalAxiosRequestConfig,
 } from 'axios'
+import router from '@/router'
 
 const service = axios.create({
   baseURL: 'http://8.138.207.252:8080', // 基础 URL
@@ -38,6 +39,8 @@ service.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
+          router.push('/login')
+          localStorage.clear()
           console.error('未授权，请重新登录')
           break
         case 404:

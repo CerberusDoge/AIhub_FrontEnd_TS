@@ -101,10 +101,6 @@ export const fetchRequest = async (data: ChatRequest, signal: AbortSignal) => {
             })
           }
           chatInfo.isSending = false
-          // if (chatInfo.currentReasonResponse) {
-          //   chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentReasonResponse, true))
-          //   chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
-          // } else chatInfo.allChats?.push(switchDataToServeMsg(chatInfo.currentResponse, false))
         })
         .catch((error) => {
           console.error('Request failed!!:', error)
