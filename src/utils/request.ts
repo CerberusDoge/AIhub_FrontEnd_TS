@@ -39,8 +39,8 @@ service.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          router.push('/login')
           localStorage.clear()
+          router.push('/login')
           console.error('未授权，请重新登录')
           break
         case 404:
