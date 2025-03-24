@@ -37,7 +37,6 @@ const handleInput = (data) => {
 <template>
   <div class="layout">
     <div class="topBar">
-      <div>82374982784927928472488</div>
       <ChangeMenuButton></ChangeMenuButton>
       <n-button quaternary icon-placement="right">新对话</n-button>
     </div>
