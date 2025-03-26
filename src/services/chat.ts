@@ -2,6 +2,7 @@ import request from '@/utils/request'
 import type { deleteChat, ChatInfo, RequestStar, ContentDetail } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { getUserInfo } from '@/services/user'
+import router from '@/router'
 
 const ChatInfo = useChatInfoStore()
 
@@ -61,6 +62,7 @@ export const getChatInfo = async (id: number) => {
     ChatInfo.currentChatInfo = data
   } catch (error) {
     console.error(error)
+    router.push('/404')
     throw error
   }
 }

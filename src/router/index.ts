@@ -50,6 +50,10 @@ const router = createRouter({
       component: () =>
         import(/* webpackChunkName: "loginAndRegister" */ '@/views/RegisterView.vue'),
     },
+    {
+      path: '/:catchAll(.*)',
+      component: () => import('@/views/404.vue'),
+    },
   ],
 })
 

@@ -13,6 +13,7 @@ import { storeToRefs } from 'pinia'
 import { throttle } from '@/utils/debounce'
 import { switchDataToClientMsg } from '@/services/chat'
 import { getUserInfo } from '@/services/user'
+import router from '@/router'
 
 const route = useRoute()
 const chatStore = useChatInfoStore()
@@ -61,6 +62,7 @@ watch(
       isLoaded.value = true
       console.log(isLoaded.value)
     })
+
     getUserInfo()
   },
 )
