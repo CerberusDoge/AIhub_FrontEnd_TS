@@ -13,7 +13,6 @@ import { storeToRefs } from 'pinia'
 import { throttle } from '@/utils/debounce'
 import { switchDataToClientMsg } from '@/services/chat'
 import { getUserInfo } from '@/services/user'
-import router from '@/router'
 
 const route = useRoute()
 const chatStore = useChatInfoStore()
@@ -110,6 +109,16 @@ onUpdated(() => {
             :messages="val.content!"
           ></ClientMessageBox>
         </div>
+      </div>
+      <div class="contentListSketch" v-else>
+        <n-space vertical>
+          <n-skeleton height="2rem" width="20%" round />
+          <n-skeleton height="2rem" width="33%" />
+          <n-skeleton text :repeat="10" /> <n-skeleton text style="width: 60%" />
+          <n-skeleton height="2rem" width="100%" :sharp="false" />
+          <n-skeleton height="2rem" width="100%" :sharp="false" />
+          <n-skeleton height="2rem" width="100%" :sharp="false" />
+        </n-space>
       </div>
     </div>
     <div class="command"><TalkInputBox :isNew="false" @isSended="handleInput"></TalkInputBox></div>
