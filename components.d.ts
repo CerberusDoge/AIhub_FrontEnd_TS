@@ -37,6 +37,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ServeMessageBox: typeof import('./src/components/ChatContainer/ServeMessageBox.vue')['default']
+    SSTdemo: typeof import('./src/components/STT/SSTdemo.vue')['default']
     TalkInputBox: typeof import('./src/components/ChatContainer/TalkInputBox.vue')['default']
     TopBar: typeof import('./src/components/TopBar/TopBar.vue')['default']
   }

@@ -51,6 +51,13 @@ const router = createRouter({
         import(/* webpackChunkName: "loginAndRegister" */ '@/views/RegisterView.vue'),
     },
     {
+      path: '/test',
+      name: 'test',
+
+      component: () =>
+        import(/* webpackChunkName: "loginAndRegister" */ '@/components/STT/SSTdemo.vue'),
+    },
+    {
       path: '/:catchAll(.*)',
       component: () => import('@/views/404.vue'),
     },
