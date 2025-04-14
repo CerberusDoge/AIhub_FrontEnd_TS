@@ -33,13 +33,12 @@ const xfVoice = new IatRecorder({
     console.log(text, typeof text)
 
     // 5秒钟内没有说话，就自动关闭
-    if (text) {
-      clearTimeout(times)
+
+    clearTimeout(times)
+    times = setTimeout(() => {
+      this.stop() // xfVoice.stop();
       console.log('closeSS')
-      times = setTimeout(() => {
-        this.stop() // xfVoice.stop();
-      }, 1000)
-    }
+    }, 5000)
   },
 })
 const changeState = () => {
