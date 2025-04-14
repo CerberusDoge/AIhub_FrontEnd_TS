@@ -363,5 +363,39 @@ export default class IatRecorder {
   stop() {
     this.recorderStop()
     this.webSocket && this.webSocket.close()
+    // 1. 停止所有音频轨道（释放麦克风权限）
+    if (this.streamRef) {
+      this.streamRef.getTracks().forEach((track) => {
+        try {
+          track.stop() // 停止单个音频轨道[1,5](@ref)
+        } catch (error) {
+          console.error('停止音频轨道失败:', error)
+        }
+      })
+      this.streamRef = null // 释放媒体流引用
+    }
+
+    // 2. 断开音频节点连接（防止内存泄漏）
+    if (this.scriptProcessor) {
+      this.scriptProcessor.disconnect()
+      this.scriptProcessor.onaudioprocess = null // 移除事件监听[3](@ref)
+      this.scriptProcessor = null
+    }
+    if (this.mediaSource) {
+      this.mediaSource.disconnect()
+      this.mediaSource = null
+    }
+
+    // 3. 关闭音频上下文（释放系统资源）
+    if (this.audioContext) {
+      this.audioContext
+        .close()
+        .then(() => {
+          this.audioContext = null // 置空上下文对象[5,7](@ref)
+        })
+        .catch((error) => {
+          console.error('关闭音频上下文失败:', error)
+        })
+    }
   }
 }
