@@ -15,6 +15,7 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
   const isSending = ref<boolean>(false) //是否在发送
   const controller = ref(new AbortController())
   const signal = ref(controller.value.signal)
+  const isSST = ref(false) //是否在语音转文字
   return {
     inputBoxInfo,
     cacheinputBoxInfo,
@@ -27,5 +28,6 @@ export const useChatInfoStore = defineStore('chatInfoStore', () => {
     isSending,
     controller,
     signal,
+    isSST,
   }
 })

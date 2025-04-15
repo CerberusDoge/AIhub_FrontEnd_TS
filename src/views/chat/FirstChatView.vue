@@ -9,17 +9,19 @@ import ChangeMenuButton from '@/components/TopBar/ChangeMenuButton.vue'
 
 import ReasonContainer from '@/components/ChatContainer/ReasonContainer.vue'
 import { useChatInfoStore } from '@/stores/chatInfo'
-import { ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
 
 const chatStore = useChatInfoStore()
-const { allChats, currentChatInfo, curretChatId } = storeToRefs(chatStore) //存储当前id所有对话信息
+const { allChats, currentChatInfo, curretChatId, isSST } = storeToRefs(chatStore) //存储当前id所有对话信息
 allChats.value = []
 currentChatInfo.value.content = ''
 currentChatInfo.value.id = undefined
 const isLoaded = ref(true) //监控是否数据获取完成
-
+onBeforeUnmount(() => {
+  isSST.value = false
+})
 //监听新id
 watch(
   () => curretChatId.value,

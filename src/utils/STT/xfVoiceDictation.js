@@ -1,4 +1,10 @@
 import CryptoJS from 'crypto-js'
+import { storeToRefs } from 'pinia'
+import { useChatInfoStore } from '@/stores/chatInfo'
+
+const ChatInfoStore = useChatInfoStore()
+const { isSST } = storeToRefs(ChatInfoStore)
+
 // import Worker from './transcode.worker.js?worker'
 export default class IatRecorder {
   constructor(opts = {}) {
@@ -361,6 +367,7 @@ export default class IatRecorder {
   }
   // 停止
   stop() {
+    isSST.value = false
     this.recorderStop()
     this.webSocket && this.webSocket.close()
     // 1. 停止所有音频轨道（释放麦克风权限）

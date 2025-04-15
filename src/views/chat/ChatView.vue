@@ -16,13 +16,14 @@ import { getUserInfo } from '@/services/user'
 
 const route = useRoute()
 const chatStore = useChatInfoStore()
-const { currentChatInfo, cacheinputBoxInfo, allChats, controller, signal, isSending } =
+const { currentChatInfo, cacheinputBoxInfo, allChats, controller, signal, isSending, isSST } =
   storeToRefs(chatStore)
 const title = ref('') //存储标题
 const id = ref(route.params.id) //存储现在的id
 const isLoaded = ref(false) //监控是否渲染完成
 
 onBeforeUnmount(() => {
+  isSST.value = false
   isSending.value = false
   console.log(1111111)
   controller.value.abort() //中止
@@ -47,6 +48,7 @@ getChatInfo(Number(id.value)).then(() => {
 watch(
   () => route.params.id,
   (newId) => {
+    isSST.value = false
     isSending.value = false
     controller.value.abort() //中止
     controller.value = new AbortController() //重置中止控制器

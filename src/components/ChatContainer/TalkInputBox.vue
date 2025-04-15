@@ -7,12 +7,13 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 import { ref, watch } from 'vue'
-import { ArrowUp as Arrow, Square as Pause } from '@vicons/ionicons5'
+import { ArrowUp as Arrow, Stop as Pause } from '@vicons/ionicons5'
 import { fetchRequest } from '@/services/sse'
 import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { storeToRefs } from 'pinia'
 import { switchDataToClientMsg } from '@/services/chat'
+import SSTbtn from '@/components/STT/SSTbtn.vue'
 
 import { NIcon } from 'naive-ui'
 import type { SelectGroupOption, SelectOption } from 'naive-ui'
@@ -100,7 +101,7 @@ const sendMessage = async () => {
     signal.value = controller.value.signal //更新信号
     const inputBoxInfo = chatStore.inputBoxInfo.trim()
     chatStore.inputBoxInfo = ''
-
+    chatStore.isSST = false
     console.log(chatStore.isSending)
 
     if (chatStore.isSending) {
@@ -158,14 +159,17 @@ const sendMessage = async () => {
       >
         <template #header> 大语言模型 </template></n-select
       >
-      <n-button circle :loading="loadingRef" @click="sendMessage" color="#5FBD22">
-        <template #icon>
-          <n-icon>
-            <Arrow v-if="!chatStore.isSending" />
-            <Pause v-else />
-          </n-icon>
-        </template>
-      </n-button>
+      <div class="btns">
+        <SSTbtn id="sst"></SSTbtn>
+        <n-button circle :loading="loadingRef" @click="sendMessage" color="#5FBD22">
+          <template #icon>
+            <n-icon>
+              <Arrow v-if="!chatStore.isSending" />
+              <Pause v-else />
+            </n-icon>
+          </template>
+        </n-button>
+      </div>
     </div>
 
     <!-- <input type="text"  v-model="input" placeholder="询问任何问题" /> -->
@@ -222,6 +226,12 @@ const sendMessage = async () => {
 .bottomContent {
   display: flex;
   justify-content: space-between;
+}
+.btns {
+  display: flex;
+  #sst {
+    margin-right: 0.3rem;
+  }
 }
 @media screen and (max-width: 768px) {
   .inputBox {
