@@ -2,11 +2,25 @@
 import CollapseSider from '@/components/Sider/CollapseSider.vue'
 import { useMenuStore } from '@/stores/menuInfo'
 import { getUserInfo } from '@/services/user'
-import { computed } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { debounce } from '@/utils/debounce'
 const menuInfo = useMenuStore()
 getUserInfo()
 const breakpoint = 768
-const isMobile = computed(() => window.innerWidth < breakpoint)
+const windowWidth = ref(window.innerWidth)
+const handleResize = debounce(() => {
+  windowWidth.value = window.innerWidth // 关键：更新响应式变量
+}, 200)
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize) // 挂载时监听
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize) // 销毁时移除监听
+})
+
+const isMobile = computed(() => windowWidth.value < breakpoint)
 </script>
 
 <template>
@@ -16,13 +30,12 @@ const isMobile = computed(() => window.innerWidth < breakpoint)
         <CollapseSider></CollapseSider></div
     ></transition>
     <div class="rightBar"><router-view></router-view></div>
-    <transition name="slideBg" mode="out-in">
-      <div
-        class="overlay"
-        v-if="isMobile && menuInfo.isDisplay"
-        @click="menuInfo.isDisplay = false"
-      ></div>
-    </transition>
+
+    <div
+      class="overlay"
+      v-if="isMobile && menuInfo.isDisplay"
+      @click="menuInfo.isDisplay = false"
+    ></div>
   </div>
 </template>
 
