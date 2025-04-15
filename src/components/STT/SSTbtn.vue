@@ -59,16 +59,19 @@ const changeState = throttle(() => {
       break
   }
 }, 2000)
-watch(isSST.value, () => {
-  switch (isSST.value) {
-    case false:
-      xfVoice.stop()
-      break
-    case true:
-      xfVoice.start()
-      break
-  }
-})
+watch(
+  () => isSST.value,
+  () => {
+    switch (isSST.value) {
+      case false:
+        xfVoice.stop()
+        break
+      case true:
+        xfVoice.start()
+        break
+    }
+  },
+)
 </script>
 
 <style scoped></style>
