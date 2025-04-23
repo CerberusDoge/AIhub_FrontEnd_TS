@@ -69,6 +69,7 @@ const RenderMd = computed(() => {
     color: rgb(108, 108, 108);
     border-left: 0.3rem solid vars.$dimGrey;
     padding-left: 0.5rem;
+    quotes: '\201C' '\201D';
   }
   .cardContent:before {
     color: #ccc;
