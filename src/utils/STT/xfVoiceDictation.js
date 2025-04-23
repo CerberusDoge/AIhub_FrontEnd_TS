@@ -69,22 +69,20 @@ export default class IatRecorder {
 
   // 操作初始化
   init() {
-    const self = this
     try {
-      if (!self.APPID || !self.APIKey || !self.APISecret) {
+      if (!this.APPID || !this.APIKey || !this.APISecret) {
         alert('请正确配置【迅飞语音听写（流式版）WebAPI】服务接口认证信息！')
       } else {
-        self.webWorker = new Worker(new URL('./transcode.worker.js', import.meta.url))
-        self.webWorker.onmessage = function (event) {
-          self.audioData.push(...event.data)
+        // 使用更安全的方式创建 Worker
+        const workerUrl = new URL('./transcode.worker.js', import.meta.url)
+        this.webWorker = new Worker(workerUrl, { type: 'module' })
+        this.webWorker.onmessage = (event) => {
+          this.audioData.push(...event.data)
         }
       }
     } catch (error) {
+      console.error('Worker 初始化失败:', error)
       alert('对不起：请在服务器环境下运行！')
-      console.error(
-        '请在服务器如：WAMP、XAMPP、Phpstudy、http-server、WebServer等环境中运行！',
-        error,
-      )
     }
   }
   // 修改录音听写状态
@@ -149,96 +147,79 @@ export default class IatRecorder {
   }
   // 初始化浏览器录音
   recorderInit() {
-    // 创建音频环境
     try {
-      this.audioContext = this.audioContext
-        ? this.audioContext
-        : new (window.AudioContext || window.webkitAudioContext)()
-      this.audioContext.resume()
+      if (!this.audioContext) {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+      }
+
       if (!this.audioContext) {
         alert('浏览器不支持webAudioApi相关接口')
         return false
       }
-    } catch (e) {
-      if (!this.audioContext) {
-        alert('浏览器不支持webAudioApi相关接口')
-        return false
-      }
-    }
-    // 获取浏览器录音权限成功时回调
-    let getMediaSuccess = (_) => {
-      // 创建一个用于通过JavaScript直接处理音频
-      this.scriptProcessor = this.audioContext.createScriptProcessor(0, 1, 1)
-      this.scriptProcessor.onaudioprocess = (e) => {
-        if (this.status === 'ing') {
-          // 多线程音频数据处理
-          try {
-            this.webWorker.postMessage(e.inputBuffer.getChannelData(0))
-          } catch (error) {}
-        }
-      }
-      // 创建一个新的MediaStreamAudioSourceNode 对象，使来自MediaStream的音频可以被播放和操作
-      this.mediaSource = this.audioContext.createMediaStreamSource(this.streamRef)
-      this.mediaSource.connect(this.scriptProcessor)
-      this.scriptProcessor.connect(this.audioContext.destination)
-      this.connectWebSocket()
-    }
-    // 获取浏览器录音权限失败时回调
-    let getMediaFail = (e) => {
-      alert('对不起：录音权限获取失败!')
-      this.audioContext && this.audioContext.close()
-      this.audioContext = undefined
-      // 关闭websocket
-      if (this.webSocket && this.webSocket.readyState === 1) {
-        this.webSocket.close()
-      }
-    }
-    navigator.getUserMedia =
-      navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia
-    // 获取浏览器录音权限
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: true,
-        })
-        .then((stream) => {
+
+      // 获取麦克风权限
+      return navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
           this.streamRef = stream
-          getMediaSuccess()
+
+          // 创建音频源
+          this.mediaSource = this.audioContext.createMediaStreamSource(stream)
+
+          // 尝试使用 AudioWorklet
+          if (this.audioContext.audioWorklet) {
+            const audioProcessorUrl = new URL('./audio-processor.js', import.meta.url)
+            return this.audioContext.audioWorklet.addModule(audioProcessorUrl)
+              .then(() => {
+                this.audioWorkletNode = new AudioWorkletNode(this.audioContext, 'audio-processor')
+                this.audioWorkletNode.port.onmessage = (event) => {
+                  this.webWorker.postMessage(event.data)
+                }
+                this.mediaSource.connect(this.audioWorkletNode)
+                this.audioWorkletNode.connect(this.audioContext.destination)
+              })
+              .catch(error => {
+                console.warn('AudioWorklet 初始化失败，使用 ScriptProcessor 降级方案:', error)
+                this.fallbackToScriptProcessor()
+              })
+          } else {
+            this.fallbackToScriptProcessor()
+          }
         })
-        .catch((e) => {
-          getMediaFail(e)
+        .then(() => {
+          this.connectWebSocket()
         })
-    } else if (navigator.getUserMedia) {
-      navigator.getUserMedia(
-        {
-          audio: true,
-        },
-        (stream) => {
-          this.streamRef = stream
-          getMediaSuccess()
-        },
-        function (e) {
-          getMediaFail(e)
-        },
-      )
-    } else {
-      if (
-        navigator.userAgent.toLowerCase().match(/chrome/) &&
-        location.origin.indexOf('https://') < 0
-      ) {
-        console.error(
-          '获取浏览器录音功能，因安全性问题，需要在localhost 或 127.0.0.1 或 https 下才能获取权限！',
-        )
-      } else {
-        alert('对不起：未识别到录音设备!')
-      }
-      this.audioContext && this.audioContext.close()
+        .catch(error => {
+          console.error('音频初始化失败:', error)
+          alert('无法获取麦克风权限或初始化音频处理失败')
+          return false
+        })
+    } catch (error) {
+      console.error('音频上下文初始化失败:', error)
+      alert('浏览器不支持webAudioApi相关接口')
       return false
     }
   }
+
+  fallbackToScriptProcessor() {
+    try {
+      this.scriptProcessor = this.audioContext.createScriptProcessor(0, 1, 1)
+      this.scriptProcessor.onaudioprocess = (e) => {
+        if (this.status === 'ing') {
+          try {
+            this.webWorker.postMessage(e.inputBuffer.getChannelData(0))
+          } catch (error) {
+            console.error('音频数据处理失败:', error)
+          }
+        }
+      }
+      this.mediaSource.connect(this.scriptProcessor)
+      this.scriptProcessor.connect(this.audioContext.destination)
+    } catch (error) {
+      console.error('ScriptProcessor 初始化失败:', error)
+      alert('浏览器不支持音频处理功能')
+    }
+  }
+
   // 向webSocket发送数据(音频二进制数据经过Base64处理)
   webSocketSend() {
     if (this.webSocket.readyState !== 1) return false
@@ -369,23 +350,31 @@ export default class IatRecorder {
   stop() {
     isSST.value = false
     this.recorderStop()
-    this.webSocket && this.webSocket.close()
-    // 1. 停止所有音频轨道（释放麦克风权限）
-    if (this.streamRef) {
-      this.streamRef.getTracks().forEach((track) => {
+
+    if (this.webSocket && this.webSocket.readyState === 1) {
+      this.webSocket.close()
+    }
+
+    // 安全地停止音频轨道
+    if (this.streamRef && this.streamRef.getTracks) {
+      this.streamRef.getTracks().forEach(track => {
         try {
-          track.stop() // 停止单个音频轨道[1,5](@ref)
+          track.stop()
         } catch (error) {
           console.error('停止音频轨道失败:', error)
         }
       })
-      this.streamRef = null // 释放媒体流引用
+      this.streamRef = null
     }
 
-    // 2. 断开音频节点连接（防止内存泄漏）
+    // 安全地断开音频节点连接
+    if (this.audioWorkletNode) {
+      this.audioWorkletNode.disconnect()
+      this.audioWorkletNode = null
+    }
     if (this.scriptProcessor) {
       this.scriptProcessor.disconnect()
-      this.scriptProcessor.onaudioprocess = null // 移除事件监听[3](@ref)
+      this.scriptProcessor.onaudioprocess = null
       this.scriptProcessor = null
     }
     if (this.mediaSource) {
@@ -393,14 +382,13 @@ export default class IatRecorder {
       this.mediaSource = null
     }
 
-    // 3. 关闭音频上下文（释放系统资源）
-    if (this.audioContext) {
-      this.audioContext
-        .close()
+    // 安全地关闭音频上下文
+    if (this.audioContext && this.audioContext.state !== 'closed') {
+      this.audioContext.close()
         .then(() => {
-          this.audioContext = null // 置空上下文对象[5,7](@ref)
+          this.audioContext = null
         })
-        .catch((error) => {
+        .catch(error => {
           console.error('关闭音频上下文失败:', error)
         })
     }
