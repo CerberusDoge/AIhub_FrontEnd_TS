@@ -7,10 +7,10 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios'
 import router from '@/router'
-
+const baseURL = import.meta.env.VITE_BASE_URL
 const service = axios.create({
-  // baseURL: 'http://8.138.207.252:8080', // 基础 URL
-  baseURL: 'https://www.overdose.love/api', // 基础 URL
+  baseURL: baseURL, // 基础 URL
+  // baseURL: 'https://www.overdose.love/api', // 基础 URL
   withCredentials: false, // 启用跨域凭证
 })
 

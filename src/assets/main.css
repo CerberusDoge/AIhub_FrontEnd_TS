@@ -160,14 +160,42 @@ code {
   width: 100%;
 }
 
+/* 代码块头部 */
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3f4f6;
+  padding: 6px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
 /* 语言标签 */
 .lang-label {
-  background-color: #f3f4f6;
   color: #6b7280;
-  padding: 6px 12px;
   font-family: monospace;
   font-size: 0.85em;
-  border-bottom: 1px solid #e5e7eb;
+}
+
+/* 复制按钮 */
+.copy-button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.85em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.copy-button:hover {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.copy-success {
+  color: #5fbd22;
 }
 
 /* 代码区域 */

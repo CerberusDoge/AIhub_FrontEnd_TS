@@ -2,7 +2,7 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { Copy, Bookmarks, ShareSocial } from '@vicons/ionicons5'
-import { computed, ref, defineProps, watch, onUnmounted } from 'vue'
+import { computed, ref, defineProps, watch, onUnmounted, onMounted } from 'vue'
 import { useMessage } from 'naive-ui'
 import { parseMarkdown } from '@/utils/marked'
 
@@ -54,6 +54,42 @@ const copyContent = async () => {
     message.error('复制出错')
   }
 }
+
+// 添加复制代码的功能
+const copyCode = (button: HTMLElement) => {
+  const codeBlock = button.closest('.code-block')
+  const code = codeBlock?.querySelector('code')?.textContent || ''
+
+  navigator.clipboard
+    .writeText(code)
+    .then(() => {
+      const copyText = button.querySelector('.copy-text') as HTMLElement
+      const copySuccess = button.querySelector('.copy-success') as HTMLElement
+
+      if (copyText && copySuccess) {
+        copyText.style.display = 'none'
+        copySuccess.style.display = 'inline'
+
+        setTimeout(() => {
+          copyText.style.display = 'inline'
+          copySuccess.style.display = 'none'
+        }, 2000)
+      }
+    })
+    .catch((err) => {
+      console.error('复制代码失败:', err)
+      message.error('复制代码失败')
+    })
+}
+
+// 将copyCode函数添加到window对象
+onMounted(() => {
+  ;(window as any).copyCode = copyCode
+})
+
+onUnmounted(() => {
+  delete (window as any).copyCode
+})
 </script>
 
 <template>

@@ -3,13 +3,14 @@ import type { ChatRequest } from '@/types/message'
 import { useChatInfoStore } from '@/stores/chatInfo'
 import { useUserStore } from '@/stores/userInfo'
 import { getUserInfo } from '@/services/user'
-import { switchDataToServeMsg, switchDataToClientMsg } from './chat'
+import { switchDataToServeMsg } from './chat'
 
 const headers = new Headers()
 const authorization = localStorage.getItem('satoken')
 headers.append('satoken', authorization!)
 headers.append('Content-Type', 'application/json')
-const baseURL = 'https://www.overdose.love/api'
+// const baseURL = 'https://www.overdose.love/api'
+const baseURL = import.meta.env.VITE_BASE_URL
 
 const chatInfo = useChatInfoStore()
 function isJSON(jsonStr: any) {
