@@ -9,7 +9,7 @@ const headers = new Headers()
 const authorization = localStorage.getItem('satoken')
 headers.append('satoken', authorization!)
 headers.append('Content-Type', 'application/json')
-const baseURL = 'http://8.138.207.252:8080'
+const baseURL = 'https://www.overdose.love/api'
 
 const chatInfo = useChatInfoStore()
 function isJSON(jsonStr: any) {
