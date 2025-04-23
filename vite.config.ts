@@ -52,14 +52,14 @@ export default defineConfig({
   },
   build: {
     cssCodeSplit: true, // 启用 CSS 代码拆分
-    // sourcemap: false, //找到原始错误
-    // manifest: false, //不生成manifest
+    sourcemap: false, //找到原始错误
+    manifest: false, //不生成manifest
     minify: 'terser', // 必须开启：使用terserOptions才有效果
     terserOptions: {
       compress: {
         //生产环境时移除console
-        // pure_funcs: ['console.log'], // 只删除 console.log
-        // drop_debugger: false,
+        pure_funcs: ['console.log'], // 只删除 console.log
+        drop_debugger: false,
       },
     },
     rollupOptions: {
