@@ -18,11 +18,11 @@ const isNew = props.isNew //存储是否完成打印
 let timer: any = null
 
 //打印效果
-const typing = () => {
+const typing = async () => {
   //存在未打印的
   if (currentIndex.value < props.messages.length) {
     msg.value += props.messages.charAt(currentIndex.value++)
-    timer = setTimeout(typing, 40)
+    timer = await setTimeout(typing, 40)
   } else {
     clearTimeout(timer)
   }

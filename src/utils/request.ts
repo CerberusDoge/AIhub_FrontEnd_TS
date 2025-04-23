@@ -9,7 +9,8 @@ import type {
 import router from '@/router'
 
 const service = axios.create({
-  baseURL: 'http://8.138.207.252:8080', // 基础 URL
+  // baseURL: 'http://8.138.207.252:8080', // 基础 URL
+  baseURL: 'https://www.overdose.love/api', // 基础 URL
   withCredentials: false, // 启用跨域凭证
 })
 
